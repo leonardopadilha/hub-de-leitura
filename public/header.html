@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub de Leitura - Header Atualizado</title>
+    <title>Hub de Leitura - Header</title>
     <link rel="stylesheet" href="/css/header.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
@@ -12,7 +12,7 @@
     <header class="custom-header">
         <nav class="navbar navbar-expand-lg custom-navbar">
             <div class="container">
-                <!-- Logo flutuante + Título -->
+                <!-- Logo flutuante + Título (mantendo design original) -->
                 <div class="logo-section navbar-brand">
                     <div class="floating-book">
                         <i class="fas fa-book-open text-primary" style="font-size: 3rem;"></i>
@@ -28,22 +28,22 @@
                     <i class="fas fa-bars text-dark"></i>
                 </button>
                 
-                <!-- Menu de navegação -->
+                <!-- Menu de navegação (layout original mantido) -->
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link custom-nav-link active" href="/">HOME</a>
+                            <a class="nav-link custom-nav-link active" href="/index.html">HOME</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link custom-nav-link d-flex align-items-center" href="/cart.html">
-                                CARRINHO
+                                CESTA DE LIVROS
                                 <span id="cart-count" class="cart-badge">0</span>
                             </a>
                         </li>
                         <li class="nav-item ms-2">
-                            <a class="account-btn" href="/dashboard.html" id="account-link">
-                                <i class="fas fa-user"></i>
-                                <span>MINHA CONTA</span>
+                            <a class="account-btn" href="/login.html" id="account-link">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>ENTRAR</span>
                             </a>
                         </li>
                     </ul>
@@ -51,3 +51,8 @@
             </div>
         </nav>
     </header>
+
+    <!-- Script Bootstrap necessário para dropdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

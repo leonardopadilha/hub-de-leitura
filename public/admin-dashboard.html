@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub de Leitura - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border-left: 4px solid #0d6efd;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .action-btn {
+            min-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .books-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table th {
+            background: #f8f9fa;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .book-cover-small {
+            width: 40px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .status-badge {
+            font-size: 0.8rem;
+        }
+        
+        .quick-stats {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+    
+    <div id="alert-container" class="alert d-none" 
+         style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
+    </div>
+    
+    <main class="container mt-5">
+        <br><br>
+        
+        <!-- Cabeçalho Admin -->
+        <div class="admin-header text-center">
+            <h1><i class="fas fa-cog fa-spin"></i> Painel Administrativo</h1>
+            <p class="mb-0">Gerencie livros, reservas e usuários do Hub de Leitura</p>
+            <small class="opacity-75">Acesso restrito a administradores</small>
+        </div>
+
+        <!-- Estatísticas Gerais -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-book fa-2x text-primary mb-2"></i>
+                    <div class="stat-number" id="total-books">-</div>
+                    <small class="text-muted">Total de Livros</small>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-bookmark fa-2x text-warning mb-2"></i>
+                    <div class="stat-number" id="active-reservations">-</div>
+                    <small class="text-muted">Reservas Ativas</small>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-users fa-2x text-success mb-2"></i>
+                    <div class="stat-number" id="total-users">-</div>
+                    <small class="text-muted">Usuários Cadastrados</small>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x text-danger mb-2"></i>
+                    <div class="stat-number" id="low-stock-books">-</div>
+                    <small class="text-muted">Estoque Baixo</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Coluna Principal -->
+            <div class="col-lg-8">
+                <!-- Ações Rápidas -->
+                <div class="admin-card">
+                    <h4><i class="fas fa-bolt text-primary"></i> Ações Rápidas</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary action-btn" onclick="openAddBookModal()">
+                                <i class="fas fa-plus"></i> Adicionar Livro
+                            </button>
+                            <button class="btn btn-outline-secondary action-btn" onclick="viewAllBooks()">
+                                <i class="fas fa-list"></i> Gerenciar Livros
+                            </button>
+                            <button class="btn btn-outline-info action-btn" onclick="viewReservations()">
+                                <i class="fas fa-bookmark"></i> Ver Reservas
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-warning action-btn" onclick="exportData()">
+                                <i class="fas fa-download"></i> Exportar Dados
+                            </button>
+                            <button class="btn btn-outline-success action-btn" onclick="importBooks()">
+                                <i class="fas fa-upload"></i> Importar Livros
+                            </button>
+                            <button class="btn btn-outline-danger action-btn" onclick="viewLogs()">
+                                <i class="fas fa-file-alt"></i> Logs do Sistema
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livros Recentes -->
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4><i class="fas fa-book text-primary"></i> Livros Adicionados Recentemente</h4>
+                        <button class="btn btn-outline-primary btn-sm" onclick="viewAllBooks()">
+                            Ver Todos
+                        </button>
+                    </div>
+                    
+                    <!-- Loading -->
+                    <div id="recent-books-loading" class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Carregando...</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabela de Livros -->
+                    <div id="recent-books-table" class="d-none">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Livro</th>
+                                        <th>Autor</th>
+                                        <th>Categoria</th>
+                                        <th>Estoque</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-books-tbody">
+                                    <!-- Livros serão inseridos aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Lateral -->
+            <div class="col-lg-4">
+                <!-- Alertas -->
+                <div class="admin-card">
+                    <h5><i class="fas fa-bell text-warning"></i> Alertas</h5>
+                    <div id="admin-alerts">
+                        <div class="text-center py-3">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Carregando...</span>
+                            </div>
+                            <span class="ms-2">Verificando alertas...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estatísticas Rápidas -->
+                <div class="admin-card">
+                    <h5><i class="fas fa-chart-line text-success"></i> Resumo Hoje</h5>
+                    <div class="quick-stats">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Novas reservas:</span>
+                            <strong id="today-reservations">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Livros retirados:</span>
+                            <strong id="today-pickups">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Devoluções:</span>
+                            <strong id="today-returns">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Reservas expiradas:</span>
+                            <strong id="today-expired" class="text-danger">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livros Populares -->
+                <div class="admin-card">
+                    <h5><i class="fas fa-star text-warning"></i> Livros Mais Reservados</h5>
+                    <div id="popular-books">
+                        <div class="text-center py-3">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Carregando...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Adicionar Livro -->
+    <div class="modal fade" id="addBookModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus text-primary"></i> Adicionar Novo Livro
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-book-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="book-title" class="form-label">Título *</label>
+                                <input type="text" class="form-control" id="book-title" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="book-author" class="form-label">Autor *</label>
+                                <input type="text" class="form-control" id="book-author" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="book-isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="book-isbn">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="book-category" class="form-label">Categoria</label>
+                                <select class="form-select" id="book-category">
+                                    <option value="">Selecione uma categoria</option>
+                                    <option value="Ficção">Ficção</option>
+                                    <option value="Romance">Romance</option>
+                                    <option value="Fantasia">Fantasia</option>
+                                    <option value="Tecnologia">Tecnologia</option>
+                                    <option value="Biografia">Biografia</option>
+                                    <option value="História">História</option>
+                                    <option value="Ciência">Ciência</option>
+                                    <option value="Autoajuda">Autoajuda</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="book-editor" class="form-label">Editora</label>
+                                <input type="text" class="form-control" id="book-editor">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="book-year" class="form-label">Ano de Publicação</label>
+                                <input type="number" class="form-control" id="book-year" min="1000" max="2030">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="book-pages" class="form-label">Páginas</label>
+                                <input type="number" class="form-control" id="book-pages" min="1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="book-copies" class="form-label">Exemplares *</label>
+                                <input type="number" class="form-control" id="book-copies" min="1" value="1" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="book-language" class="form-label">Idioma</label>
+                                <select class="form-select" id="book-language">
+                                    <option value="Português">Português</option>
+                                    <option value="Inglês">Inglês</option>
+                                    <option value="Espanhol">Espanhol</option>
+                                    <option value="Francês">Francês</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="book-description" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="book-description" rows="3" 
+                                      placeholder="Descrição do livro..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="book-cover" class="form-label">Imagem da Capa</label>
+                            <input type="text" class="form-control" id="book-cover" 
+                                   placeholder="livro-padrao.png">
+                            <div class="form-text">Nome do arquivo da imagem (deve estar na pasta images/books/)</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewBook()">
+                        <i class="fas fa-save"></i> Salvar Livro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-5 bg-light py-4">
+        <div class="container text-center">
+            <p>&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se é admin
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const token = localStorage.getItem('authToken');
+            
+            if (!token || !isAdmin) {
+                alert('Acesso negado. Apenas administradores podem acessar esta página.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Inicializar dashboard
+            loadDashboardData();
+        });
+
+        function loadDashboardData() {
+            console.log('Carregando dados do dashboard admin...');
+            
+            // Carregar estatísticas gerais
+            loadGeneralStats();
+            
+            // Carregar livros recentes
+            loadRecentBooks();
+            
+            // Carregar alertas
+            loadAdminAlerts();
+            
+            // Carregar estatísticas do dia
+            loadTodayStats();
+            
+            // Carregar livros populares
+            loadPopularBooks();
+        }
+
+        function loadGeneralStats() {
+            const token = localStorage.getItem('authToken');
+            
+            // Buscar total de livros
+            fetch('/api/books', {
+                headers: { 'Authorization': token }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const totalBooks = data.pagination ? data.pagination.totalBooks : data.books?.length || 0;
+                document.getElementById('total-books').textContent = totalBooks;
+                
+                // Verificar livros com estoque baixo
+                const lowStockBooks = data.books ? data.books.filter(book => 
+                    book.available_copies <= 1 && book.available_copies > 0
+                ).length : 0;
+                document.getElementById('low-stock-books').textContent = lowStockBooks;
+            })
+            .catch(error => {
+                console.error('Erro ao carregar estatísticas de livros:', error);
+                document.getElementById('total-books').textContent = '?';
+                document.getElementById('low-stock-books').textContent = '?';
+            });
+
+            // Buscar reservas ativas
+            fetch('/api/reservations', {
+                headers: { 'Authorization': token }
+            })
+            .then(response => response.json())
+            .then(reservations => {
+                const activeReservations = reservations.filter(r => r.status === 'active').length;
+                document.getElementById('active-reservations').textContent = activeReservations;
+            })
+            .catch(error => {
+                console.error('Erro ao carregar reservas:', error);
+                document.getElementById('active-reservations').textContent = '?';
+            });
+
+            // Buscar total de usuários
+            fetch('/api/users', {
+                headers: { 'Authorization': token }
+            })
+            .then(response => response.json())
+            .then(users => {
+                document.getElementById('total-users').textContent = users.length;
+            })
+            .catch(error => {
+                console.error('Erro ao carregar usuários:', error);
+                document.getElementById('total-users').textContent = '?';
+            });
+        }
+
+        function loadRecentBooks() {
+            const token = localStorage.getItem('authToken');
+            
+            fetch('/api/books?limit=5', {
+                headers: { 'Authorization': token }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const books = data.books || [];
+                displayRecentBooks(books.slice(0, 5));
+                document.getElementById('recent-books-loading').classList.add('d-none');
+                document.getElementById('recent-books-table').classList.remove('d-none');
+            })
+            .catch(error => {
+                console.error('Erro ao carregar livros recentes:', error);
+                document.getElementById('recent-books-loading').innerHTML = 
+                    '<p class="text-danger">Erro ao carregar livros</p>';
+            });
+        }
+
+        function displayRecentBooks(books) {
+            const tbody = document.getElementById('recent-books-tbody');
+            tbody.innerHTML = '';
+
+            books.forEach(book => {
+                const row = document.createElement('tr');
+                const isAvailable = book.available_copies > 0;
+                const stockStatus = book.available_copies <= 1 ? 'danger' : 
+                                   book.available_copies <= 3 ? 'warning' : 'success';
+
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="images/books/${book.cover_image || 'livro-padrao.png'}" 
+                                 class="book-cover-small me-2" alt="${book.title}">
+                            <div>
+                                <strong>${book.title}</strong><br>
+                                <small class="text-muted">ID: ${book.id}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${book.author}</td>
+                    <td><span class="badge bg-secondary">${book.category}</span></td>
+                    <td>
+                        <span class="badge bg-${stockStatus}">${book.available_copies}/${book.total_copies}</span>
+                    </td>
+                    <td>
+                        <span class="badge ${isAvailable ? 'bg-success' : 'bg-danger'} status-badge">
+                            ${isAvailable ? 'Disponível' : 'Esgotado'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editBook(${book.id})" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteBook(${book.id})" title="Excluir">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadAdminAlerts() {
+            // Simular alertas (em produção viria da API)
+            const alerts = [
+                { type: 'warning', message: '3 livros com estoque baixo', icon: 'fa-exclamation-triangle' },
+                { type: 'info', message: '5 reservas vencendo hoje', icon: 'fa-clock' },
+                { type: 'success', message: 'Sistema funcionando normalmente', icon: 'fa-check-circle' }
+            ];
+
+            const alertsContainer = document.getElementById('admin-alerts');
+            alertsContainer.innerHTML = '';
+
+            alerts.forEach(alert => {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${alert.type} py-2 px-3 mb-2`;
+                alertDiv.innerHTML = `
+                    <i class="fas ${alert.icon}"></i>
+                    <small>${alert.message}</small>
+                `;
+                alertsContainer.appendChild(alertDiv);
+            });
+        }
+
+        function loadTodayStats() {
+            // Simular estatísticas do dia
+            document.getElementById('today-reservations').textContent = '8';
+            document.getElementById('today-pickups').textContent = '12';
+            document.getElementById('today-returns').textContent = '15';
+            document.getElementById('today-expired').textContent = '2';
+        }
+
+        function loadPopularBooks() {
+            const popularContainer = document.getElementById('popular-books');
+            
+            // Simular livros populares
+            const popularBooks = [
+                { title: 'Dom Casmurro', reservations: 15 },
+                { title: '1984', reservations: 12 },
+                { title: 'O Pequeno Príncipe', reservations: 10 }
+            ];
+
+            let popularHtml = '';
+            popularBooks.forEach((book, index) => {
+                popularHtml += `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">
+                            <strong>${index + 1}.</strong> ${book.title}
+                        </span>
+                        <span class="badge bg-primary">${book.reservations}</span>
+                    </div>
+                `;
+            });
+
+            popularContainer.innerHTML = popularHtml;
+        }
+
+        // Funções de ação
+        function openAddBookModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addBookModal'));
+            modal.show();
+        }
+
+        function saveNewBook() {
+            const formData = {
+                title: document.getElementById('book-title').value,
+                author: document.getElementById('book-author').value,
+                isbn: document.getElementById('book-isbn').value,
+                category: document.getElementById('book-category').value,
+                editor: document.getElementById('book-editor').value,
+                publication_year: parseInt(document.getElementById('book-year').value) || null,
+                pages: parseInt(document.getElementById('book-pages').value) || null,
+                total_copies: parseInt(document.getElementById('book-copies').value) || 1,
+                language: document.getElementById('book-language').value,
+                description: document.getElementById('book-description').value,
+                cover_image: document.getElementById('book-cover').value || 'livro-padrao.png'
+            };
+
+            if (!formData.title || !formData.author) {
+                alert('Título e autor são obrigatórios!');
+                return;
+            }
+
+            const token = localStorage.getItem('authToken');
+
+            fetch('/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    showAlert('Livro adicionado com sucesso!', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('addBookModal')).hide();
+                    document.getElementById('add-book-form').reset();
+                    loadDashboardData(); // Recarregar dados
+                } else {
+                    showAlert(data.error || 'Erro ao adicionar livro', 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao adicionar livro:', error);
+                showAlert('Erro de conexão', 'danger');
+            });
+        }
+
+        function viewAllBooks() {
+            window.location.href = '/admin-books.html';
+        }
+
+        function viewReservations() {
+            window.location.href = '/admin-reservations.html';
+        }
+
+        function editBook(id) {
+            // TODO: Implementar edição
+            showAlert('Funcionalidade de edição será implementada em breve', 'info');
+        }
+
+        function deleteBook(id) {
+            if (confirm('Tem certeza que deseja excluir este livro?')) {
+                const token = localStorage.getItem('authToken');
+                
+                fetch(`/api/books/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        showAlert('Livro excluído com sucesso!', 'success');
+                        loadDashboardData();
+                    } else {
+                        showAlert(data.error || 'Erro ao excluir livro', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao excluir livro:', error);
+                    showAlert('Erro de conexão', 'danger');
+                });
+            }
+        }
+
+        function exportData() {
+            showAlert('Funcionalidade de exportação será implementada em breve', 'info');
+        }
+
+        function importBooks() {
+            showAlert('Funcionalidade de importação será implementada em breve', 'info');
+        }
+
+        function viewLogs() {
+            showAlert('Funcionalidade de logs será implementada em breve', 'info');
+        }
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            const iconClass = type === 'success' ? 'fa-check-circle' : 
+                             type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+            
+            alertContainer.className = `alert alert-${type}`;
+            alertContainer.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
+            alertContainer.classList.remove('d-none');
+            
+            setTimeout(() => {
+                alertContainer.classList.add('d-none');
+            }, 5000);
+        }
+    </script>
+    <script src="js/header.js"></script>
+</body>
+</html>
