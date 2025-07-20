@@ -1,0 +1,127 @@
+/* Animação do ícone flutuante */
+.floating-book {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Header customizado */
+.custom-header {
+  background: white !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  width: 100%;
+}
+
+.custom-navbar {
+  background: transparent !important;
+  padding: 0.25rem 0;
+}
+
+/* Estilo do logo e título */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-section h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+  text-align: left !important;
+}
+
+.logo-section p {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0;
+  text-align: left !important;
+}
+
+.logo-section div:last-child {
+  text-align: left !important;
+}
+
+/* Links da navegação */
+.custom-nav-link {
+  color: #6b7280 !important;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.custom-nav-link:hover {
+  color: #2563eb !important;
+}
+
+.custom-nav-link.active {
+  color: #2563eb !important;
+  font-weight: 600;
+}
+
+/* Badge do carrinho */
+.cart-badge {
+  background-color: #dc2626 !important;
+  color: white;
+  font-size: 0.875rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+}
+
+/* Botão da conta */
+.account-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.account-btn:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  color: white;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 991.98px) {
+  .logo-section h1 {
+    font-size: 1.5rem;
+  }
+  .logo-section p {
+    font-size: 0.875rem;
+  }
+}
+
+/* Espaçamento para compensar header fixo */
+body {
+  padding-top: 100px;
+}
