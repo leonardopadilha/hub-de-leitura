@@ -1,0 +1,263 @@
+{
+    "info": {
+      "name": "QA-Commerce API Collection",
+      "description": "Collection para a API QA-Commerce com validação JWT.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"admin\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get Users",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:3000/api/users",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "users"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Create User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\",\n  \"isAdmin\": false\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/users",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "users"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Update User",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\",\n  \"isAdmin\": false\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/users/1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "users", "1"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Delete User",
+        "request": {
+          "method": "DELETE",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:3000/api/users/1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "users", "1"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Add Product to Cart",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": 1,\n  \"productId\": 101,\n  \"quantity\": 2\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/carrinho",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "carrinho"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Update Cart Item",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": 1,\n  \"productId\": 101,\n  \"quantity\": 3\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/carrinho",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "carrinho"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Remove Cart Item",
+        "request": {
+          "method": "DELETE",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": 1,\n  \"productId\": 101\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/carrinho",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "carrinho"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Checkout",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": 1,\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"123 Main St\",\n  \"number\": \"456\",\n  \"cep\": \"12345678\",\n  \"phone\": \"1234567890\",\n  \"email\": \"john.doe@example.com\",\n  \"paymentMethod\": \"credit_card\",\n  \"cardNumber\": \"1234123412341234\",\n  \"cardExpiry\": \"12/2025\",\n  \"cardCvc\": \"123\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/api/checkout",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["api", "checkout"]
+          }
+        },
+        "response": []
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "exec": [
+            "pm.environment.set(\"token\", pm.response.json().token);"
+          ]
+        }
+      },
+      {
+        "listen": "test",
+        "script": {
+          "exec": [
+            "if (pm.response.code === 200 && pm.request.url.path[1] === \"login\") {",
+            "  const jsonData = pm.response.json();",
+            "  pm.environment.set(\"token\", jsonData.token);",
+            "}"
+          ]
+        }
+      }
+    ]
+  }
+  

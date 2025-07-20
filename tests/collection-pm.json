@@ -1,0 +1,374 @@
+{
+	"info": {
+	  "_postman_id": "1df7d0a2-78d4-4b9a-8f72-77c401f9c5da",
+	  "name": "QA-Commerce API",
+	  "description": "Coleção de testes para a API QA-Commerce.",
+	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+	  {
+		"name": "Login",
+		"item": [
+		  {
+			"name": "Login",
+			"request": {
+			  "method": "POST",
+			  "header": [],
+			  "body": {
+				"mode": "raw",
+				"raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"admin\"\n}"
+			  },
+			  "url": {
+				"raw": "http://localhost:3000/api/login",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "login"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  },
+	  {
+		"name": "Usuarios",
+		"item": [
+		  {
+			"name": "Listar Usuarios",
+			"request": {
+			  "method": "GET",
+			  "header": [
+				{
+				  "key": "Authorization",
+				  "value": "Bearer {{token}}",
+				  "type": "text"
+				}
+			  ],
+			  "url": {
+				"raw": "http://localhost:3000/api/users",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "users"
+				]
+			  }
+			},
+			"response": []
+		  },
+		  {
+			"name": "Criar Usuario",
+			"request": {
+			  "method": "POST",
+			  "header": [],
+			  "body": {
+				"mode": "raw",
+				"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\",\n  \"isAdmin\": false\n}"
+			  },
+			  "url": {
+				"raw": "http://localhost:3000/api/users",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "users"
+				]
+			  }
+			},
+			"response": []
+		  },
+		  {
+			"name": "Atualizar Usuario",
+			"request": {
+			  "method": "PUT",
+			  "header": [
+				{
+				  "key": "Authorization",
+				  "value": "Bearer {{token}}",
+				  "type": "text"
+				}
+			  ],
+			  "body": {
+				"mode": "raw",
+				"raw": "{\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"NewPassword123!\",\n  \"isAdmin\": true\n}"
+			  },
+			  "url": {
+				"raw": "http://localhost:3000/api/users/1",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "users",
+				  "1"
+				]
+			  }
+			},
+			"response": []
+		  },
+		  {
+			"name": "Deletar Usuario",
+			"request": {
+			  "method": "DELETE",
+			  "header": [
+				{
+				  "key": "Authorization",
+				  "value": "Bearer {{token}}",
+				  "type": "text"
+				}
+			  ],
+			  "url": {
+				"raw": "http://localhost:3000/api/users/1",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "users",
+				  "1"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  },
+	  {
+		"name": "Carrinho",
+		"item": [
+		  {
+			"name": "Adicionar Produto ao Carrinho",
+			"request": {
+			  "method": "POST",
+			  "header": [],
+			  "body": {
+				"mode": "raw",
+				"raw": "{\n  \"userId\": 1,\n  \"productId\": 1,\n  \"quantity\": 2\n}"
+			  },
+			  "url": {
+				"raw": "http://localhost:3000/api/carrinho",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "carrinho"
+				]
+			  }
+			},
+			"response": []
+		  },
+		  {
+			"name": "Obter Produtos do Carrinho",
+			"request": {
+			  "method": "GET",
+			  "header": [
+				{
+				  "key": "Authorization",
+				  "value": "Bearer {{token}}",
+				  "type": "text"
+				}
+			  ],
+			  "url": {
+				"raw": "http://localhost:3000/api/carrinho/1",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "carrinho",
+				  "1"
+				]
+			  }
+			},
+			"response": []
+		  },
+		  {
+			"name": "Remover Produto do Carrinho",
+			"request": {
+			  "method": "DELETE",
+			  "header": [
+				{
+				  "key": "Authorization",
+				  "value": "Bearer {{token}}",
+				  "type": "text"
+				}
+			  ],
+			  "url": {
+				"raw": "http://localhost:3000/api/carrinho/1/1",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "carrinho",
+				  "1",
+				  "1"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  },
+	  {
+		"name": "Checkout",
+		"item": [
+		  {
+			"name": "Finalizar Pedido",
+			"request": {
+			  "method": "POST",
+			  "header": [],
+			  "body": {
+				"mode": "raw",
+				"raw": "{\n  \"userId\": 1,\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"123 Main St\",\n  \"number\": \"456\",\n  \"cep\": \"12345678\",\n  \"phone\": \"1234567890\",\n  \"email\": \"john.doe@example.com\",\n  \"paymentMethod\": \"credit_card\",\n  \"cardNumber\": \"1234123412341234\",\n  \"cardExpiry\": \"12/2025\",\n  \"cardCvc\": \"123\",\n  \"createAccount\": false\n}"
+			  },
+			  "url": {
+				"raw": "http://localhost:3000/api/checkout",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "checkout"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  },
+	  {
+		"name": "Produtos",
+		"item": [
+		  {
+			"name": "Listar Produtos",
+			"request": {
+			  "method": "GET",
+			  "header": [],
+			  "url": {
+				"raw": "http://localhost:3000/api/produtos",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "produtos"
+				]
+			  }
+			},
+			"response": []
+		  },
+		  {
+			"name": "Obter Detalhes de um Produto",
+			"request": {
+			  "method": "GET",
+			  "header": [],
+			  "url": {
+				"raw": "http://localhost:3000/api/produtos/1",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "produtos",
+				  "1"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  },
+	  {
+		"name": "Pedidos",
+		"item": [
+		  {
+			"name": "Listar Pedidos do Usuário",
+			"request": {
+			  "method": "GET",
+			  "header": [
+				{
+				  "key": "Authorization",
+				  "value": "Bearer {{token}}",
+				  "type": "text"
+				}
+			  ],
+			  "url": {
+				"raw": "http://localhost:3000/api/orders?userId=1",
+				"protocol": "http",
+				"host": [
+				  "localhost"
+				],
+				"port": "3000",
+				"path": [
+				  "api",
+				  "orders"
+				],
+				"query": [
+				  {
+					"key": "userId",
+					"value": "1"
+				  }
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  }
+	],
+	"event": [
+	  {
+		"listen": "test",
+		"script": {
+		  "exec": [
+			"const token = pm.response.json().token;",
+			"",
+			"if (token) {",
+			"    pm.environment.set(\"token\", token);",
+			"}"
+		  ],
+		  "type": "text/javascript"
+		}
+	  }
+	],
+	"auth": {
+	  "type": "bearer",
+	  "bearer": [
+		{
+		  "key": "token",
+		  "value": "{{token}}",
+		  "type": "string"
+		}
+	  ]
+	}
+  }
+  

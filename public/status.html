@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA-Commerce - Status do Pedido</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header id="header"></header>
+    <div id="app">
+        <br><br>
+        <h1>STATUS DO PEDIDO</h1>
+        <main class="container mt-5">
+            <div id="order-status" class="text-center"></div>
+        </main>
+        <footer class="mt-5 py-3">
+            <p class="text-center">&copy; 2024 QA-Commerce</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            
+            fetch(`/api/orders/${orderId}`)
+                .then(response => response.json())
+                .then(order => {
+                    const orderStatus = document.getElementById('order-status');
+                    if (order.id) {
+                        orderStatus.innerHTML = `
+                            <h4>Obrigado pelo seu pedido ${order.first_name}.</h4>
+                            <p>ID do Pedido: <strong>${order.formattedOrderId}</strong></p>
+                            <p>Total: <strong>R$${order.total_price.toFixed(2)}</strong></p>
+                            <p>Status: <strong>${order.status}</strong></p>
+                            <p>Agradecemos a sua preferência!</p>
+                        `;
+                    } else {
+                        orderStatus.innerHTML = `
+                            <p class="text-danger">Pedido não encontrado</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('order-status').innerHTML = `
+                        <p class="text-danger">Erro ao buscar status do pedido</p>
+                    `;
+                    console.error('Erro ao buscar status do pedido:', error);
+                });
+        });
+    </script>
+    <script src="js/header.js"></script>
+</body>
+</html>

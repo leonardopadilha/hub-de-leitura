@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA-Commerce - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header id="header"></header>
+    <div id="app">
+        <br><br>
+        <h1>Sua Melhor Experiência de Compra Está Aqui!</h1>
+        <p class="text-center">
+            Navegue por nossa seleção de produtos e desfrute de uma experiência de compra única.
+            <br>Atendimento personalizado, entrega rápida e fácil, e tudo o que você precisa em um só lugar.
+            <br>Compre agora e viva o novo!
+        </p>
+        <div id="alert-container" class="alert d-none" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 1050;"></div>
+
+        <main class="container mt-5">
+            <!-- Lista de Produtos -->
+            <div id="product-list" class="row">
+                <!-- Produtos serão listados dinamicamente aqui -->
+            </div>
+            <!-- Paginação -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center" id="pagination">
+                    <!-- Paginação dinâmica -->
+                </ul>
+            </nav>
+        </main>
+        <footer class="mt-5">
+            <p class="text-center">&copy; 2024 QA-Commerce</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userId = 1; // Supondo um usuário com id 1
+            let currentPage = 1;
+            const limit = 9;
+
+            function fetchProducts(page) {
+                fetch(`/api/produtos?page=${page}&limit=${limit}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const productList = document.getElementById('product-list');
+                        productList.innerHTML = '';
+        
+                        data.products.forEach(product => {
+                            const productCard = document.createElement('div');
+                            productCard.className = 'col-md-4 mb-4';
+                            productCard.innerHTML = `
+                                <div class="card">
+                                    <a href="/product.html?id=${product.id}">
+                                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                                    </a>
+                                    <div class="card-body">
+                                        <legend>
+                                            <a href="/product.html?id=${product.id}" class="text-dark text-decoration-none">${product.name}</a>
+                                        </legend>
+                                        <p class="card-text">${product.description}</p>
+                                        <p>Preço: R$${product.price.toFixed(2)}</p>
+                                        <div class="form-group">
+                                            <label for="quantity-${product.id}">Quantidade:</label>
+                                            <input type="number" id="quantity-${product.id}" value="1" min="1" class="form-control w-50 mb-2">
+                                        </div>
+                                        <button class="btn btn-primary add-to-cart" data-id="${product.id}">Adicionar ao Carrinho</button>
+                                    </div>
+                                </div>
+                            `;
+                            productList.appendChild(productCard);
+                        });
+
+                        // Atualizar a paginação
+                        const pagination = document.getElementById('pagination');
+                        pagination.innerHTML = '';
+
+                        // Adicionar botão "Anterior"
+                        const prevPageItem = document.createElement('li');
+                        prevPageItem.className = `page-item ${data.currentPage === 1 ? 'disabled' : ''}`;
+                        prevPageItem.innerHTML = `<a class="page-link" href="#" data-page="${data.currentPage - 1}">Anterior</a>`;
+                        pagination.appendChild(prevPageItem);
+
+                        // Adicionar botões de página
+                        for (let i = 1; i <= data.totalPages; i++) {
+                            const pageItem = document.createElement('li');
+                            pageItem.className = `page-item ${i === data.currentPage ? 'active' : ''}`;
+                            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+                            pagination.appendChild(pageItem);
+                        }
+
+                        // Adicionar botão "Próximo"
+                        const nextPageItem = document.createElement('li');
+                        nextPageItem.className = `page-item ${data.currentPage === data.totalPages ? 'disabled' : ''}`;
+                        nextPageItem.innerHTML = `<a class="page-link" href="#" data-page="${data.currentPage + 1}">Próximo</a>`;
+                        pagination.appendChild(nextPageItem);
+
+                        // Adicionar evento de clique para os botões "Add to Cart"
+                        document.querySelectorAll('.add-to-cart').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const productId = this.dataset.id;
+                                const quantity = document.getElementById(`quantity-${productId}`).value;
+                                fetch('/api/carrinho', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ userId: 1, productId: productId, quantity: parseInt(quantity, 10) })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Mostrar mensagem de sucesso
+                                    const alertContainer = document.getElementById('alert-container');
+                                    alertContainer.classList.remove('d-none');
+                                    alertContainer.classList.add('alert-success');
+                                    alertContainer.innerHTML = 'Produto adicionado ao carrinho!';
+                                    alertContainer.style.display = 'block';
+                                    setTimeout(() => {
+                                        alertContainer.style.display = 'none';
+                                    }, 3000);
+                                    // Atualizar o contador do carrinho
+                                    updateCartCount(userId);
+                                })
+                                .catch(error => console.error('Erro ao adicionar produto ao carrinho:', error));
+                            });
+                        });
+                    })
+                    .catch(error => console.error('Erro ao buscar produtos:', error));
+            }
+
+            // Carregar produtos da primeira página
+            fetchProducts(currentPage);
+
+            // Adicionar evento de clique para os links de paginação
+            document.getElementById('pagination').addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                    event.preventDefault();
+                    const page = parseInt(event.target.getAttribute('data-page'));
+                    if (page !== currentPage && page > 0) {
+                        currentPage = page;
+                        fetchProducts(currentPage);
+                    }
+                }
+            });
+
+            // Função para atualizar o contador do carrinho
+            function updateCartCount(userId) {
+                fetch(`/api/carrinho/${userId}`)
+                    .then(response => response.json())
+                    .then(cartItems => {
+                        const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+                        document.getElementById('cart-count').textContent = cartCount;
+                    })
+                    .catch(error => console.error('Erro ao atualizar o contador do carrinho:', error));
+            }
+        });
+    </script>
+    <script src="js/header.js"></script>
+</body>
+</html>
