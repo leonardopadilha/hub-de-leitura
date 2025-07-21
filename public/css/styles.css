@@ -42,55 +42,61 @@ header {
     border-bottom: 1px solid #ddd;
 }
 
-/* Navbar */
-.navbar {
+/* Navbar genérica - NÃO AFETA HEADER CUSTOMIZADO */
+.old-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
 }
 
-.navbar-brand img {
+.old-navbar .navbar-brand img {
     max-height: 60px;
-    margin-right: 20px; /* Espaçamento entre o logo e o menu */
+    margin-right: 20px;
 }
 
-.navbar-nav {
+.old-navbar .navbar-nav {
     display: flex;
     align-items: center;
-    gap: 30px; /* Espaçamento entre os itens do menu */
+    gap: 30px;
     margin-left: auto;
 }
 
-a {
+/* Links gerais - NÃO AFETA O HEADER */
+main a,
+section a,
+.content a,
+#app a:not(.custom-nav-link):not(.account-btn):not(.navbar-brand a) {
     color: #8f5bc4;
     text-decoration: underline;
 }
 
-.nav-item { 
+/* Estilos de navegação específicos para OLD NAVBAR - NÃO AFETA HEADER CUSTOMIZADO */
+.old-navbar .nav-item { 
     position: relative;
 }
 
-.nav-item .nav-link {
-    font-size: 1.2rem; /* Ajuste o tamanho conforme necessário */
+.old-navbar .nav-item .nav-link {
+    font-size: 1.2rem;
     color: white;
     transition: color 0.2s;
-    padding: 10px 0; /* Espaçamento vertical */
+    padding: 10px 0;
 }
 
-.nav-item .nav-link:hover {
+.old-navbar .nav-item .nav-link:hover {
    color: #764ba2;
 }
 
-.nav-item .badge {
+/* Badge específico para OLD NAVBAR - NÃO AFETA HEADER CUSTOMIZADO */
+.old-navbar .nav-item .badge {
     font-size: 1rem;
     padding: 0.3em 0.6em;
     background-color: #764ba2;
     color: white;
     border-radius: 60%;
     position: absolute;
-    top: -14px; /* Alinhamento vertical do badge */
-    right: -10px; /* Alinhamento horizontal do badge */
+    top: -14px;
+    right: -10px;
 }
 
 /* Estilo do contêiner principal */
@@ -438,26 +444,33 @@ legend {
     color: #764ba2;
 }
 
-h1 {
+/* ESTILOS ESPECÍFICOS PARA CONTEÚDO PRINCIPAL - NÃO AFETA O HEADER */
+main h1,
+section h1,
+.content h1,
+#app h1:not(.logo-section h1) {
     text-transform: uppercase;
-    text-align: center; /* Centraliza o texto */
-    font-size: 2.5rem; /* Ajuste o tamanho da fonte conforme necessário */
-    font-weight: 700; /* Deixa o texto em negrito */
-    letter-spacing: 0.1em; /* Adiciona espaçamento entre as letras */
-    margin-top: 20px; /* Espaço acima do título */
-    margin-bottom: 20px; /* Espaço abaixo do título */
-    color: #764ba2; /* Cor do título h1 */
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #764ba2;
 }
 
-h4 {
+main h4,
+section h4,
+.content h4,
+#app h4:not(.logo-section h4) {
     text-transform: uppercase;
-    text-align: center; /* Centraliza o texto */
-    font-size: 2.5rem; /* Ajuste o tamanho da fonte conforme necessário */
-    font-weight: 700; /* Deixa o texto em negrito */
-    letter-spacing: 0.1em; /* Adiciona espaçamento entre as letras */
-    margin-top: 20px; /* Espaço acima do título */
-    margin-bottom: 20px; /* Espaço abaixo do título */
-    color: #935dca; /* Cor do título h4 */
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #935dca;
 }
 
 .text-center {
@@ -465,14 +478,16 @@ h4 {
     font-size: 1.2rem;
 }
 
-h5 {
+main h5,
+section h5,
+.content h5 {
     text-transform: uppercase;
-    text-align: left; /* Centraliza o texto */
-    font-weight: 700; /* Deixa o texto em negrito */
-    letter-spacing: 0.1em; /* Adiciona espaçamento entre as letras */
-    margin-top: 20px; /* Espaço acima do título */
-    margin-bottom: 20px; /* Espaço abaixo do título */
-    color: #35bbdc; /* Cor do título h5 */
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #35bbdc;
 }
 
 #dashboard .order-details {
