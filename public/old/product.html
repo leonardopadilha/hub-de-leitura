@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QACommerce - Produto</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header id="header"></header>
+    <div id="app">
+        <main class="container mt-5">
+            <div id="alert-container" class="alert d-none"></div>
+            <div id="product-details" class="row">
+                <!-- Detalhes do produto serão carregados aqui -->
+            </div>
+        </main>
+        <footer class="mt-5 py-3">
+            <p class="text-center">&copy; 2024 QA-Commerce</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userId = 1; // Supondo um usuário com id 1
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+    
+            fetch(`/api/produtos/${productId}`)
+                .then(response => response.json())
+                .then(product => {
+                    const productDetails = document.getElementById('product-details');
+                    productDetails.innerHTML = `
+                        <div class="col-md-6">
+                            <img src="${product.image}" alt="${product.name}" id="product-image" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <legend>${product.name}</legend>
+                            <p id="product-description">${product.description}</p>
+                            <p id="product-price">Preço: R$${product.price.toFixed(2)}</p>
+                            <label for="product-quantity">Quantidade:</label>
+                            <input type="number" id="product-quantity" value="1" min="1" class="form-control w-25 mb-2">
+                            <button class="btn btn-primary" id="add-to-cart" data-id="${product.id}">Adicionar ao carrinho</button>
+                            <a href="/" class="btn btn-secondary ms-2">Voltar para Home</a>
+                        </div>
+                    `;
+    
+                    // Adicionar evento de clique para o botão "Comprar"
+                    document.getElementById('add-to-cart').addEventListener('click', function() {
+                        const quantity = document.getElementById('product-quantity').value;
+                        fetch('/api/carrinho', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ userId: userId, productId: product.id, quantity: parseInt(quantity, 10) })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mostrar mensagem de sucesso
+                            const alertContainer = document.getElementById('alert-container');
+                            alertContainer.classList.remove('d-none');
+                            alertContainer.classList.add('alert-success');
+                            alertContainer.innerHTML = 'Produto adicionado ao carrinho!';
+                            alertContainer.style.display = 'block';
+                            setTimeout(() => {
+                                alertContainer.style.display = 'none';
+                            }, 3000);
+                            // Atualizar o contador do carrinho
+                            updateCartCount(userId);
+                        })
+                        .catch(error => console.error('Erro ao adicionar produto ao carrinho:', error));
+                    });
+    
+                    // Atualizar contador do carrinho na inicialização
+                    updateCartCount(userId);
+                })
+                .catch(error => console.error('Erro ao buscar detalhes do produto:', error));
+        });
+    
+        // Função para atualizar o contador do carrinho
+        function updateCartCount(userId) {
+            fetch(`/api/carrinho/${userId}`)
+                .then(response => response.json())
+                .then(cartItems => {
+                    const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+                    document.getElementById('cart-count').textContent = cartCount;
+                })
+                .catch(error => console.error('Erro ao atualizar o contador do carrinho:', error));
+        }
+    </script>
+    <script src="js/header.js"></script>
+    
+</body>
+</html>

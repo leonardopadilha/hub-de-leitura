@@ -2,10 +2,6 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.admin-gradient {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
 .card-hover:hover {
   transform: translateY(-5px);
   transition: all 0.3s ease;
@@ -39,7 +35,6 @@
 
 .floating-book {
   animation: float 3s ease-in-out infinite;
-  color: #764ba2;
 }
 
 @keyframes float {
@@ -89,4 +84,33 @@
 @keyframes pulse {
   0%,100% { opacity: 1; }
   50%     { opacity: 0.7; }
+}
+
+/* Estilos de hover para botões do hero */
+.hero-btn-primary {
+  background-color: white;
+  color: #febc04;
+  transition: all 0.3s ease;
+}
+
+.hero-btn-primary:hover {
+  background-color: #f3f4f6;
+  color: #6b46c1;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hero-btn-secondary {
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.hero-btn-secondary:hover {
+  background-color: #febc04;
+  border-color: #7c3aed;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
 }

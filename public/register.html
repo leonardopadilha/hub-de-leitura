@@ -1,11 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/preflight.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Hub de Leitura - Criar Conta</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/home.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -76,58 +79,61 @@
 </head>
 
 <body>
-    <div id="header"></div>
+    <section class="hero-gradient text-white py-18">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center fade-in"
+                style="opacity: 1; transform: translateY(0px); transition: 0.6s;">
+                <br /><br />
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    Cadastre-se no <span class="text-yellow-300">Hub de Leitura</span>
+                </h2>
+                <p class="text-xl md:text-2xl mb-8 text-blue-100">
+                    Crie sua conta e mergulhe em um universo de histórias.
+                </p>
+            </div>
+        </div>
+    </section>
 
+    <div id="header"></div>
     <main>
         <div class="register-container">
             <!-- Cabeçalho -->
             <div class="register-header">
-                <i class="fas fa-user-plus"></i>
                 <h2>Criar Conta</h2>
-                <p class="text-muted">Junte-se ao Hub de Leitura</p>
             </div>
-
             <!-- Container de Alertas -->
-            <div id="alert-container" class="d-none mb-3"></div>
-
+            <div class="d-none mb-3" id="alert-container"></div>
             <!-- Formulário de Cadastro -->
-            <form id="register-form" novalidate>
+            <form id="register-form" novalidate="">
                 <div class="mb-3">
-                    <label for="name" class="form-label">
+                    <label class="form-label" for="name">
                         <i class="fas fa-signature"></i> Nome Completo *
                     </label>
-                    <input type="text" class="form-control" id="name" placeholder="Seu nome completo" required>
+                    <input class="form-control" id="name" placeholder="Seu nome completo" required="" type="text" />
                     <div class="invalid-feedback">Por favor, insira seu nome completo.</div>
                 </div>
-
                 <div class="mb-3">
-                    <label for="email" class="form-label">
+                    <label class="form-label" for="email">
                         <i class="fas fa-envelope"></i> Email *
                     </label>
-                    <input type="email" class="form-control" id="email" placeholder="seu@email.com" required>
+                    <input class="form-control" id="email" placeholder="seu@email.com" required="" type="email" />
                     <div class="invalid-feedback">Por favor, insira um email válido.</div>
-                    <div class="form-text">
-                        <i class="fas fa-info-circle"></i>
-                        Será usado para notificações sobre suas reservas
-                    </div>
                 </div>
-
                 <div class="mb-3">
-                    <label for="phone" class="form-label">
+                    <label class="form-label" for="phone">
                         <i class="fas fa-phone"></i> Telefone
                     </label>
-                    <input type="tel" class="form-control" id="phone" placeholder="(11) 99999-9999">
+                    <input class="form-control" id="phone" placeholder="(11) 99999-9999" type="tel" />
                     <div class="form-text">Opcional - para contato em caso de emergência</div>
                 </div>
-
                 <div class="mb-3">
-                    <label for="password" class="form-label">
+                    <label class="form-label" for="password">
                         <i class="fas fa-lock"></i> Senha *
                     </label>
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password" placeholder="Crie uma senha segura"
-                            required>
-                        <button class="btn btn-outline-secondary" type="button" id="toggle-password">
+                        <input class="form-control" id="password" placeholder="Crie uma senha segura" required=""
+                            type="password" />
+                        <button class="btn btn-outline-secondary" id="toggle-password" type="button">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -135,32 +141,28 @@
                     <div class="form-text" id="password-feedback">Mínimo 6 caracteres</div>
                     <div class="invalid-feedback">Por favor, crie uma senha com pelo menos 6 caracteres.</div>
                 </div>
-
                 <div class="mb-3">
-                    <label for="confirm-password" class="form-label">
+                    <label class="form-label" for="confirm-password">
                         <i class="fas fa-check-double"></i> Confirmar Senha *
                     </label>
-                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirme sua senha"
-                        required>
+                    <input class="form-control" id="confirm-password" placeholder="Confirme sua senha" required=""
+                        type="password" />
                     <div class="invalid-feedback">As senhas não coincidem.</div>
                 </div>
-
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="terms-agreement" required>
+                    <input class="form-check-input" id="terms-agreement" required="" type="checkbox" />
                     <label class="form-check-label" for="terms-agreement">
-                        Li e concordo com os <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">termos de
+                        Li e concordo com os <a data-bs-target="#termsModal" data-bs-toggle="modal" href="#">termos de
                             uso</a> da biblioteca
                     </label>
                     <div class="invalid-feedback">Você deve aceitar os termos de uso.</div>
                 </div>
-
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-lg" id="register-btn">
+                    <button class="btn btn-primary btn-lg" id="register-btn" type="submit">
                         <i class="fas fa-user-plus"></i> Criar Conta
                     </button>
                 </div>
             </form>
-
             <!-- Benefícios -->
             <div class="benefits-box">
                 <h6><i class="fas fa-gift text-primary"></i> Benefícios da sua conta:</h6>
@@ -181,22 +183,20 @@
                     <span>Defina metas de leitura</span>
                 </div>
             </div>
-
             <!-- Links de Navegação -->
             <div class="text-center mt-4">
                 <div class="d-grid gap-2">
-                    <hr>
+                    <hr />
                     <p class="mb-2">Já tem uma conta?</p>
-                    <a href="/login.html" class="btn btn-outline-primary">
+                    <a class="btn btn-outline-primary" href="/login.html">
                         <i class="fas fa-sign-in-alt"></i> Fazer Login
                     </a>
-                    <a href="/index.html" class="btn btn-outline-secondary">
+                    <a class="btn btn-outline-secondary" href="/catalog.html">
                         <i class="fas fa-book"></i> Voltar ao Catálogo
                     </a>
                 </div>
             </div>
         </div>
-
         <!-- Modal de Termos -->
         <div class="modal fade" id="termsModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
@@ -205,13 +205,12 @@
                         <h5 class="modal-title">
                             <i class="fas fa-file-contract"></i> Termos de Uso - Hub de Leitura
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body">
                         <h6>1. Sobre o Serviço</h6>
                         <p>O Hub de Leitura é um sistema de reserva de livros para fins educacionais e de treinamento em
                             QA.</p>
-
                         <h6>2. Responsabilidades do Usuário</h6>
                         <ul>
                             <li>Retirar livros reservados dentro do prazo de 48 horas</li>
@@ -219,106 +218,37 @@
                             <li>Manter dados pessoais atualizados</li>
                             <li>Tratar os livros com cuidado</li>
                         </ul>
-
                         <h6>3. Regras da Biblioteca</h6>
                         <ul>
                             <li>Máximo de 3 livros por usuário simultaneamente</li>
                             <li>Renovação permitida por até 2 vezes</li>
                             <li>Multa de R$ 1,00 por dia de atraso</li>
                         </ul>
-
                         <h6>4. Privacidade</h6>
                         <p>Seus dados pessoais são utilizados apenas para gerenciamento das reservas e comunicação sobre
                             a biblioteca.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" onclick="acceptTerms()">Aceitar e Fechar</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fechar</button>
+                        <button class="btn btn-primary" onclick="acceptTerms()" type="button">Aceitar e Fechar</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <footer id="footer"></footer>
+    </div>
 
-    <footer class="mt-5 bg-dark text-light py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5><i class="fas fa-book-open text-primary"></i> Hub de Leitura</h5>
-                    <p class="text-light">Sistema de Treinamento QA para gestão de biblioteca digital. Facilitando o
-                        acesso ao conhecimento.</p>
-                    <div class="social-links">
-                        <a href="#" class="text-primary me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary"><i
-                                class="fab fa-linkedin fa-lg"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h6 class="text-light">Links Rápidos</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="/index.html" class="text-light text-decoration-none"><i
-                                    class="fas fa-home me-2"></i>Catálogo</a></li>
-                        <li><a href="/dashboard.html" class="text-light text-decoration-none"><i
-                                    class="fas fa-user me-2"></i>Minhas Reservas</a></li>
-                        <li><a href="/cart.html" class="text-light text-decoration-none"><i
-                                    class="fas fa-shopping-cart me-2"></i>Minha Cesta</a></li>
-                        <li><a href="#" class="text-light text-decoration-none"><i
-                                    class="fas fa-question-circle me-2"></i>Ajuda</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h6 class="text-light">Contato</h6>
-                    <ul class="list-unstyled text-light">
-                        <li><i class="fas fa-map-marker-alt me-2"></i>Biblioteca Central</li>
-                        <li><i class="fas fa-phone me-2"></i>(11) 3333-4444</li>
-                        <li><i class="fas fa-envelope me-2"></i>contato@hubdeleitura.com</li>
-                        <li><i class="fas fa-clock me-2"></i>Seg-Sex: 8h às 18h</li>
-                    </ul>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h6 class="text-light">Horário</h6>
-                    <div class="text-light small">
-                        <div class="d-flex justify-content-between">
-                            <span>Segunda:</span>
-                            <span>8h-18h</span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span>Ter-Sex:</span>
-                            <span>8h-20h</span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span>Sábado:</span>
-                            <span>9h-15h</span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span>Domingo:</span>
-                            <span>Fechado</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr class="border-secondary">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0 text-light">&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small class="text-light">
-                        Desenvolvido com <i class="fas fa-heart text-danger"></i> por
-                        <a href="https://linkedin.com/in/fabio10" target="_blank"
-                            class="text-primary text-decoration-none">
-                            <i class="fab fa-linkedin me-1"></i>Fábio Araújo
-                        </a>
-                    </small>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/footer.html")
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("footer").innerHTML = data;
+                })
+                .catch((error) => console.error("Erro ao carregar o footer:", error));
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
             setupEventListeners();
 

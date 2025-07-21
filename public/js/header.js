@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function adaptHeaderForLibrary() {
     console.log("Adaptando header para biblioteca..."); // Debug
 
-    // Sempre trocar para "CESTA DE LIVROS" (independente de login)
+    // 
     const links = document.querySelectorAll(
-      'a[href="/cart.html"], a[href="/dashboard.html"]'
+      'a[href="/basket.html"], a[href="/dashboard.html"]'
     );
 
     links.forEach((link) => {

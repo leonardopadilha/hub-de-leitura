@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub de Leitura - Minha Conta</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/home.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -12,70 +14,67 @@
             transition: transform 0.2s;
             border-left: 4px solid #0d6efd;
         }
-        
+
         .dashboard-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-radius: 15px;
         }
-        
+
         .stat-number {
             font-size: 2.5rem;
             font-weight: bold;
         }
-        
+
         .recent-activity {
             max-height: 300px;
             overflow-y: auto;
         }
-        
+
         .activity-item {
             border-left: 3px solid #28a745;
             padding-left: 15px;
             margin-bottom: 15px;
         }
-        
+
         .activity-item.expired {
             border-left-color: #dc3545;
         }
-        
+
         .activity-item.completed {
             border-left-color: #6c757d;
         }
     </style>
 </head>
+
 <body>
-    <div id="header"></div>
-    
-    <div id="alert-container" class="alert d-none" 
-         style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
-    </div>
-    
-    <main class="container mt-5">
-        <br><br>
-        
-        <!-- Cabeçalho de Boas-vindas -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1><i class="fas fa-user-circle text-primary"></i> Minha Conta</h1>
-                        <h4>Olá, <span id="user-name">Carregando...</span>! 👋</h4>
-                        <p class="text-muted">Bem-vindo ao seu espaço pessoal no Hub de Leitura</p>
-                    </div>
-                    <div>
-                        <img src="images/reading-avatar.png" alt="Avatar de leitura" 
-                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;"
-                             onerror="this.style.display='none'">
-                    </div>
+    <section class="hero-gradient text-white py-5">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center fade-in"
+                style="opacity: 1; transform: translateY(0px); transition: 0.6s;">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6" style="color: white;">
+                    Minha <span class="text-yellow-300" style="color: #fbbf24;">Conta</span>
+                </h2>
+                <div class="text-xl md:text-2xl mb-8 text-blue-100">
+                    <h4 style="color: #dbeafe;">Olá, <span id="user-name">Carregando...</span>!</h4>
+                    <p class="text-muted" style="color: #a5b4fc !important;">Bem-vindo ao seu espaço pessoal no Hub de Leitura</p>
                 </div>
             </div>
         </div>
+    </section>
+
+    <div id="alert-container" class="alert d-none"
+        style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
+    </div>
+
+    <div id="header"></div>
+
+    <main class="container mt-5">
 
         <!-- Cards de Estatísticas -->
         <div class="row mb-4">
@@ -155,7 +154,7 @@
                             <a href="/index.html" class="btn btn-primary">
                                 <i class="fas fa-search"></i> Buscar Livros
                             </a>
-                            <a href="/cart.html" class="btn btn-outline-primary">
+                            <a href="/basket.html" class="btn btn-outline-primary">
                                 <i class="fas fa-bookmark"></i> Cestas de Livros
                             </a>
                             <button id="update-account-button" class="btn btn-outline-secondary">
@@ -199,82 +198,23 @@
         </div>
     </main>
 
-        <footer class="mt-5 bg-dark text-light py-5">
-            <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                <h5><i class="fas fa-book-open text-primary"></i> Hub de Leitura</h5>
-                <p class="text-light">Sistema de Treinamento QA para gestão de biblioteca digital. Facilitando o acesso ao conhecimento.</p>
-                <div class="social-links">
-                    <a href="#" class="text-primary me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
-                    <a href="#" class="text-primary me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                    <a href="#" class="text-primary me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                    <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary"><i class="fab fa-linkedin fa-lg"></i></a>
-                </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                <h6 class="text-light">Links Rápidos</h6>
-                <ul class="list-unstyled">
-                    <li><a href="/index.html" class="text-light text-decoration-none"><i class="fas fa-home me-2"></i>Catálogo</a></li>
-                    <li><a href="/dashboard.html" class="text-light text-decoration-none"><i class="fas fa-user me-2"></i>Minhas Reservas</a></li>
-                    <li><a href="/cart.html" class="text-light text-decoration-none"><i class="fas fa-shopping-cart me-2"></i>Minha Cesta</a></li>
-                    <li><a href="#" class="text-light text-decoration-none"><i class="fas fa-question-circle me-2"></i>Ajuda</a></li>
-                </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                <h6 class="text-light">Contato</h6>
-                <ul class="list-unstyled text-light">
-                    <li><i class="fas fa-map-marker-alt me-2"></i>Biblioteca Central</li>
-                    <li><i class="fas fa-phone me-2"></i>(11) 3333-4444</li>
-                    <li><i class="fas fa-envelope me-2"></i>contato@hubdeleitura.com</li>
-                    <li><i class="fas fa-clock me-2"></i>Seg-Sex: 8h às 18h</li>
-                </ul>
-                </div>
-                <div class="col-md-2 mb-4">
-                <h6 class="text-light">Horário</h6>
-                <div class="text-light small">
-                    <div class="d-flex justify-content-between">
-                    <span>Segunda:</span>
-                    <span>8h-18h</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                    <span>Ter-Sex:</span>
-                    <span>8h-20h</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                    <span>Sábado:</span>
-                    <span>9h-15h</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                    <span>Domingo:</span>
-                    <span>Fechado</span>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <hr class="border-secondary">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                <p class="mb-0 text-light">&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                <small class="text-light">
-                    Desenvolvido com <i class="fas fa-heart text-danger"></i> por 
-                    <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary text-decoration-none">
-                    <i class="fab fa-linkedin me-1"></i>Fábio Araújo
-                    </a>
-                </small>
-                </div>
-            </div>
-            </div>
-        </footer>
+    <footer id="footer"></footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/footer.html")
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("footer").innerHTML = data;
+                })
+                .catch((error) => console.error("Erro ao carregar o footer:", error));
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
             // Verificar autenticação
             const token = localStorage.getItem('authToken');
             const userName = localStorage.getItem('userName');
-            
+
             if (!token) {
                 window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
                 return;
@@ -310,23 +250,23 @@
 
         function loadDashboardData() {
             const token = localStorage.getItem('authToken');
-            
+
             // Carregar reservas do usuário
             fetch('/api/reservations', {
                 headers: {
                     'Authorization': token
                 }
             })
-            .then(response => response.json())
-            .then(reservations => {
-                updateStatistics(reservations);
-                displayLatestReservation(reservations);
-                displayRecentActivities(reservations);
-            })
-            .catch(error => {
-                console.error('Erro ao carregar dados:', error);
-                showError('Erro ao carregar informações do dashboard.');
-            });
+                .then(response => response.json())
+                .then(reservations => {
+                    updateStatistics(reservations);
+                    displayLatestReservation(reservations);
+                    displayRecentActivities(reservations);
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar dados:', error);
+                    showError('Erro ao carregar informações do dashboard.');
+                });
         }
 
         function updateStatistics(reservations) {
@@ -343,14 +283,14 @@
 
         function displayLatestReservation(reservations) {
             const container = document.getElementById('latest-reservation');
-            
+
             if (reservations.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-4">
                         <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
                         <h5>Nenhuma reserva ainda</h5>
                         <p class="text-muted">Que tal começar explorando nosso catálogo?</p>
-                        <a href="/index.html" class="btn btn-primary">
+                        <a href="/catalog.html" class="btn btn-primary">
                             <i class="fas fa-search"></i> Buscar Livros
                         </a>
                     </div>
@@ -362,14 +302,14 @@
             const latestReservation = reservations[0];
             const reservationDate = new Date(latestReservation.reservation_date).toLocaleDateString('pt-BR');
             const statusBadge = getStatusBadge(latestReservation.status);
-            
+
             let additionalInfo = '';
             if (latestReservation.pickup_deadline && latestReservation.status === 'active') {
                 const deadline = new Date(latestReservation.pickup_deadline);
                 const now = new Date();
                 const isUrgent = deadline <= new Date(now.getTime() + 24 * 60 * 60 * 1000);
                 const deadlineStr = deadline.toLocaleDateString('pt-BR');
-                
+
                 additionalInfo = `
                     <div class="alert ${isUrgent ? 'alert-warning' : 'alert-info'} mt-3">
                         <i class="fas fa-clock"></i>
@@ -411,7 +351,7 @@
 
         function displayRecentActivities(reservations) {
             const container = document.getElementById('recent-activities');
-            
+
             if (reservations.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-3">
@@ -423,12 +363,12 @@
 
             // Pegar as 5 atividades mais recentes
             const recentActivities = reservations.slice(0, 5);
-            
+
             let activitiesHtml = '';
             recentActivities.forEach(activity => {
                 const date = new Date(activity.reservation_date).toLocaleDateString('pt-BR');
                 const statusIcon = getStatusIcon(activity.status);
-                
+
                 activitiesHtml += `
                     <div class="activity-item ${activity.status}">
                         <div class="d-flex justify-content-between align-items-start">
@@ -446,7 +386,7 @@
                     </div>
                 `;
             });
-            
+
             container.innerHTML = activitiesHtml;
         }
 
@@ -475,7 +415,7 @@
             alertContainer.className = 'alert alert-danger';
             alertContainer.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
             alertContainer.classList.remove('d-none');
-            
+
             setTimeout(() => {
                 alertContainer.classList.add('d-none');
             }, 5000);
@@ -483,4 +423,5 @@
     </script>
     <script src="js/header.js"></script>
 </body>
+
 </html>

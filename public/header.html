@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub de Leitura - Header</title>
     <link rel="stylesheet" href="/css/header.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <header class="custom-header">
@@ -14,11 +12,13 @@
             <div class="container">
                 <!-- Logo flutuante + Título -->
                 <div class="logo-section navbar-brand">
-                    <div class="floating-book">
-                        <i class="fas fa-book-open text-primary" style="font-size: 3rem;"></i>
-                    </div>
+        <div class="floating-book">
+            <a href="/index.html" class="text-decoration-none">
+                <i class="fas fa-book-open" style="font-size: 3rem; color: #febc04; transition: transform 0.3s ease;"></i>
+            </a>
+        </div>
                     <div>
-                        <h1>Hub de Leitura</h1>
+                        <h1 style="color: #764ba2;">Hub de Leitura</h1>
                         <p>Seu Portal do Conhecimento</p>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             <a class="nav-link custom-nav-link active" href="/index.html">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link custom-nav-link d-flex align-items-center" href="/cart.html">
+                            <a class="nav-link custom-nav-link d-flex align-items-center" href="/basket.html">
                                 CESTA DE LIVROS
                                 <span id="cart-count" class="cart-badge">0</span>
                             </a>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub de Leitura - Detalhes do Livro</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header id="header"></header>
+    <div id="app">
+        <br><br>
+        
+        <div id="alert-container" class="alert d-none" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 1050;"></div>
+
+        <main class="container mt-4">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/index.html">Catálogo</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" id="breadcrumb-title">Carregando...</li>
+                </ol>
+            </nav>
+
+            <!-- Loading -->
+            <div id="loading" class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+                <p class="mt-2">Carregando detalhes do livro...</p>
+            </div>
+
+            <!-- Detalhes do Livro -->
+            <div id="book-details" class="d-none">
+                <div class="row">
+                    <!-- Coluna da Imagem -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img id="book-cover" src="" class="card-img-top" alt="" style="height: 500px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <div id="availability-badge" class="mb-3"></div>
+                                <!-- Botões de ação -->
+                                <div id="action-buttons" class="d-grid gap-2">
+                                    <!-- Botões de ação serão inseridos dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna das Informações -->
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 id="book-title" class="card-title"></h1>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-user"></i> Por <span id="book-author"></span>
+                                </p>
+
+
+
+                                <!-- Informações do Livro -->
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-info-circle text-primary"></i> Informações</h6>
+                                        <ul class="list-unstyled">
+                                            <li><strong>ISBN:</strong> <span id="book-isbn"></span></li>
+                                            <li><strong>Editora:</strong> <span id="book-editor"></span></li>
+                                            <li><strong>Categoria:</strong> <span id="book-category"></span></li>
+                                            <li><strong>Idioma:</strong> <span id="book-language"></span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-book text-primary"></i> Detalhes</h6>
+                                        <ul class="list-unstyled">
+                                            <li><strong>Ano:</strong> <span id="book-year"></span></li>
+                                            <li><strong>Páginas:</strong> <span id="book-pages"></span></li>
+                                            <li><strong>Formato:</strong> <span id="book-format"></span></li>
+                                            <li><strong>Exemplares:</strong> <span id="book-copies"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Descrição -->
+                                <div class="mb-4">
+                                    <h6><i class="fas fa-align-left text-primary"></i> Descrição</h6>
+                                    <p id="book-description" class="text-justify"></p>
+                                </div>
+
+                                <!-- Formulário de reserva agora é um call-to-action para cesta -->
+                                <div id="cart-cta" class="d-none">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6><i class="fas fa-shopping-basket text-primary"></i> Adicione à sua cesta!</h6>
+                                            <p class="mb-3">Adicione este livro à sua cesta para reservar junto com outros livros.</p>
+                                            <button id="cta-add-to-cart" class="btn btn-primary">
+                                                <i class="fas fa-shopping-basket"></i> Adicionar à Cesta
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Erro -->
+            <div id="error-section" class="d-none text-center">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h5>Livro não encontrado</h5>
+                    <p>O livro que você está procurando não foi encontrado.</p>
+                    <a href="/catalog.html" class="btn btn-primary">Voltar ao Catálogo</a>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="mt-5 bg-dark text-light py-5">
+            <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                <h5><i class="fas fa-book-open text-primary"></i> Hub de Leitura</h5>
+                <p class="text-light">Sistema de Treinamento QA para gestão de biblioteca digital. Facilitando o acesso ao conhecimento.</p>
+                <div class="social-links">
+                    <a href="#" class="text-primary me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="text-primary me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-primary me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary"><i class="fab fa-linkedin fa-lg"></i></a>
+                </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                <h6 class="text-light">Links Rápidos</h6>
+                <ul class="list-unstyled">
+                    <li><a href="/index.html" class="text-light text-decoration-none"><i class="fas fa-home me-2"></i>Catálogo</a></li>
+                    <li><a href="/dashboard.html" class="text-light text-decoration-none"><i class="fas fa-user me-2"></i>Minhas Reservas</a></li>
+                    <li><a href="/basket.html" class="text-light text-decoration-none"><i class="fas fa-shopping-cart me-2"></i>Minha Cesta</a></li>
+                    <li><a href="#" class="text-light text-decoration-none"><i class="fas fa-question-circle me-2"></i>Ajuda</a></li>
+                </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                <h6 class="text-light">Contato</h6>
+                <ul class="list-unstyled text-light">
+                    <li><i class="fas fa-map-marker-alt me-2"></i>Biblioteca Central</li>
+                    <li><i class="fas fa-phone me-2"></i>(11) 3333-4444</li>
+                    <li><i class="fas fa-envelope me-2"></i>contato@hubdeleitura.com</li>
+                    <li><i class="fas fa-clock me-2"></i>Seg-Sex: 8h às 18h</li>
+                </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                <h6 class="text-light">Horário</h6>
+                <div class="text-light small">
+                    <div class="d-flex justify-content-between">
+                    <span>Segunda:</span>
+                    <span>8h-18h</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <span>Ter-Sex:</span>
+                    <span>8h-20h</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <span>Sábado:</span>
+                    <span>9h-15h</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <span>Domingo:</span>
+                    <span>Fechado</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                <p class="mb-0 text-light">&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                <small class="text-light">
+                    Desenvolvido com <i class="fas fa-heart text-danger"></i> por 
+                    <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary text-decoration-none">
+                    <i class="fab fa-linkedin me-1"></i>Fábio Araújo
+                    </a>
+                </small>
+                </div>
+            </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obter ID do livro da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookId = urlParams.get('id');
+            
+            if (!bookId) {
+                showError();
+                return;
+            }
+
+            let currentBook = null;
+
+            // Carregar detalhes do livro
+            loadBookDetails(bookId);
+
+            function loadBookDetails(id) {
+                fetch(`/api/books/${id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Livro não encontrado');
+                        }
+                        return response.json();
+                    })
+                    .then(book => {
+                        currentBook = book;
+                        displayBookDetails(book);
+                        // Configurar botão de adicionar à cesta
+                        setupAddToCartButton();
+                        document.getElementById('loading').classList.add('d-none');
+                        document.getElementById('book-details').classList.remove('d-none');
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar livro:', error);
+                        showError();
+                    });
+            }
+
+            function displayBookDetails(book) {
+                // Atualizar breadcrumb
+                document.getElementById('breadcrumb-title').textContent = book.title;
+                document.title = `${book.title} - Hub de Leitura`;
+
+                // Informações básicas
+                document.getElementById('book-cover').src = `images/books/${book.cover_image || 'livro-padrao.png'}`;
+                document.getElementById('book-cover').alt = book.title;
+                document.getElementById('book-title').textContent = book.title;
+                document.getElementById('book-author').textContent = book.author;
+                document.getElementById('book-isbn').textContent = book.isbn || 'Não informado';
+                document.getElementById('book-editor').textContent = book.editor || 'Não informado';
+                document.getElementById('book-category').textContent = book.category || 'Não informado';
+                document.getElementById('book-language').textContent = book.language || 'Não informado';
+                document.getElementById('book-year').textContent = book.publication_year || 'Não informado';
+                document.getElementById('book-pages').textContent = book.pages ? `${book.pages} páginas` : 'Não informado';
+                document.getElementById('book-format').textContent = book.format || 'Não informado';
+                document.getElementById('book-copies').textContent = `${book.availability.availableCopies} de ${book.availability.totalCopies}`;
+                document.getElementById('book-description').textContent = book.description || 'Descrição não disponível.';
+
+                // Badge de disponibilidade
+                const availabilityBadge = document.getElementById('availability-badge');
+                const isAvailable = book.availability.isAvailable;
+                availabilityBadge.innerHTML = `
+                    <span class="badge ${isAvailable ? 'bg-success' : 'bg-danger'} fs-6">
+                        <i class="fas ${isAvailable ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                        ${isAvailable ? 'Disponível para reserva' : 'Indisponível'}
+                    </span>
+                `;
+
+                // Botões de ação
+                const actionButtons = document.getElementById('action-buttons');
+                if (isAvailable) {
+                    actionButtons.innerHTML = `
+                        <button id="add-to-cart-btn" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-basket"></i> Adicionar à Cesta
+                        </button>
+                        <a href="/basket.html" class="btn btn-outline-info">
+                            <i class="fas fa-shopping-basket"></i> Ver Cesta
+                        </a>
+                        <button class="btn btn-outline-secondary" onclick="window.history.back()">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <button class="btn btn-secondary btn-lg" disabled>
+                            <i class="fas fa-clock"></i> Indisponível
+                        </button>
+                        <button id="wishlist-btn" class="btn btn-outline-warning">
+                            <i class="fas fa-heart"></i> Adicionar à Lista de Desejos
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="window.history.back()">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                    `;
+                }
+            }
+
+
+
+            function setupAddToCartButton() {
+                const addToCartBtn = document.getElementById('add-to-cart-btn');
+                
+                if (addToCartBtn) {
+                    addToCartBtn.addEventListener('click', function() {
+                        // Adicionar livro à cesta
+                        const bookData = {
+                            id: currentBook.id,
+                            title: currentBook.title,
+                            author: currentBook.author,
+                            category: currentBook.category,
+                            cover_image: currentBook.cover_image,
+                            isbn: currentBook.isbn,
+                            available_copies: currentBook.availability.availableCopies
+                        };
+                        
+                        // Verificar se a função addToCart existe (vem do basket.html)
+                        if (typeof window.addToCart === 'function') {
+                            const success = window.addToCart(bookData);
+                            
+                            if (success) {
+                                // Mostrar botão para ir à cesta
+                                addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Adicionado!';
+                                addToCartBtn.disabled = true;
+                                
+                                // Mostrar botão de ir para cesta
+                                setTimeout(() => {
+                                    addToCartBtn.innerHTML = '<i class="fas fa-shopping-basket"></i> Ir para Cesta';
+                                    addToCartBtn.disabled = false;
+                                    addToCartBtn.onclick = function() {
+                                        window.location.href = '/basket.html';
+                                    };
+                                }, 2000);
+                            }
+                        } else {
+                            // Fallback: salvar no localStorage diretamente
+                            const cart = JSON.parse(localStorage.getItem('bookCart') || '[]');
+                            
+                            // Verificar se já está na cesta
+                            const existingIndex = cart.findIndex(item => item.id === bookData.id);
+                            if (existingIndex !== -1) {
+                                showAlert('Este livro já está na sua cesta!', 'alert-warning');
+                                return;
+                            }
+                            
+                            // Adicionar à cesta
+                            cart.push(bookData);
+                            localStorage.setItem('bookCart', JSON.stringify(cart));
+                            
+                            showAlert('Livro adicionado à cesta com sucesso!', 'alert-success');
+                            
+                            // Atualizar visual do botão
+                            addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Adicionado!';
+                            addToCartBtn.disabled = true;
+                            
+                            // Atualizar contador no header
+                            if (typeof window.updateCartCount === 'function') {
+                                window.updateCartCount();
+                            }
+                            
+                            setTimeout(() => {
+                                addToCartBtn.innerHTML = '<i class="fas fa-shopping-basket"></i> Ir para Cesta';
+                                addToCartBtn.disabled = false;
+                                addToCartBtn.onclick = function() {
+                                    window.location.href = '/basket.html';
+                                };
+                            }, 2000);
+                        }
+                    });
+                }
+            }
+
+
+
+            function showError() {
+                document.getElementById('loading').classList.add('d-none');
+                document.getElementById('error-section').classList.remove('d-none');
+            }
+
+            function showAlert(message, type) {
+                const alertContainer = document.getElementById('alert-container');
+                alertContainer.className = `alert ${type}`;
+                alertContainer.innerHTML = `
+                    <i class="fas ${type === 'alert-success' ? 'fa-check-circle' : 
+                                   type === 'alert-warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle'}"></i>
+                    ${message}
+                `;
+                alertContainer.classList.remove('d-none');
+                
+                setTimeout(() => {
+                    alertContainer.classList.add('d-none');
+                }, 5000);
+            }
+        });
+    </script>
+    <script src="js/header.js"></script>
+
+    <style>
+        .text-justify {
+            text-align: justify;
+        }
+        
+        .card-img-top {
+            transition: transform 0.3s;
+        }
+        
+        .card-img-top:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</body>
+</html>

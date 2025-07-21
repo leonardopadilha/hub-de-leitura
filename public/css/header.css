@@ -1,7 +1,6 @@
 /* Animação do ícone flutuante */
 .floating-book {
   animation: float 3s ease-in-out infinite;
-  color: #764ba2;
 }
 
 @keyframes float {
@@ -27,6 +26,17 @@
   width: 100%;
 }
 
+.btn-outline-primary {
+    border-color: #febc04;
+    color: #febc04;
+}
+
+.btn-outline-primary:hover {
+  background-color: #febc04;
+  border-color: #febc04;
+  color: white;
+}
+
 .custom-navbar {
   background: transparent !important;
   padding: 0.25rem 0;
@@ -40,6 +50,7 @@
 }
 
 .logo-section h1 {
+  font-family: 'Roboto', 'Arial', sans-serif;
   font-size: 2.5rem;
   font-weight: bold;
   color: #1f2937;
@@ -113,7 +124,7 @@
 }
 
 /* Responsividade */
-@media (max-width: 991.98px) {
+/* @media (max-width: 991.98px) {
   .logo-section h1 {
     font-size: 1.5rem;
   }
@@ -121,7 +132,7 @@
     font-size: 0.875rem;
   }
 }
-
+ */
 /* Espaçamento para compensar header fixo */
 body {
   padding-top: 100px;
