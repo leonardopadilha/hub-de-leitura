@@ -52,7 +52,7 @@ header {
 }
 
 a {
-    color: #35bbdc;
+    color: #8f5bc4;
     text-decoration: underline;
 }
 
@@ -68,13 +68,13 @@ a {
 }
 
 .nav-item .nav-link:hover {
-   color: #35bbdc;
+   color: #764ba2;
 }
 
 .nav-item .badge {
     font-size: 1rem;
     padding: 0.3em 0.6em;
-    background-color: #35bbdc;
+    background-color: #764ba2;
     color: white;
     border-radius: 60%;
     position: absolute;
@@ -210,15 +210,15 @@ main {
 
 /* Estilo para botões */
 .btn-primary {
-    background-color: #35bbdc !important;
-    border-color: #2399b7 !important;
+    background-color: #764ba2 !important;
+    border-color: #672aa4 !important;
     color: white;
     transition: background-color 0.2s, border-color 0.2s;
 }
 
 .btn-primary:hover {
-    background-color: #2399b7 !important;
-    border-color: #83e0f7 !important;
+    background-color: #764ba2 !important;
+    border-color: #a179c9 !important;
 }
 
 .btn-secondary {
@@ -332,27 +332,27 @@ main {
     margin: 0 5px;
     padding: 10px 15px;
     background-color: white;
-    border: 1px solid #35bbdc;
-    color: #35bbdc;
+    border: 1px solid #764ba2;
+    color: #764ba2;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .active>.page-link{
-    background-color: #35bbdc !important;
+    background-color: #764ba2 !important;
     color: white;
 }
 
 .pagination .page-link:hover {
-    background-color: #2399b7 !important;
+    background-color: #764ba2 !important;
     border-color: #83e0f7 !important;
 }
 
 .pagination .page-link.active {
-    background-color: #35bbdc;
+    background-color: #764ba2;
     color: white;
-    border-color: #35bbdc;
+    border-color: #9c64d3;
 }
 
 .pagination .page-link.disabled {
@@ -424,7 +424,7 @@ legend {
 }
 
 #dashboard h2 {
-    color: #35bbdc;
+    color: #764ba2;
 }
 
 h1 {
@@ -435,7 +435,7 @@ h1 {
     letter-spacing: 0.1em; /* Adiciona espaçamento entre as letras */
     margin-top: 20px; /* Espaço acima do título */
     margin-bottom: 20px; /* Espaço abaixo do título */
-    color: #35bbdc; /* Cor do título h1 */
+    color: #764ba2; /* Cor do título h1 */
 }
 
 h4 {
@@ -446,7 +446,7 @@ h4 {
     letter-spacing: 0.1em; /* Adiciona espaçamento entre as letras */
     margin-top: 20px; /* Espaço acima do título */
     margin-bottom: 20px; /* Espaço abaixo do título */
-    color: #35bbdc; /* Cor do título h4 */
+    color: #935dca; /* Cor do título h4 */
 }
 
 .text-center {

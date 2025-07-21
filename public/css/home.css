@@ -39,6 +39,7 @@
 
 .floating-book {
   animation: float 3s ease-in-out infinite;
+  color: #764ba2;
 }
 
 @keyframes float {
