@@ -67,7 +67,7 @@ app.post("/api/login", (req, res) => {
       const token = jwt.sign(
         { id: user.id, isAdmin: user.isAdmin },
         SECRET_KEY,
-        { expiresIn: "1h" }
+        { expiresIn: "8h" }
       );
       res.json({ 
         id: user.id, 

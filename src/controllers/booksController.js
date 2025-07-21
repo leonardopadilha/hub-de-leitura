@@ -2,12 +2,12 @@ const db = require("../../config/db");
 
 /**
  * Controller para gerenciamento de livros
- * Substitui a funcionalidade de produtos do e-commerce
+ * Versão com paginação real corrigida
  */
 class BooksController {
 
   /**
-   * Listar livros com paginação e filtros
+   * Listar livros com paginação REAL e filtros
    * GET /api/books
    */
   static getAllBooks(req, res) {
@@ -47,44 +47,55 @@ class BooksController {
       whereClause += " AND available_copies > 0";
     }
     
-    // Query principal com paginação
-    const mainQuery = `
-      SELECT 
-        id, title, author, isbn, editor, category, language,
-        publication_year, pages, format, total_copies, available_copies,
-        description, cover_image, created_at
-      FROM Books 
-      ${whereClause}
-      ORDER BY title ASC
-      LIMIT ? OFFSET ?
-    `;
-    
-    queryParams.push(limit, offset);
-    
-    // Query para contar total
+    // PRIMEIRO: Contar total de registros (SEM limit/offset)
     const countQuery = `SELECT COUNT(*) as total FROM Books ${whereClause}`;
     
-    db.all(mainQuery, queryParams, (err, rows) => {
+    console.log('📊 Count Query:', countQuery);
+    console.log('📊 Count Params:', countParams);
+    
+    db.get(countQuery, countParams, (err, countResult) => {
       if (err) {
-        console.error('Erro ao buscar livros:', err);
+        console.error('Erro ao contar livros:', err);
         return res.status(500).json({ 
-          error: "Erro ao buscar livros.",
+          error: "Erro ao calcular o total de livros.",
           details: err.message 
         });
       }
       
-      db.get(countQuery, countParams, (err, result) => {
+      const total = countResult.total;
+      const totalPages = Math.ceil(total / limit);
+      
+      console.log(`📚 Total encontrado: ${total} livros, ${totalPages} páginas`);
+      
+      // SEGUNDO: Buscar livros da página atual (COM limit/offset)
+      const mainQuery = `
+        SELECT 
+          id, title, author, isbn, editor, category, language,
+          publication_year, pages, format, total_copies, available_copies,
+          description, cover_image, created_at
+        FROM Books 
+        ${whereClause}
+        ORDER BY created_at DESC, id DESC
+        LIMIT ? OFFSET ?
+      `;
+      
+      queryParams.push(limit, offset);
+      
+      console.log('📖 Main Query:', mainQuery);
+      console.log('📖 Main Params:', queryParams);
+      
+      db.all(mainQuery, queryParams, (err, rows) => {
         if (err) {
-          console.error('Erro ao contar livros:', err);
+          console.error('Erro ao buscar livros:', err);
           return res.status(500).json({ 
-            error: "Erro ao calcular o total de livros.",
+            error: "Erro ao buscar livros.",
             details: err.message 
           });
         }
         
-        const total = result.total;
-        const totalPages = Math.ceil(total / limit);
+        console.log(`✅ Retornando ${rows.length} livros da página ${page}`);
         
+        // Resposta com informações completas de paginação
         res.json({
           books: rows,
           pagination: {
@@ -93,13 +104,21 @@ class BooksController {
             totalBooks: total,
             booksPerPage: limit,
             hasNextPage: page < totalPages,
-            hasPrevPage: page > 1
+            hasPrevPage: page > 1,
+            startIndex: offset + 1,
+            endIndex: Math.min(offset + limit, total)
           },
           filters: {
             category,
             author,
             search,
             available
+          },
+          meta: {
+            requestedPage: page,
+            requestedLimit: limit,
+            resultsCount: rows.length,
+            timestamp: new Date().toISOString()
           }
         });
       });
@@ -198,6 +217,8 @@ class BooksController {
       description, cover_image
     } = req.body;
     
+    console.log('📝 Criando novo livro:', { title, author, total_copies });
+    
     // Validações básicas
     if (!title || !author) {
       return res.status(400).json({ 
@@ -234,6 +255,8 @@ class BooksController {
         });
       }
       
+      console.log(`✅ Livro criado com ID: ${this.lastID}`);
+      
       res.status(201).json({
         message: "Livro criado com sucesso.",
         bookId: this.lastID
@@ -252,6 +275,8 @@ class BooksController {
       publication_year, pages, format, total_copies,
       description, cover_image
     } = req.body;
+    
+    console.log(`📝 Atualizando livro ID: ${bookId}`);
     
     // Verificar se o livro existe
     db.get("SELECT * FROM Books WHERE id = ?", [bookId], (err, book) => {
@@ -273,6 +298,7 @@ class BooksController {
       if (total_copies && total_copies !== book.total_copies) {
         const difference = total_copies - book.total_copies;
         newAvailableCopies = Math.max(0, book.available_copies + difference);
+        console.log(`📊 Ajustando estoque: ${book.available_copies} → ${newAvailableCopies}`);
       }
       
       const query = `
@@ -311,6 +337,8 @@ class BooksController {
           });
         }
         
+        console.log(`✅ Livro ${bookId} atualizado com sucesso`);
+        
         res.json({
           message: "Livro atualizado com sucesso."
         });
@@ -324,6 +352,8 @@ class BooksController {
    */
   static deleteBook(req, res) {
     const bookId = req.params.id;
+    
+    console.log(`🗑️ Tentando deletar livro ID: ${bookId}`);
     
     // Verificar se há reservas ativas para este livro
     const checkReservationsQuery = `
@@ -341,6 +371,7 @@ class BooksController {
       }
       
       if (result.active_reservations > 0) {
+        console.log(`❌ Livro ${bookId} tem ${result.active_reservations} reservas ativas`);
         return res.status(400).json({ 
           message: "Não é possível deletar livro com reservas ativas." 
         });
@@ -360,6 +391,8 @@ class BooksController {
             message: "Livro não encontrado." 
           });
         }
+        
+        console.log(`✅ Livro ${bookId} deletado com sucesso`);
         
         res.json({
           message: "Livro deletado com sucesso."

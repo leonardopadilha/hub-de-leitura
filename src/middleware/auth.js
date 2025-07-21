@@ -8,6 +8,59 @@ function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
+  console.log('🔍 DEBUG AUTH:', {
+    hasHeader: !!authHeader,
+    hasToken: !!token,
+    headerFormat: authHeader?.substring(0, 20) + '...'
+  });
+
+  if (!token) {
+    return res.status(401).json({ 
+      message: "Token não fornecido.",
+      debug: "Expected format: Bearer <token>"
+    });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log('❌ JWT Error:', err.name, err.message);
+      return res.status(403).json({ 
+        message: "Token inválido.",
+        error: err.name
+      });
+    }
+    
+    console.log('✅ JWT Valid:', { id: user.id, isAdmin: user.isAdmin });
+    req.user = user;
+    next();
+  });
+}
+
+/**
+ * Middleware para verificar se é administrador
+ */
+function isAdmin(req, res, next) {
+  console.log('🔍 Admin Check:', { 
+    hasUser: !!req.user, 
+    isAdmin: req.user?.isAdmin 
+  });
+
+  if (!req.user || !req.user.isAdmin) {
+    return res.status(403).json({ 
+      message: "Acesso negado. Apenas administradores.",
+      userRole: req.user?.isAdmin ? 'admin' : 'user'
+    });
+  }
+  next();
+}
+
+/**
+ * Middleware combinado: Autentica E verifica admin em uma única função
+ */
+function requireAdmin(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
   if (!token) {
     return res.status(401).json({ 
       message: "Token não fornecido." 
@@ -20,21 +73,17 @@ function authenticateToken(req, res, next) {
         message: "Token inválido." 
       });
     }
+
+    // Verificar se é admin na mesma função
+    if (!user.isAdmin) {
+      return res.status(403).json({ 
+        message: "Acesso negado. Apenas administradores." 
+      });
+    }
+
     req.user = user;
     next();
   });
-}
-
-/**
- * Middleware para verificar se é administrador
- */
-function isAdmin(req, res, next) {
-  if (!req.user || !req.user.isAdmin) {
-    return res.status(403).json({ 
-      message: "Acesso negado. Apenas administradores." 
-    });
-  }
-  next();
 }
 
 /**
@@ -67,5 +116,6 @@ module.exports = {
   authenticateToken,
   isAdmin,
   isOwnerOrAdmin,
-  authenticateAdmin // Legado - manter por compatibilidade
+  authenticateAdmin, // Legado - manter por compatibilidade
+  requireAdmin // NOVO - middleware combinado mais eficiente
 };

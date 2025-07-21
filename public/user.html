@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,52 +16,60 @@
             padding: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .profile-avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             border: 4px solid white;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
             margin-bottom: 1rem;
         }
-        
+
         .form-section {
             background: white;
             border-radius: 10px;
             padding: 2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .section-title {
             border-bottom: 2px solid #f8f9fa;
             padding-bottom: 0.5rem;
             margin-bottom: 1.5rem;
             color: #495057;
         }
-        
+
         .password-strength {
             height: 4px;
             border-radius: 2px;
             margin-top: 5px;
             transition: all 0.3s;
         }
-        
-        .strength-weak { background-color: #dc3545; }
-        .strength-medium { background-color: #ffc107; }
-        .strength-strong { background-color: #28a745; }
-        
+
+        .strength-weak {
+            background-color: #dc3545;
+        }
+
+        .strength-medium {
+            background-color: #ffc107;
+        }
+
+        .strength-strong {
+            background-color: #28a745;
+        }
+
         .reading-preferences {
             background: #f8f9fa;
             border-radius: 8px;
             padding: 1rem;
         }
-        
+
         .preference-chip {
             display: inline-block;
             background: #e9ecef;
@@ -71,32 +80,33 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .preference-chip.selected {
             background: #0d6efd;
             color: white;
             border-color: #0d6efd;
         }
-        
+
         .preference-chip:hover {
             background: #dee2e6;
         }
-        
+
         .preference-chip.selected:hover {
             background: #0b5ed7;
         }
     </style>
 </head>
+
 <body>
     <div id="header"></div>
-    
-    <div id="alert-container" class="alert d-none" 
-         style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
+
+    <div id="alert-container" class="alert d-none"
+        style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
     </div>
-    
+
     <main class="container mt-5">
         <br><br>
-        
+
         <!-- Cabeçalho do Perfil -->
         <div class="profile-header text-center">
             <div class="row align-items-center">
@@ -119,41 +129,38 @@
                 <h4 class="section-title">
                     <i class="fas fa-user text-primary"></i> Informações Pessoais
                 </h4>
-                
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="name" class="form-label">
                             <i class="fas fa-signature"></i> Nome Completo *
                         </label>
-                        <input type="text" class="form-control" id="name" required 
-                               placeholder="Seu nome completo">
+                        <input type="text" class="form-control" id="name" required placeholder="Seu nome completo">
                         <div class="invalid-feedback">Por favor, insira seu nome completo.</div>
                     </div>
-                    
+
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">
                             <i class="fas fa-envelope"></i> Email *
                         </label>
-                        <input type="email" class="form-control" id="email" required 
-                               placeholder="seu@email.com">
+                        <input type="email" class="form-control" id="email" required placeholder="seu@email.com">
                         <div class="invalid-feedback">Por favor, insira um email válido.</div>
                         <div class="form-text">
-                            <i class="fas fa-info-circle"></i> 
+                            <i class="fas fa-info-circle"></i>
                             Usado para notificações sobre reservas e prazos
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="phone" class="form-label">
                             <i class="fas fa-phone"></i> Telefone
                         </label>
-                        <input type="tel" class="form-control" id="phone" 
-                               placeholder="(11) 99999-9999">
+                        <input type="tel" class="form-control" id="phone" placeholder="(11) 99999-9999">
                         <div class="form-text">Opcional - para contato em caso de emergência</div>
                     </div>
-                    
+
                     <div class="col-md-6 mb-3">
                         <label for="birthdate" class="form-label">
                             <i class="fas fa-birthday-cake"></i> Data de Nascimento
@@ -169,45 +176,47 @@
                 <h4 class="section-title">
                     <i class="fas fa-shield-alt text-primary"></i> Segurança da Conta
                 </h4>
-                
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="current-password" class="form-label">
                             <i class="fas fa-lock"></i> Senha Atual
                         </label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="current-password" 
-                                   placeholder="Digite sua senha atual">
-                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('current-password')">
+                            <input type="password" class="form-control" id="current-password"
+                                placeholder="Digite sua senha atual">
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePassword('current-password')">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                         <div class="form-text">Necessário apenas para alterar a senha</div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="new-password" class="form-label">
                             <i class="fas fa-key"></i> Nova Senha
                         </label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="new-password" 
-                                   placeholder="Nova senha (deixe vazio para não alterar)">
-                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('new-password')">
+                            <input type="password" class="form-control" id="new-password"
+                                placeholder="Nova senha (deixe vazio para não alterar)">
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePassword('new-password')">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                         <div class="password-strength" id="password-strength"></div>
                         <div class="form-text" id="password-feedback">Mínimo 6 caracteres</div>
                     </div>
-                    
+
                     <div class="col-md-6 mb-3">
                         <label for="confirm-password" class="form-label">
                             <i class="fas fa-check-double"></i> Confirmar Nova Senha
                         </label>
-                        <input type="password" class="form-control" id="confirm-password" 
-                               placeholder="Confirme a nova senha">
+                        <input type="password" class="form-control" id="confirm-password"
+                            placeholder="Confirme a nova senha">
                         <div class="invalid-feedback">As senhas não coincidem.</div>
                     </div>
                 </div>
@@ -218,11 +227,12 @@
                 <h4 class="section-title">
                     <i class="fas fa-book-heart text-primary"></i> Preferências de Leitura
                 </h4>
-                
+
                 <div class="reading-preferences">
                     <h6><i class="fas fa-tags"></i> Categorias Favoritas</h6>
-                    <p class="text-muted small mb-3">Selecione suas categorias preferidas para receber recomendações personalizadas</p>
-                    
+                    <p class="text-muted small mb-3">Selecione suas categorias preferidas para receber recomendações
+                        personalizadas</p>
+
                     <div id="categories-preferences">
                         <!-- Categorias serão carregadas dinamicamente -->
                         <div class="text-center">
@@ -233,20 +243,20 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row mt-4">
                     <div class="col-md-6 mb-3">
                         <label for="reading-goal" class="form-label">
                             <i class="fas fa-target"></i> Meta de Leitura Mensal
                         </label>
                         <div class="input-group">
-                            <input type="number" class="form-control" id="reading-goal" 
-                                   min="0" max="50" placeholder="0">
+                            <input type="number" class="form-control" id="reading-goal" min="0" max="50"
+                                placeholder="0">
                             <span class="input-group-text">livros/mês</span>
                         </div>
                         <div class="form-text">Quantos livros você pretende ler por mês?</div>
                     </div>
-                    
+
                     <div class="col-md-6 mb-3">
                         <label for="notification-preference" class="form-label">
                             <i class="fas fa-bell"></i> Notificações
@@ -287,14 +297,85 @@
         </form>
     </main>
 
-    <footer class="mt-5 bg-light py-4">
-        <div class="container text-center">
-            <p>&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
+    <footer class="mt-5 bg-dark text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-book-open text-primary"></i> Hub de Leitura</h5>
+                    <p class="text-light">Sistema de Treinamento QA para gestão de biblioteca digital. Facilitando o
+                        acesso ao conhecimento.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-primary me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-primary me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary"><i
+                                class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-light">Links Rápidos</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/index.html" class="text-light text-decoration-none"><i
+                                    class="fas fa-home me-2"></i>Catálogo</a></li>
+                        <li><a href="/dashboard.html" class="text-light text-decoration-none"><i
+                                    class="fas fa-user me-2"></i>Minhas Reservas</a></li>
+                        <li><a href="/cart.html" class="text-light text-decoration-none"><i
+                                    class="fas fa-shopping-cart me-2"></i>Minha Cesta</a></li>
+                        <li><a href="#" class="text-light text-decoration-none"><i
+                                    class="fas fa-question-circle me-2"></i>Ajuda</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-light">Contato</h6>
+                    <ul class="list-unstyled text-light">
+                        <li><i class="fas fa-map-marker-alt me-2"></i>Biblioteca Central</li>
+                        <li><i class="fas fa-phone me-2"></i>(11) 3333-4444</li>
+                        <li><i class="fas fa-envelope me-2"></i>contato@hubdeleitura.com</li>
+                        <li><i class="fas fa-clock me-2"></i>Seg-Sex: 8h às 18h</li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h6 class="text-light">Horário</h6>
+                    <div class="text-light small">
+                        <div class="d-flex justify-content-between">
+                            <span>Segunda:</span>
+                            <span>8h-18h</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Ter-Sex:</span>
+                            <span>8h-20h</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Sábado:</span>
+                            <span>9h-15h</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Domingo:</span>
+                            <span>Fechado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light">&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="text-light">
+                        Desenvolvido com <i class="fas fa-heart text-danger"></i> por
+                        <a href="https://linkedin.com/in/fabio10" target="_blank"
+                            class="text-primary text-decoration-none">
+                            <i class="fab fa-linkedin me-1"></i>Fábio Araújo
+                        </a>
+                    </small>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Verificar autenticação
             const token = localStorage.getItem('authToken');
             if (!token) {
@@ -311,11 +392,11 @@
         function setupEventListeners() {
             // Form submission
             document.getElementById('profile-form').addEventListener('submit', handleSubmit);
-            
+
             // Password validation
             document.getElementById('new-password').addEventListener('input', validatePassword);
             document.getElementById('confirm-password').addEventListener('input', validatePasswordMatch);
-            
+
             // Phone formatting
             document.getElementById('phone').addEventListener('input', formatPhone);
         }
@@ -323,7 +404,7 @@
         function loadUserData() {
             const token = localStorage.getItem('authToken');
             const userId = localStorage.getItem('userId');
-            
+
             // Simular carregamento de dados do usuário
             // Na implementação real, faria uma chamada para /api/users/:id
             const userData = {
@@ -335,7 +416,7 @@
                 notification_preference: 'all',
                 preferred_categories: ['Ficção', 'Tecnologia']
             };
-            
+
             // Preencher formulário
             document.getElementById('name').value = userData.name;
             document.getElementById('email').value = userData.email;
@@ -343,7 +424,7 @@
             document.getElementById('birthdate').value = userData.birthdate;
             document.getElementById('reading-goal').value = userData.reading_goal;
             document.getElementById('notification-preference').value = userData.notification_preference;
-            
+
             // Salvar categorias preferidas para quando carregar as categorias
             window.userPreferredCategories = userData.preferred_categories;
         }
@@ -354,10 +435,10 @@
                 .then(data => {
                     const container = document.getElementById('categories-preferences');
                     let categoriesHtml = '';
-                    
+
                     data.categories.forEach(category => {
-                        const isSelected = window.userPreferredCategories && 
-                                         window.userPreferredCategories.includes(category.category);
+                        const isSelected = window.userPreferredCategories &&
+                            window.userPreferredCategories.includes(category.category);
                         categoriesHtml += `
                             <span class="preference-chip ${isSelected ? 'selected' : ''}" 
                                   data-category="${category.category}">
@@ -365,80 +446,80 @@
                             </span>
                         `;
                     });
-                    
+
                     container.innerHTML = categoriesHtml;
-                    
+
                     // Adicionar event listeners para chips
                     document.querySelectorAll('.preference-chip').forEach(chip => {
-                        chip.addEventListener('click', function() {
+                        chip.addEventListener('click', function () {
                             this.classList.toggle('selected');
                         });
                     });
                 })
                 .catch(error => {
                     console.error('Erro ao carregar categorias:', error);
-                    document.getElementById('categories-preferences').innerHTML = 
+                    document.getElementById('categories-preferences').innerHTML =
                         '<p class="text-muted">Erro ao carregar categorias</p>';
                 });
         }
 
         function handleSubmit(e) {
             e.preventDefault();
-            
+
             if (!validateForm()) {
                 return;
             }
-            
+
             const formData = gatherFormData();
             saveProfile(formData);
         }
 
         function validateForm() {
             let isValid = true;
-            
+
             // Validar nome
             const name = document.getElementById('name').value.trim();
             if (!name) {
                 showFieldError('name', 'Nome é obrigatório');
                 isValid = false;
             }
-            
+
             // Validar email
             const email = document.getElementById('email').value.trim();
             if (!email || !isValidEmail(email)) {
                 showFieldError('email', 'Email válido é obrigatório');
                 isValid = false;
             }
-            
+
             // Validar senhas se preenchidas
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            
+
             if (newPassword) {
                 if (newPassword.length < 6) {
                     showFieldError('new-password', 'Senha deve ter pelo menos 6 caracteres');
                     isValid = false;
                 }
-                
+
                 if (newPassword !== confirmPassword) {
                     showFieldError('confirm-password', 'Senhas não coincidem');
                     isValid = false;
                 }
-                
+
                 const currentPassword = document.getElementById('current-password').value;
                 if (!currentPassword) {
                     showFieldError('current-password', 'Senha atual é necessária para alterar a senha');
                     isValid = false;
                 }
             }
-            
+
             return isValid;
         }
 
         function gatherFormData() {
             const selectedCategories = Array.from(document.querySelectorAll('.preference-chip.selected'))
                 .map(chip => chip.dataset.category);
-            
+
             return {
                 name: document.getElementById('name').value.trim(),
                 email: document.getElementById('email').value.trim(),
@@ -457,10 +538,10 @@
             const originalText = saveBtn.innerHTML;
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-            
+
             const token = localStorage.getItem('authToken');
             const userId = localStorage.getItem('userId');
-            
+
             fetch(`/api/users/${userId}`, {
                 method: 'PUT',
                 headers: {
@@ -469,44 +550,44 @@
                 },
                 body: JSON.stringify(formData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    // Atualizar localStorage se o nome mudou
-                    if (formData.name !== localStorage.getItem('userName')) {
-                        localStorage.setItem('userName', formData.name);
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        // Atualizar localStorage se o nome mudou
+                        if (formData.name !== localStorage.getItem('userName')) {
+                            localStorage.setItem('userName', formData.name);
+                        }
+
+                        showAlert('Perfil atualizado com sucesso!', 'success');
+
+                        // Limpar campos de senha
+                        document.getElementById('current-password').value = '';
+                        document.getElementById('new-password').value = '';
+                        document.getElementById('confirm-password').value = '';
+
+                        // Atualizar header se necessário
+                        if (window.refreshHeader) {
+                            window.refreshHeader();
+                        }
+                    } else {
+                        showAlert(data.error || 'Erro ao atualizar perfil', 'danger');
                     }
-                    
-                    showAlert('Perfil atualizado com sucesso!', 'success');
-                    
-                    // Limpar campos de senha
-                    document.getElementById('current-password').value = '';
-                    document.getElementById('new-password').value = '';
-                    document.getElementById('confirm-password').value = '';
-                    
-                    // Atualizar header se necessário
-                    if (window.refreshHeader) {
-                        window.refreshHeader();
-                    }
-                } else {
-                    showAlert(data.error || 'Erro ao atualizar perfil', 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao salvar perfil:', error);
-                showAlert('Erro de conexão. Tente novamente.', 'danger');
-            })
-            .finally(() => {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = originalText;
-            });
+                })
+                .catch(error => {
+                    console.error('Erro ao salvar perfil:', error);
+                    showAlert('Erro de conexão. Tente novamente.', 'danger');
+                })
+                .finally(() => {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = originalText;
+                });
         }
 
         // Utility functions
         function togglePassword(fieldId) {
             const field = document.getElementById(fieldId);
             const button = field.nextElementSibling.querySelector('i');
-            
+
             if (field.type === 'password') {
                 field.type = 'text';
                 button.classList.replace('fa-eye', 'fa-eye-slash');
@@ -520,22 +601,22 @@
             const password = document.getElementById('new-password').value;
             const strengthBar = document.getElementById('password-strength');
             const feedback = document.getElementById('password-feedback');
-            
+
             if (!password) {
                 strengthBar.style.width = '0%';
                 feedback.textContent = 'Mínimo 6 caracteres';
                 return;
             }
-            
+
             let strength = 0;
             if (password.length >= 6) strength++;
             if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
             if (password.match(/[0-9]/)) strength++;
             if (password.match(/[^a-zA-Z0-9]/)) strength++;
-            
+
             const width = (strength / 4) * 100;
             strengthBar.style.width = width + '%';
-            
+
             if (strength < 2) {
                 strengthBar.className = 'password-strength strength-weak';
                 feedback.textContent = 'Senha fraca';
@@ -552,7 +633,7 @@
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
             const confirmField = document.getElementById('confirm-password');
-            
+
             if (confirmPassword && newPassword !== confirmPassword) {
                 confirmField.classList.add('is-invalid');
             } else {
@@ -574,7 +655,7 @@
         function showFieldError(fieldId, message) {
             const field = document.getElementById(fieldId);
             field.classList.add('is-invalid');
-            
+
             let feedback = field.parentNode.querySelector('.invalid-feedback');
             if (feedback) {
                 feedback.textContent = message;
@@ -598,13 +679,13 @@
 
         function showAlert(message, type) {
             const alertContainer = document.getElementById('alert-container');
-            const iconClass = type === 'success' ? 'fa-check-circle' : 
-                             type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle';
-            
+            const iconClass = type === 'success' ? 'fa-check-circle' :
+                type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle';
+
             alertContainer.className = `alert alert-${type}`;
             alertContainer.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
             alertContainer.classList.remove('d-none');
-            
+
             setTimeout(() => {
                 alertContainer.classList.add('d-none');
             }, 5000);
@@ -612,4 +693,5 @@
     </script>
     <script src="js/header.js"></script>
 </body>
+
 </html>

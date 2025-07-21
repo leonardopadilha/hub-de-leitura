@@ -77,18 +77,39 @@
             border-radius: 10px;
             padding: 1rem;
         }
+
+        /* Fix para o modal não ficar atrás do header */
+        .modal {
+            z-index: 1060;
+        }
+        
+        .modal-backdrop {
+            z-index: 1055;
+        }
+
+        /* Ajuste do header fixo */
+        body {
+            padding-top: 100px;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1050;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
-    <div id="header"></div>
+    <div id="header" class="fixed-header"></div>
     
     <div id="alert-container" class="alert d-none" 
-         style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
+         style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1070; max-width: 500px;">
     </div>
     
-    <main class="container mt-5">
-        <br><br>
-        
+    <main class="container mt-3">
         <!-- Cabeçalho Admin -->
         <div class="admin-header text-center">
             <h1><i class="fas fa-cog fa-spin"></i> Painel Administrativo</h1>
@@ -136,24 +157,24 @@
                     <h4><i class="fas fa-bolt text-primary"></i> Ações Rápidas</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <button class="btn btn-primary action-btn" onclick="openAddBookModal()">
-                                <i class="fas fa-plus"></i> Adicionar Livro
-                            </button>
-                            <button class="btn btn-outline-secondary action-btn" onclick="viewAllBooks()">
-                                <i class="fas fa-list"></i> Gerenciar Livros
+                            <button class="btn btn-primary action-btn" onclick="goToAdminBooks()">
+                                <i class="fas fa-book"></i> Gerenciar Livros
                             </button>
                             <button class="btn btn-outline-info action-btn" onclick="viewReservations()">
                                 <i class="fas fa-bookmark"></i> Ver Reservas
+                            </button>
+                            <button class="btn btn-outline-success action-btn" onclick="viewUsers()">
+                                <i class="fas fa-users"></i> Gerenciar Usuários
                             </button>
                         </div>
                         <div class="col-md-6">
                             <button class="btn btn-outline-warning action-btn" onclick="exportData()">
                                 <i class="fas fa-download"></i> Exportar Dados
                             </button>
-                            <button class="btn btn-outline-success action-btn" onclick="importBooks()">
+                            <button class="btn btn-outline-secondary action-btn" onclick="importBooks()">
                                 <i class="fas fa-upload"></i> Importar Livros
                             </button>
-                            <button class="btn btn-outline-danger action-btn" onclick="viewLogs()">
+                            <button class="btn btn-outline-dark action-btn" onclick="viewLogs()">
                                 <i class="fas fa-file-alt"></i> Logs do Sistema
                             </button>
                         </div>
@@ -164,8 +185,8 @@
                 <div class="admin-card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4><i class="fas fa-book text-primary"></i> Livros Adicionados Recentemente</h4>
-                        <button class="btn btn-outline-primary btn-sm" onclick="viewAllBooks()">
-                            Ver Todos
+                        <button class="btn btn-outline-primary btn-sm" onclick="goToAdminBooks()">
+                            <i class="fas fa-external-link-alt"></i> Gerenciar Todos
                         </button>
                     </div>
                     
@@ -187,7 +208,6 @@
                                         <th>Categoria</th>
                                         <th>Estoque</th>
                                         <th>Status</th>
-                                        <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody id="recent-books-tbody">
@@ -252,111 +272,81 @@
         </div>
     </main>
 
-    <!-- Modal Adicionar Livro -->
-    <div class="modal fade" id="addBookModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-plus text-primary"></i> Adicionar Novo Livro
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <footer class="mt-5 bg-dark text-light py-5">
+            <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                <h5><i class="fas fa-book-open text-primary"></i> Hub de Leitura</h5>
+                <p class="text-light">Sistema de Treinamento QA para gestão de biblioteca digital. Facilitando o acesso ao conhecimento.</p>
+                <div class="social-links">
+                    <a href="#" class="text-primary me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="text-primary me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-primary me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary"><i class="fab fa-linkedin fa-lg"></i></a>
                 </div>
-                <div class="modal-body">
-                    <form id="add-book-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="book-title" class="form-label">Título *</label>
-                                <input type="text" class="form-control" id="book-title" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="book-author" class="form-label">Autor *</label>
-                                <input type="text" class="form-control" id="book-author" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="book-isbn" class="form-label">ISBN</label>
-                                <input type="text" class="form-control" id="book-isbn">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="book-category" class="form-label">Categoria</label>
-                                <select class="form-select" id="book-category">
-                                    <option value="">Selecione uma categoria</option>
-                                    <option value="Ficção">Ficção</option>
-                                    <option value="Romance">Romance</option>
-                                    <option value="Fantasia">Fantasia</option>
-                                    <option value="Tecnologia">Tecnologia</option>
-                                    <option value="Biografia">Biografia</option>
-                                    <option value="História">História</option>
-                                    <option value="Ciência">Ciência</option>
-                                    <option value="Autoajuda">Autoajuda</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="book-editor" class="form-label">Editora</label>
-                                <input type="text" class="form-control" id="book-editor">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="book-year" class="form-label">Ano de Publicação</label>
-                                <input type="number" class="form-control" id="book-year" min="1000" max="2030">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="book-pages" class="form-label">Páginas</label>
-                                <input type="number" class="form-control" id="book-pages" min="1">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="book-copies" class="form-label">Exemplares *</label>
-                                <input type="number" class="form-control" id="book-copies" min="1" value="1" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="book-language" class="form-label">Idioma</label>
-                                <select class="form-select" id="book-language">
-                                    <option value="Português">Português</option>
-                                    <option value="Inglês">Inglês</option>
-                                    <option value="Espanhol">Espanhol</option>
-                                    <option value="Francês">Francês</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="book-description" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="book-description" rows="3" 
-                                      placeholder="Descrição do livro..."></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="book-cover" class="form-label">Imagem da Capa</label>
-                            <input type="text" class="form-control" id="book-cover" 
-                                   placeholder="livro-padrao.png">
-                            <div class="form-text">Nome do arquivo da imagem (deve estar na pasta images/books/)</div>
-                        </div>
-                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveNewBook()">
-                        <i class="fas fa-save"></i> Salvar Livro
-                    </button>
+                <div class="col-md-3 mb-4">
+                <h6 class="text-light">Links Rápidos</h6>
+                <ul class="list-unstyled">
+                    <li><a href="/index.html" class="text-light text-decoration-none"><i class="fas fa-home me-2"></i>Catálogo</a></li>
+                    <li><a href="/dashboard.html" class="text-light text-decoration-none"><i class="fas fa-user me-2"></i>Minhas Reservas</a></li>
+                    <li><a href="/cart.html" class="text-light text-decoration-none"><i class="fas fa-shopping-cart me-2"></i>Minha Cesta</a></li>
+                    <li><a href="#" class="text-light text-decoration-none"><i class="fas fa-question-circle me-2"></i>Ajuda</a></li>
+                </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                <h6 class="text-light">Contato</h6>
+                <ul class="list-unstyled text-light">
+                    <li><i class="fas fa-map-marker-alt me-2"></i>Biblioteca Central</li>
+                    <li><i class="fas fa-phone me-2"></i>(11) 3333-4444</li>
+                    <li><i class="fas fa-envelope me-2"></i>contato@hubdeleitura.com</li>
+                    <li><i class="fas fa-clock me-2"></i>Seg-Sex: 8h às 18h</li>
+                </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                <h6 class="text-light">Horário</h6>
+                <div class="text-light small">
+                    <div class="d-flex justify-content-between">
+                    <span>Segunda:</span>
+                    <span>8h-18h</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <span>Ter-Sex:</span>
+                    <span>8h-20h</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <span>Sábado:</span>
+                    <span>9h-15h</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                    <span>Domingo:</span>
+                    <span>Fechado</span>
+                    </div>
+                </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <footer class="mt-5 bg-light py-4">
-        <div class="container text-center">
-            <p>&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
-        </div>
-    </footer>
+            <hr class="border-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                <p class="mb-0 text-light">&copy; 2025 Hub de Leitura - Sistema de Treinamento QA</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                <small class="text-light">
+                    Desenvolvido com <i class="fas fa-heart text-danger"></i> por 
+                    <a href="https://linkedin.com/in/fabio10" target="_blank" class="text-primary text-decoration-none">
+                    <i class="fab fa-linkedin me-1"></i>Fábio Araújo
+                    </a>
+                </small>
+                </div>
+            </div>
+            </div>
+        </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Verificar se é admin
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isAdmin = localStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === '1';
             const token = localStorage.getItem('authToken');
             
             if (!token || !isAdmin) {
@@ -491,14 +481,6 @@
                             ${isAvailable ? 'Disponível' : 'Esgotado'}
                         </span>
                     </td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="editBook(${book.id})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteBook(${book.id})" title="Excluir">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
                 `;
                 tbody.appendChild(row);
             });
@@ -559,96 +541,17 @@
             popularContainer.innerHTML = popularHtml;
         }
 
-        // Funções de ação
-        function openAddBookModal() {
-            const modal = new bootstrap.Modal(document.getElementById('addBookModal'));
-            modal.show();
-        }
-
-        function saveNewBook() {
-            const formData = {
-                title: document.getElementById('book-title').value,
-                author: document.getElementById('book-author').value,
-                isbn: document.getElementById('book-isbn').value,
-                category: document.getElementById('book-category').value,
-                editor: document.getElementById('book-editor').value,
-                publication_year: parseInt(document.getElementById('book-year').value) || null,
-                pages: parseInt(document.getElementById('book-pages').value) || null,
-                total_copies: parseInt(document.getElementById('book-copies').value) || 1,
-                language: document.getElementById('book-language').value,
-                description: document.getElementById('book-description').value,
-                cover_image: document.getElementById('book-cover').value || 'livro-padrao.png'
-            };
-
-            if (!formData.title || !formData.author) {
-                alert('Título e autor são obrigatórios!');
-                return;
-            }
-
-            const token = localStorage.getItem('authToken');
-
-            fetch('/api/books', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    showAlert('Livro adicionado com sucesso!', 'success');
-                    bootstrap.Modal.getInstance(document.getElementById('addBookModal')).hide();
-                    document.getElementById('add-book-form').reset();
-                    loadDashboardData(); // Recarregar dados
-                } else {
-                    showAlert(data.error || 'Erro ao adicionar livro', 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao adicionar livro:', error);
-                showAlert('Erro de conexão', 'danger');
-            });
-        }
-
-        function viewAllBooks() {
-            window.location.href = '/admin-books.html';
+        // Funções de navegação
+        function goToAdminBooks() {
+            window.location.href = './admin-books.html';
         }
 
         function viewReservations() {
-            window.location.href = '/admin-reservations.html';
+            window.location.href = 'admin-reservations.html';
         }
 
-        function editBook(id) {
-            // TODO: Implementar edição
-            showAlert('Funcionalidade de edição será implementada em breve', 'info');
-        }
-
-        function deleteBook(id) {
-            if (confirm('Tem certeza que deseja excluir este livro?')) {
-                const token = localStorage.getItem('authToken');
-                
-                fetch(`/api/books/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': token
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        showAlert('Livro excluído com sucesso!', 'success');
-                        loadDashboardData();
-                    } else {
-                        showAlert(data.error || 'Erro ao excluir livro', 'danger');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao excluir livro:', error);
-                    showAlert('Erro de conexão', 'danger');
-                });
-            }
+        function viewUsers() {
+            showAlert('Funcionalidade de gerenciamento de usuários será implementada em breve', 'info');
         }
 
         function exportData() {
@@ -676,6 +579,311 @@
                 alertContainer.classList.add('d-none');
             }, 5000);
         }
+    
+        // Sistema educacional para mostrar expiração do token
+// Adicione no admin-dashboard.html e admin-books.html
+
+class EducationalTokenManager {
+    constructor() {
+        this.warningShown = false;
+        this.timerInterval = null;
+        this.init();
+    }
+
+    init() {
+        this.createTokenTimer();
+        this.startTokenCheck();
+        this.showEducationalInfo();
+    }
+
+    createTokenTimer() {
+        // Criar elemento de timer no header
+        const timerElement = document.createElement('div');
+        timerElement.id = 'token-timer';
+        timerElement.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #17a2b8;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1060;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        `;
+        document.body.appendChild(timerElement);
+    }
+
+    updateTimer() {
+        const token = localStorage.getItem('authToken');
+        const timerElement = document.getElementById('token-timer');
+        
+        if (!token || !timerElement) return;
+
+        try {
+            const cleanToken = token.replace('Bearer ', '');
+            const payload = JSON.parse(atob(cleanToken.split('.')[1]));
+            const expirationTime = payload.exp * 1000;
+            const currentTime = Date.now();
+            const timeLeft = expirationTime - currentTime;
+
+            if (timeLeft <= 0) {
+                this.handleExpiredToken();
+                return;
+            }
+
+            const minutes = Math.floor(timeLeft / 60000);
+            const seconds = Math.floor((timeLeft % 60000) / 1000);
+            
+            // Mudar cor baseado no tempo restante
+            if (minutes < 5) {
+                timerElement.style.background = '#dc3545'; // Vermelho
+                if (!this.warningShown) {
+                    this.showExpirationWarning(minutes);
+                }
+            } else if (minutes < 15) {
+                timerElement.style.background = '#ffc107'; // Amarelo
+                timerElement.style.color = '#000';
+            } else {
+                timerElement.style.background = '#17a2b8'; // Azul
+                timerElement.style.color = '#fff';
+            }
+
+            timerElement.innerHTML = `
+                <i class="fas fa-clock"></i> Sessão: ${minutes}m ${seconds}s
+                <br><small>Clique para renovar</small>
+            `;
+
+            // Adicionar click para renovar (re-login)
+            timerElement.onclick = () => this.showRenewalOptions();
+
+        } catch (error) {
+            console.error('Erro ao verificar token:', error);
+            this.handleExpiredToken();
+        }
+    }
+
+    startTokenCheck() {
+        this.updateTimer(); // Primeira verificação
+        this.timerInterval = setInterval(() => {
+            this.updateTimer();
+        }, 1000); // Atualizar a cada segundo
+    }
+
+    showExpirationWarning(minutesLeft) {
+        this.warningShown = true;
+        
+        const modal = document.createElement('div');
+        modal.innerHTML = `
+            <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                Sessão Expirando
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Sua sessão expirará em ${minutesLeft} minutos!</strong></p>
+                            <div class="alert alert-info">
+                                <h6>📚 <strong>Sobre Autenticação JWT:</strong></h6>
+                                <ul class="mb-0">
+                                    <li>Tokens JWT têm tempo limitado por segurança</li>
+                                    <li>Este sistema está configurado para <strong>1 hora</strong></li>
+                                    <li>Em sistemas reais, você implementaria refresh tokens</li>
+                                    <li>Para QA: Teste sempre cenários de token expirado</li>
+                                </ul>
+                            </div>
+                            <p>O que você gostaria de fazer?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="this.closest('.modal').parentElement.remove()">
+                                Continuar Trabalhando
+                            </button>
+                            <button class="btn btn-primary" onclick="window.location.href='./login.html'">
+                                <i class="fas fa-sign-in-alt"></i> Renovar Sessão (Re-login)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    showRenewalOptions() {
+        const modal = document.createElement('div');
+        modal.innerHTML = `
+            <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">
+                                <i class="fas fa-refresh"></i> 
+                                Renovar Sessão
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Para renovar sua sessão, você precisa fazer login novamente.</p>
+                            <div class="alert alert-warning">
+                                <strong>⚠️ Dados não salvos serão perdidos!</strong><br>
+                                Certifique-se de salvar qualquer trabalho em andamento.
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <h6>🎓 <strong>Para Estudantes/QA:</strong></h6>
+                                <p class="mb-0">
+                                    Este é o comportamento padrão de sistemas JWT. 
+                                    Sempre teste como sua aplicação lida com tokens expirados!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="this.closest('.modal').parentElement.remove()">
+                                Cancelar
+                            </button>
+                            <button class="btn btn-primary" onclick="window.location.href='./login.html'">
+                                <i class="fas fa-sign-in-alt"></i> Ir para Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    handleExpiredToken() {
+        clearInterval(this.timerInterval);
+        
+        const modal = document.createElement('div');
+        modal.innerHTML = `
+            <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title">
+                                <i class="fas fa-times-circle"></i> 
+                                Sessão Expirada
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Sua sessão expirou!</strong></p>
+                            <div class="alert alert-danger">
+                                <strong>🔒 Token JWT Expirado</strong><br>
+                                Por motivos de segurança, você precisa fazer login novamente.
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <h6>📚 <strong>Conceito QA - Teste de Expiração:</strong></h6>
+                                <ul class="mb-0">
+                                    <li>✅ Sistema detectou token expirado corretamente</li>
+                                    <li>✅ Usuário foi notificado adequadamente</li>
+                                    <li>✅ Redirecionamento seguro para login</li>
+                                    <li>🧪 <strong>Cenário testado:</strong> Autenticação expirada</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onclick="window.location.href='./login.html'">
+                                <i class="fas fa-sign-in-alt"></i> Fazer Login Novamente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Auto-redirect após 10 segundos
+        setTimeout(() => {
+            localStorage.clear();
+            window.location.href = './login.html';
+        }, 10000);
+    }
+
+    showEducationalInfo() {
+        // Mostrar info educacional na primeira vez
+        if (!localStorage.getItem('jwt_education_shown')) {
+            setTimeout(() => {
+                const modal = document.createElement('div');
+                modal.innerHTML = `
+                    <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">
+                                        <i class="fas fa-graduation-cap"></i> 
+                                        Sistema de Autenticação JWT - Guia QA
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-info">
+                                        <h6><strong>🎯 Sobre este Sistema:</strong></h6>
+                                        <ul>
+                                            <li>Tokens JWT expiram em <strong>1 hora</strong> por segurança</li>
+                                            <li>Você pode ver o tempo restante no canto superior direito</li>
+                                            <li>O sistema avisará quando restarem 5 minutos</li>
+                                            <li>Após expirar, você precisa fazer login novamente</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="alert alert-warning">
+                                        <h6><strong>🧪 Cenários para Testar:</strong></h6>
+                                        <ul>
+                                            <li>Acesso com token válido</li>
+                                            <li>Acesso com token expirado</li>
+                                            <li>Acesso sem token</li>
+                                            <li>Operações admin vs usuário comum</li>
+                                            <li>Comportamento em múltiplas abas</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="alert alert-success">
+                                        <h6><strong>✅ Boas Práticas QA:</strong></h6>
+                                        <ul class="mb-0">
+                                            <li>Sempre teste cenários de token expirado</li>
+                                            <li>Verifique se o sistema lida bem com erros de auth</li>
+                                            <li>Teste diferentes níveis de permissão</li>
+                                            <li>Valide mensagens de erro claras para usuários</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" onclick="this.closest('.modal').parentElement.remove(); localStorage.setItem('jwt_education_shown', 'true')">
+                                        <i class="fas fa-check"></i> Entendi! Vamos testar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }, 2000);
+        }
+    }
+
+    destroy() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+        }
+        const timerElement = document.getElementById('token-timer');
+        if (timerElement) {
+            timerElement.remove();
+        }
+    }
+}
+
+// Inicializar quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se é uma página admin
+    if (window.location.pathname.includes('admin')) {
+        new EducationalTokenManager();
+    }
+});
+    
     </script>
     <script src="js/header.js"></script>
 </body>

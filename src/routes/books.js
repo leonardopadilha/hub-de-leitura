@@ -21,15 +21,19 @@ router.get('/:id', BooksController.getBookById);
 
 /**
  * Rotas protegidas - apenas administradores
+ * CORREÇÃO: Middleware combinado para garantir ordem correta
  */
 
+// Middleware combinado para admin
+const requireAdmin = [authenticateToken, isAdmin];
+
 // POST /api/books - Criar novo livro (Admin apenas)
-router.post('/', authenticateToken, isAdmin, BooksController.createBook);
+router.post('/', requireAdmin, BooksController.createBook);
 
 // PUT /api/books/:id - Atualizar livro (Admin apenas)
-router.put('/:id', authenticateToken, isAdmin, BooksController.updateBook);
+router.put('/:id', requireAdmin, BooksController.updateBook);
 
 // DELETE /api/books/:id - Deletar livro (Admin apenas)
-router.delete('/:id', authenticateToken, isAdmin, BooksController.deleteBook);
+router.delete('/:id', requireAdmin, BooksController.deleteBook);
 
 module.exports = router;
