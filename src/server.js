@@ -615,7 +615,7 @@ async function startServer() {
       
       console.log('\n🔑 Credenciais de Teste (Banco Existente):');
       console.log('   👑 Admin: admin@biblioteca.com / admin123');
-      console.log('   👤 User:  usuario@gmail.com / Teste@123');
+      console.log('   👤 User:  usuario@teste.com / user123');
       
       console.log('\n📋 Endpoints Principais:');
       console.log('   🔐 POST /api/login        - Autenticação');

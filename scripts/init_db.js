@@ -243,8 +243,8 @@ console.log("✅ Tabela Basket criada");
   // Usuário comum para testes
   const userTestData = {
     name: "Usuário Padrão",
-    email: "usuario@gmail.com",
-    password: "Teste@123",
+    email: "usuario@teste.com",
+    password: "user123",
     phone: "(11) 88888-8888",
     isAdmin: 0,
   };

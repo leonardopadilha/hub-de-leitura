@@ -144,38 +144,10 @@ npm start
 - [ ] Tentar acessar dashboard como usuário comum
 - [ ] Visualizar estatísticas
 - [ ] Filtrar reservas por status/usuário
-- [ ] Exportar dados em CSV
 - [ ] Verificar alertas de atraso
 
 ## 🗂️ Estrutura do Projeto
 
-```
-hub-de-leitura/
-├── 📁 src/
-│   ├── 📁 controllers/          # Lógica de negócio
-│   │   ├── adminReservationsController.js
-│   │   └── booksController.js
-│   ├── 📁 routes/               # Rotas da API
-│   │   ├── admin.js
-│   │   └── books.js
-│   ├── 📁 middleware/           # Middlewares
-│   │   └── auth.js
-│   └── server.js                # Servidor principal
-├── 📁 config/
-│   ├── db.js                    # Configuração do banco
-│   └── swagger.json             # Documentação da API
-├── 📁 public/                   # Frontend
-│   ├── admin-dashboard.html     # Dashboard administrativo
-│   ├── admin-reservations.html  # Gestão de reservas
-│   ├── login.html               # Página de login
-│   ├── dashboard.html           # Dashboard do usuário
-│   ├── 📁 css/                  # Estilos
-│   ├── 📁 js/                   # Scripts
-│   └── 📁 images/               # Imagens e capas
-├── 📁 data/                     # Banco de dados SQLite
-├── package.json
-└── README.md
-```
 
 ## 🔗 Endpoints da API
 
@@ -295,8 +267,8 @@ kill -9 PID_DO_PROCESSO
 - Tokens expiram em 1 hora por padrão
 
 ### Banco de dados corrompido
-- Delete o arquivo `data/library.db`
-- Reinicie o servidor para recriar
+- Delete o arquivo `database/biblioteca.db`
+- Rode o comando `npm run db` para recriar o banco
 
 ## 📚 Recursos de Aprendizado
 
@@ -323,20 +295,6 @@ kill -9 PID_DO_PROCESSO
 - [ ] Integração com sistemas externos
 - [ ] App mobile com React Native
 
-## 📞 Suporte
-
-### Para Dúvidas Técnicas
-- Abra uma [Issue](https://github.com/fabioaraujoqa/hub-de-leitura/issues)
-- Email: qa-suporte@hubdeleitura.com
-
-### Para Sugestões Educacionais
-- Email: fabio@qualityassurance.com
-- LinkedIn: [Fábio Araújo](https://linkedin.com/in/fabioaraujoqa)
-
-## 📄 Licença
-
-Este projeto está licenciado sob a **Licença Educational** - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
 ### Uso Permitido
 - ✅ Uso educacional e acadêmico
 - ✅ Modificação para fins didáticos  
@@ -352,12 +310,10 @@ Este projeto está licenciado sob a **Licença Educational** - veja o arquivo [L
 
 ## ⭐ Agradecimentos
 
-Desenvolvido com ❤️ para a comunidade de **Quality Assurance** brasileira.
+Desenvolvido com ❤️ para a comunidade de **Quality Assurance**.
 
 **Contribuidores:**
-- [Fábio Araújo](https://github.com/fabioaraujoqa) - Criador e Maintainer
-- [Bruna Emerich](https://github.com/brunaemerich) - Parceira de Desenvolvimento  
-- [Tamara Fontanella](https://github.com/tamarafontanella) - Parceira de Desenvolvimento
+- [Fábio Araújo](https://github.com/fabioaraujoqa) - Criador
 
 ---
 
