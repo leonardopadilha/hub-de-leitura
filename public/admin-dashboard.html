@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub de Leitura - Admin Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2024">
+    <link rel="shortcut icon" href="/images/favicon.svg?v=2024">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin.css">
@@ -15,63 +18,63 @@
             padding: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .stat-card {
             background: white;
             border-radius: 15px;
             padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
             border-left: 4px solid #0d6efd;
         }
-        
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .stat-number {
             font-size: 2.5rem;
             font-weight: bold;
             color: #0d6efd;
         }
-        
+
         .admin-card {
             background: white;
             border-radius: 15px;
             padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
         }
-        
+
         .action-btn {
             min-width: 200px;
             margin-bottom: 1rem;
         }
-        
+
         .books-table {
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .table th {
             background: #f8f9fa;
             border: none;
             font-weight: 600;
         }
-        
+
         .book-cover-small {
             width: 40px;
             height: 60px;
             object-fit: cover;
             border-radius: 4px;
         }
-        
+
         .status-badge {
             font-size: 0.8rem;
         }
-        
+
         .quick-stats {
             background: #f8f9fa;
             border-radius: 10px;
@@ -82,7 +85,7 @@
         .modal {
             z-index: 1060;
         }
-        
+
         .modal-backdrop {
             z-index: 1055;
         }
@@ -98,17 +101,18 @@
             width: 100%;
             z-index: 1050;
             background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body>
     <div id="header" class="fixed-header"></div>
-    
-    <div id="alert-container" class="alert d-none" 
-         style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1070; max-width: 500px;">
+
+    <div id="alert-container" class="alert d-none"
+        style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1070; max-width: 500px;">
     </div>
-    
+
     <main class="container mt-3">
         <!-- Cabeçalho Admin -->
         <div class="admin-header text-center">
@@ -189,14 +193,14 @@
                             <i class="fas fa-external-link-alt"></i> Gerenciar Todos
                         </button>
                     </div>
-                    
+
                     <!-- Loading -->
                     <div id="recent-books-loading" class="text-center py-3">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Carregando...</span>
                         </div>
                     </div>
-                    
+
                     <!-- Tabela de Livros -->
                     <div id="recent-books-table" class="d-none">
                         <div class="table-responsive">
@@ -275,11 +279,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Verificar se é admin
             const isAdmin = localStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === '1';
             const token = localStorage.getItem('authToken');
-            
+
             if (!token || !isAdmin) {
                 alert('Acesso negado. Apenas administradores podem acessar esta página.');
                 window.location.href = '/login.html';
@@ -292,93 +296,178 @@
 
         function loadDashboardData() {
             console.log('Carregando dados do dashboard admin...');
-            
+
             // Carregar estatísticas gerais
             loadGeneralStats();
-            
+
             // Carregar livros recentes
             loadRecentBooks();
-            
+
             // Carregar alertas
             loadAdminAlerts();
-            
+
             // Carregar estatísticas do dia
             loadTodayStats();
-            
+
             // Carregar livros populares
             loadPopularBooks();
         }
 
-        function loadGeneralStats() {
+ function loadGeneralStats() {
             const token = localStorage.getItem('authToken');
             
-            // Buscar total de livros
+            // 1. Buscar total de livros (CORRIGIDO)
             fetch('/api/books', {
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error(`Books API: ${response.status}`);
+                return response.json();
+            })
             .then(data => {
-                const totalBooks = data.pagination ? data.pagination.totalBooks : data.books?.length || 0;
+                console.log('📚 Dados de livros completos:', data);
+                
+                // Verificar todas as possíveis estruturas de resposta
+                let totalBooks = 0;
+                let booksArray = [];
+                
+                if (Array.isArray(data)) {
+                    // Resposta é array direto
+                    totalBooks = data.length;
+                    booksArray = data;
+                    console.log('📚 Estrutura: Array direto com', totalBooks, 'livros');
+                } else if (data.books && Array.isArray(data.books)) {
+                    // Resposta tem propriedade books
+                    totalBooks = data.books.length;
+                    booksArray = data.books;
+                    console.log('📚 Estrutura: Objeto com books array -', totalBooks, 'livros');
+                } else if (data.pagination && data.pagination.totalBooks) {
+                    // Resposta tem paginação
+                    totalBooks = data.pagination.totalBooks;
+                    booksArray = data.books || [];
+                    console.log('📚 Estrutura: Com paginação -', totalBooks, 'livros total');
+                } else if (data.total) {
+                    // Resposta tem campo total
+                    totalBooks = data.total;
+                    booksArray = data.books || data.data || [];
+                    console.log('📚 Estrutura: Com total -', totalBooks, 'livros');
+                } else {
+                    console.warn('📚 Estrutura de dados não reconhecida:', Object.keys(data));
+                    totalBooks = '?';
+                }
+                
                 document.getElementById('total-books').textContent = totalBooks;
                 
                 // Verificar livros com estoque baixo
-                const lowStockBooks = data.books ? data.books.filter(book => 
-                    book.available_copies <= 1 && book.available_copies > 0
-                ).length : 0;
+                const lowStockBooks = booksArray.filter(book => 
+                    book && book.available_copies <= 1 && book.available_copies > 0
+                ).length;
+                
                 document.getElementById('low-stock-books').textContent = lowStockBooks;
+                
+                console.log('📚 Estatísticas:', { totalBooks, lowStockBooks });
             })
             .catch(error => {
-                console.error('Erro ao carregar estatísticas de livros:', error);
-                document.getElementById('total-books').textContent = '?';
-                document.getElementById('low-stock-books').textContent = '?';
+                console.error('❌ Erro ao carregar estatísticas de livros:', error);
+                document.getElementById('total-books').textContent = 'Erro';
+                document.getElementById('low-stock-books').textContent = 'Erro';
+                
+                // Tentar método alternativo - buscar apenas contagem
+                fetch('/api/books?count=true', {
+                    headers: { 'Authorization': token }
+                })
+                .then(response => response.json())
+                .then(countData => {
+                    console.log('📚 Dados de contagem:', countData);
+                    if (countData.count || countData.total) {
+                        document.getElementById('total-books').textContent = countData.count || countData.total;
+                    }
+                })
+                .catch(countError => {
+                    console.error('❌ Erro ao carregar contagem de livros:', countError);
+                });
             });
 
-            // Buscar reservas ativas
-            fetch('/api/reservations', {
+            // 2. Buscar reservas ativas (CORRIGIDO: usar endpoint do admin)
+            fetch('/api/admin/reservations', {
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
-            .then(reservations => {
-                const activeReservations = reservations.filter(r => r.status === 'active').length;
+            .then(response => {
+                if (!response.ok) throw new Error(`Admin Reservations API: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                console.log('📋 Dados de reservas admin:', data);
+                
+                // A API admin retorna { reservations: [...], total: N }
+                const reservations = data.reservations || [];
+                const activeReservations = reservations.filter(r => 
+                    r.status === 'active' || r.calculated_status === 'active'
+                ).length;
+                
                 document.getElementById('active-reservations').textContent = activeReservations;
             })
             .catch(error => {
-                console.error('Erro ao carregar reservas:', error);
+                console.error('❌ Erro ao carregar reservas admin:', error);
                 document.getElementById('active-reservations').textContent = '?';
             });
 
-            // Buscar total de usuários
-            fetch('/api/users', {
+            // 3. Buscar total de usuários (CORRIGIDO: usar endpoint do admin)
+            fetch('/api/admin/users', {
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
-            .then(users => {
-                document.getElementById('total-users').textContent = users.length;
+            .then(response => {
+                if (!response.ok) {
+                    // Fallback: tentar endpoint de usuários normal
+                    return fetch('/api/users', {
+                        headers: { 'Authorization': token }
+                    });
+                }
+                return response;
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`Users API: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                console.log('👥 Dados de usuários:', data);
+                
+                // Pode ser array direto ou objeto com pagination
+                const totalUsers = data.pagination ? data.pagination.totalUsers : 
+                                 data.users ? data.users.length : 
+                                 Array.isArray(data) ? data.length : 0;
+                
+                document.getElementById('total-users').textContent = totalUsers;
             })
             .catch(error => {
-                console.error('Erro ao carregar usuários:', error);
+                console.error('❌ Erro ao carregar usuários:', error);
                 document.getElementById('total-users').textContent = '?';
             });
         }
 
         function loadRecentBooks() {
             const token = localStorage.getItem('authToken');
-            
-            fetch('/api/books?limit=5', {
+
+            fetch('/api/books?limit=5&sort=recent', {
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
-            .then(data => {
-                const books = data.books || [];
-                displayRecentBooks(books.slice(0, 5));
-                document.getElementById('recent-books-loading').classList.add('d-none');
-                document.getElementById('recent-books-table').classList.remove('d-none');
-            })
-            .catch(error => {
-                console.error('Erro ao carregar livros recentes:', error);
-                document.getElementById('recent-books-loading').innerHTML = 
-                    '<p class="text-danger">Erro ao carregar livros</p>';
-            });
+                .then(response => {
+                    if (!response.ok) throw new Error(`Books API: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('📚 Livros recentes:', data);
+
+                    const books = data.books || [];
+                    displayRecentBooks(books.slice(0, 5));
+                    document.getElementById('recent-books-loading').classList.add('d-none');
+                    document.getElementById('recent-books-table').classList.remove('d-none');
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar livros recentes:', error);
+                    document.getElementById('recent-books-loading').innerHTML =
+                        '<div class="alert alert-danger py-2"><small><i class="fas fa-exclamation-triangle"></i> Erro ao carregar livros</small></div>';
+                });
         }
 
         function displayRecentBooks(books) {
@@ -388,8 +477,8 @@
             books.forEach(book => {
                 const row = document.createElement('tr');
                 const isAvailable = book.available_copies > 0;
-                const stockStatus = book.available_copies <= 1 ? 'danger' : 
-                                   book.available_copies <= 3 ? 'warning' : 'success';
+                const stockStatus = book.available_copies <= 1 ? 'danger' :
+                    book.available_copies <= 3 ? 'warning' : 'success';
 
                 row.innerHTML = `
                     <td>
@@ -418,58 +507,167 @@
         }
 
         function loadAdminAlerts() {
-            // Simular alertas (em produção viria da API)
-            const alerts = [
-                { type: 'warning', message: '3 livros com estoque baixo', icon: 'fa-exclamation-triangle' },
-                { type: 'info', message: '5 reservas vencendo hoje', icon: 'fa-clock' },
-                { type: 'success', message: 'Sistema funcionando normalmente', icon: 'fa-check-circle' }
-            ];
+            const token = localStorage.getItem('authToken');
 
-            const alertsContainer = document.getElementById('admin-alerts');
-            alertsContainer.innerHTML = '';
+            // Carregar alertas baseados em dados reais
+            Promise.all([
+                // Livros com estoque baixo
+                fetch('/api/books', { headers: { 'Authorization': token } })
+                    .then(r => r.json())
+                    .then(data => {
+                        const lowStock = data.books ? data.books.filter(book =>
+                            book.available_copies <= 2 && book.available_copies > 0
+                        ).length : 0;
+                        return { type: 'warning', count: lowStock, message: `${lowStock} livros com estoque baixo`, icon: 'fa-exclamation-triangle' };
+                    }),
 
-            alerts.forEach(alert => {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = `alert alert-${alert.type} py-2 px-3 mb-2`;
-                alertDiv.innerHTML = `
-                    <i class="fas ${alert.icon}"></i>
-                    <small>${alert.message}</small>
+                // Reservas vencendo hoje
+                fetch('/api/admin/reservations', { headers: { 'Authorization': token } })
+                    .then(r => r.json())
+                    .then(data => {
+                        const today = new Date().toDateString();
+                        const expiring = data.reservations ? data.reservations.filter(r => {
+                            if (!r.pickup_deadline) return false;
+                            const deadline = new Date(r.pickup_deadline);
+                            return deadline.toDateString() === today && r.status === 'active';
+                        }).length : 0;
+                        return { type: 'info', count: expiring, message: `${expiring} reservas vencendo hoje`, icon: 'fa-clock' };
+                    })
+            ])
+                .then(alerts => {
+                    const alertsContainer = document.getElementById('admin-alerts');
+                    alertsContainer.innerHTML = '';
+
+                    // Adicionar alerta de sistema sempre
+                    alerts.push({ type: 'success', message: 'Sistema funcionando normalmente', icon: 'fa-check-circle' });
+
+                    alerts.forEach(alert => {
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = `alert alert-${alert.type} py-2 px-3 mb-2`;
+                        alertDiv.innerHTML = `
+                        <i class="fas ${alert.icon}"></i>
+                        <small>${alert.message}</small>
+                    `;
+                        alertsContainer.appendChild(alertDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar alertas:', error);
+                    const alertsContainer = document.getElementById('admin-alerts');
+                    alertsContainer.innerHTML = `
+                    <div class="alert alert-warning py-2">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <small>Erro ao carregar alertas</small>
+                    </div>
                 `;
-                alertsContainer.appendChild(alertDiv);
-            });
+                });
         }
 
         function loadTodayStats() {
-            // Simular estatísticas do dia
-            document.getElementById('today-reservations').textContent = '8';
-            document.getElementById('today-pickups').textContent = '12';
-            document.getElementById('today-returns').textContent = '15';
-            document.getElementById('today-expired').textContent = '2';
+            const token = localStorage.getItem('authToken');
+
+            // Buscar estatísticas reais do dia
+            fetch('/api/admin/reservations', {
+                headers: { 'Authorization': token }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const reservations = data.reservations || [];
+                    const today = new Date().toDateString();
+
+                    // Calcular estatísticas do dia
+                    const todayReservations = reservations.filter(r => {
+                        const resDate = new Date(r.reservation_date);
+                        return resDate.toDateString() === today;
+                    }).length;
+
+                    const todayPickups = reservations.filter(r => {
+                        if (!r.pickup_date) return false;
+                        const pickupDate = new Date(r.pickup_date);
+                        return pickupDate.toDateString() === today;
+                    }).length;
+
+                    const todayReturns = reservations.filter(r => {
+                        if (!r.return_date) return false;
+                        const returnDate = new Date(r.return_date);
+                        return returnDate.toDateString() === today;
+                    }).length;
+
+                    const todayExpired = reservations.filter(r => {
+                        return r.calculated_status === 'expired';
+                    }).length;
+
+                    // Atualizar interface
+                    document.getElementById('today-reservations').textContent = todayReservations;
+                    document.getElementById('today-pickups').textContent = todayPickups;
+                    document.getElementById('today-returns').textContent = todayReturns;
+                    document.getElementById('today-expired').textContent = todayExpired;
+
+                    console.log('📊 Estatísticas do dia:', { todayReservations, todayPickups, todayReturns, todayExpired });
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar estatísticas do dia:', error);
+                    // Fallback para dados simulados
+                    document.getElementById('today-reservations').textContent = '-';
+                    document.getElementById('today-pickups').textContent = '-';
+                    document.getElementById('today-returns').textContent = '-';
+                    document.getElementById('today-expired').textContent = '-';
+                });
         }
 
         function loadPopularBooks() {
-            const popularContainer = document.getElementById('popular-books');
-            
-            // Simular livros populares
-            const popularBooks = [
-                { title: 'Dom Casmurro', reservations: 15 },
-                { title: '1984', reservations: 12 },
-                { title: 'O Pequeno Príncipe', reservations: 10 }
-            ];
+            const token = localStorage.getItem('authToken');
 
-            let popularHtml = '';
-            popularBooks.forEach((book, index) => {
-                popularHtml += `
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="small">
-                            <strong>${index + 1}.</strong> ${book.title}
-                        </span>
-                        <span class="badge bg-primary">${book.reservations}</span>
-                    </div>
-                `;
-            });
+            fetch('/api/admin/reservations', {
+                headers: { 'Authorization': token }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const reservations = data.reservations || [];
 
-            popularContainer.innerHTML = popularHtml;
+                    // Contar reservas por livro
+                    const bookCounts = {};
+                    reservations.forEach(r => {
+                        const key = `${r.book_id}-${r.title}`;
+                        bookCounts[key] = (bookCounts[key] || 0) + 1;
+                    });
+
+                    // Ordenar por popularidade
+                    const popularBooks = Object.entries(bookCounts)
+                        .map(([key, count]) => {
+                            const [bookId, title] = key.split('-');
+                            return { title: title || 'Título não disponível', reservations: count };
+                        })
+                        .sort((a, b) => b.reservations - a.reservations)
+                        .slice(0, 5);
+
+                    const popularContainer = document.getElementById('popular-books');
+
+                    if (popularBooks.length === 0) {
+                        popularContainer.innerHTML = '<p class="text-muted small">Nenhuma reserva ainda</p>';
+                        return;
+                    }
+
+                    let popularHtml = '';
+                    popularBooks.forEach((book, index) => {
+                        popularHtml += `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="small">
+                                <strong>${index + 1}.</strong> ${book.title}
+                            </span>
+                            <span class="badge bg-primary">${book.reservations}</span>
+                        </div>
+                    `;
+                    });
+
+                    popularContainer.innerHTML = popularHtml;
+                    console.log('⭐ Livros populares:', popularBooks);
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar livros populares:', error);
+                    document.getElementById('popular-books').innerHTML =
+                        '<p class="text-muted small">Erro ao carregar dados</p>';
+                });
         }
 
         // Funções de navegação
@@ -499,39 +697,39 @@
 
         function showAlert(message, type) {
             const alertContainer = document.getElementById('alert-container');
-            const iconClass = type === 'success' ? 'fa-check-circle' : 
-                             type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
-            
+            const iconClass = type === 'success' ? 'fa-check-circle' :
+                type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+
             alertContainer.className = `alert alert-${type}`;
             alertContainer.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
             alertContainer.classList.remove('d-none');
-            
+
             setTimeout(() => {
                 alertContainer.classList.add('d-none');
             }, 5000);
         }
-    
+
         // Sistema educacional para mostrar expiração do token
-// Adicione no admin-dashboard.html e admin-books.html
+        // Adicione no admin-dashboard.html e admin-books.html
 
-class EducationalTokenManager {
-    constructor() {
-        this.warningShown = false;
-        this.timerInterval = null;
-        this.init();
-    }
+        class EducationalTokenManager {
+            constructor() {
+                this.warningShown = false;
+                this.timerInterval = null;
+                this.init();
+            }
 
-    init() {
-        this.createTokenTimer();
-        this.startTokenCheck();
-        this.showEducationalInfo();
-    }
+            init() {
+                this.createTokenTimer();
+                this.startTokenCheck();
+                this.showEducationalInfo();
+            }
 
-    createTokenTimer() {
-        // Criar elemento de timer no header
-        const timerElement = document.createElement('div');
-        timerElement.id = 'token-timer';
-        timerElement.style.cssText = `
+            createTokenTimer() {
+                // Criar elemento de timer no header
+                const timerElement = document.createElement('div');
+                timerElement.id = 'token-timer';
+                timerElement.style.cssText = `
             position: fixed;
             top: 10px;
             right: 10px;
@@ -543,70 +741,70 @@ class EducationalTokenManager {
             z-index: 1060;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         `;
-        document.body.appendChild(timerElement);
-    }
-
-    updateTimer() {
-        const token = localStorage.getItem('authToken');
-        const timerElement = document.getElementById('token-timer');
-        
-        if (!token || !timerElement) return;
-
-        try {
-            const cleanToken = token.replace('Bearer ', '');
-            const payload = JSON.parse(atob(cleanToken.split('.')[1]));
-            const expirationTime = payload.exp * 1000;
-            const currentTime = Date.now();
-            const timeLeft = expirationTime - currentTime;
-
-            if (timeLeft <= 0) {
-                this.handleExpiredToken();
-                return;
+                document.body.appendChild(timerElement);
             }
 
-            const minutes = Math.floor(timeLeft / 60000);
-            const seconds = Math.floor((timeLeft % 60000) / 1000);
-            
-            // Mudar cor baseado no tempo restante
-            if (minutes < 5) {
-                timerElement.style.background = '#dc3545'; // Vermelho
-                if (!this.warningShown) {
-                    this.showExpirationWarning(minutes);
-                }
-            } else if (minutes < 15) {
-                timerElement.style.background = '#ffc107'; // Amarelo
-                timerElement.style.color = '#000';
-            } else {
-                timerElement.style.background = '#17a2b8'; // Azul
-                timerElement.style.color = '#fff';
-            }
+            updateTimer() {
+                const token = localStorage.getItem('authToken');
+                const timerElement = document.getElementById('token-timer');
 
-            timerElement.innerHTML = `
+                if (!token || !timerElement) return;
+
+                try {
+                    const cleanToken = token.replace('Bearer ', '');
+                    const payload = JSON.parse(atob(cleanToken.split('.')[1]));
+                    const expirationTime = payload.exp * 1000;
+                    const currentTime = Date.now();
+                    const timeLeft = expirationTime - currentTime;
+
+                    if (timeLeft <= 0) {
+                        this.handleExpiredToken();
+                        return;
+                    }
+
+                    const minutes = Math.floor(timeLeft / 60000);
+                    const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+                    // Mudar cor baseado no tempo restante
+                    if (minutes < 5) {
+                        timerElement.style.background = '#dc3545'; // Vermelho
+                        if (!this.warningShown) {
+                            this.showExpirationWarning(minutes);
+                        }
+                    } else if (minutes < 15) {
+                        timerElement.style.background = '#ffc107'; // Amarelo
+                        timerElement.style.color = '#000';
+                    } else {
+                        timerElement.style.background = '#17a2b8'; // Azul
+                        timerElement.style.color = '#fff';
+                    }
+
+                    timerElement.innerHTML = `
                 <i class="fas fa-clock"></i> Sessão: ${minutes}m ${seconds}s
                 <br><small>Clique para renovar</small>
             `;
 
-            // Adicionar click para renovar (re-login)
-            timerElement.onclick = () => this.showRenewalOptions();
+                    // Adicionar click para renovar (re-login)
+                    timerElement.onclick = () => this.showRenewalOptions();
 
-        } catch (error) {
-            console.error('Erro ao verificar token:', error);
-            this.handleExpiredToken();
-        }
-    }
+                } catch (error) {
+                    console.error('Erro ao verificar token:', error);
+                    this.handleExpiredToken();
+                }
+            }
 
-    startTokenCheck() {
-        this.updateTimer(); // Primeira verificação
-        this.timerInterval = setInterval(() => {
-            this.updateTimer();
-        }, 1000); // Atualizar a cada segundo
-    }
+            startTokenCheck() {
+                this.updateTimer(); // Primeira verificação
+                this.timerInterval = setInterval(() => {
+                    this.updateTimer();
+                }, 1000); // Atualizar a cada segundo
+            }
 
-    showExpirationWarning(minutesLeft) {
-        this.warningShown = true;
-        
-        const modal = document.createElement('div');
-        modal.innerHTML = `
+            showExpirationWarning(minutesLeft) {
+                this.warningShown = true;
+
+                const modal = document.createElement('div');
+                modal.innerHTML = `
             <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -641,12 +839,12 @@ class EducationalTokenManager {
                 </div>
             </div>
         `;
-        document.body.appendChild(modal);
-    }
+                document.body.appendChild(modal);
+            }
 
-    showRenewalOptions() {
-        const modal = document.createElement('div');
-        modal.innerHTML = `
+            showRenewalOptions() {
+                const modal = document.createElement('div');
+                modal.innerHTML = `
             <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -683,14 +881,14 @@ class EducationalTokenManager {
                 </div>
             </div>
         `;
-        document.body.appendChild(modal);
-    }
+                document.body.appendChild(modal);
+            }
 
-    handleExpiredToken() {
-        clearInterval(this.timerInterval);
-        
-        const modal = document.createElement('div');
-        modal.innerHTML = `
+            handleExpiredToken() {
+                clearInterval(this.timerInterval);
+
+                const modal = document.createElement('div');
+                modal.innerHTML = `
             <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -726,21 +924,21 @@ class EducationalTokenManager {
                 </div>
             </div>
         `;
-        document.body.appendChild(modal);
-        
-        // Auto-redirect após 10 segundos
-        setTimeout(() => {
-            localStorage.clear();
-            window.location.href = './login.html';
-        }, 10000);
-    }
+                document.body.appendChild(modal);
 
-    showEducationalInfo() {
-        // Mostrar info educacional na primeira vez
-        if (!localStorage.getItem('jwt_education_shown')) {
-            setTimeout(() => {
-                const modal = document.createElement('div');
-                modal.innerHTML = `
+                // Auto-redirect após 10 segundos
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = './login.html';
+                }, 10000);
+            }
+
+            showEducationalInfo() {
+                // Mostrar info educacional na primeira vez
+                if (!localStorage.getItem('jwt_education_shown')) {
+                    setTimeout(() => {
+                        const modal = document.createElement('div');
+                        modal.innerHTML = `
                     <div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -791,31 +989,32 @@ class EducationalTokenManager {
                         </div>
                     </div>
                 `;
-                document.body.appendChild(modal);
-            }, 2000);
-        }
-    }
+                        document.body.appendChild(modal);
+                    }, 2000);
+                }
+            }
 
-    destroy() {
-        if (this.timerInterval) {
-            clearInterval(this.timerInterval);
+            destroy() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                }
+                const timerElement = document.getElementById('token-timer');
+                if (timerElement) {
+                    timerElement.remove();
+                }
+            }
         }
-        const timerElement = document.getElementById('token-timer');
-        if (timerElement) {
-            timerElement.remove();
-        }
-    }
-}
 
-// Inicializar quando a página carregar
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar se é uma página admin
-    if (window.location.pathname.includes('admin')) {
-        new EducationalTokenManager();
-    }
-});
-    
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            // Verificar se é uma página admin
+            if (window.location.pathname.includes('admin')) {
+                new EducationalTokenManager();
+            }
+        });
+
     </script>
     <script src="js/header.js"></script>
 </body>
+
 </html>

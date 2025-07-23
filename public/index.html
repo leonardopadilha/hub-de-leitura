@@ -6,11 +6,97 @@
     <title>Hub de Leitura - Home</title>
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/preflight.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2024">
+    <link rel="shortcut icon" href="/images/favicon.svg?v=2024">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <header id="header"></header>
+
+    <!-- Imagem do Booki -->
+    <div class="floating-image" id="floatingImage">
+        <a href="#contact">
+            <img src="images/booki.png" alt="Leitura" data-tooltip="Booki" />
+        </a>
+        <div class="tooltip">Oie. Eu sou Booki. Como posso te ajudar?</div>
+    </div>
+
+    <style>
+        .floating-image {
+            position: fixed;
+            top: 70px;
+            right: 150px;
+            z-index: 9999;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(-90px);
+        }
+
+        .floating-image.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-image img {
+            width: 130px;
+            height: 130px;
+            cursor: pointer;
+        }
+
+        .floating-image .tooltip {
+            visibility: hidden;
+            width: 150px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            top: 105%;
+            left: 1px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+
+        .floating-image .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #333 transparent;
+        }
+
+        .floating-image:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const floatingImage = document.getElementById('floatingImage');
+            const heroSection = document.getElementById('home');
+            
+            function handleScroll() {
+                const heroRect = heroSection.getBoundingClientRect();
+                const isHeroVisible = heroRect.bottom > 0 && heroRect.top < window.innerHeight;
+                
+                if (isHeroVisible) {
+                    floatingImage.classList.add('visible');
+                } else {
+                    floatingImage.classList.remove('visible');
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Check initial state
+        });
+    </script>
 
     <div class="bg-gray-50">
         <!-- Hero Section -->
@@ -395,6 +481,7 @@
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto">
                     <div class="text-center mb-12 fade-in">
+                        <br><br>
                         <h2 class="text-4xl font-bold text-gray-800 mb-8">Entre em Contato</h2>
                         <p class="text-xl text-gray-600 mb-8">
                             Estamos aqui para ajudar! Se você tiver dúvidas, sugestões ou precisar de suporte,

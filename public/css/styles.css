@@ -10,6 +10,17 @@
     color: #febc04;
 }
 
+.btn-outline-info {
+    border-color: #764ba2;
+    color: #764ba2;
+}
+
+.btn-outline-info:hover {
+  background-color: #775a94;
+  border-color: #764ba2;
+  color: white;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -353,6 +364,7 @@ main {
     color: #764ba2;
     text-decoration: none;
     border-radius: 4px;
+    border-bottom-color: #000000;
     transition: background-color 0.2s, color 0.2s;
 }
 
@@ -363,7 +375,7 @@ main {
 
 .pagination .page-link:hover {
     background-color: #764ba2 !important;
-    border-color: #83e0f7 !important;
+    border-color: #c6c6c6 !important;
 }
 
 .pagination .page-link.active {
@@ -404,7 +416,7 @@ fieldset.payment-info {
 legend {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #35bbdc;
+    color: #764ba2;
 }
 
 .d-none {
@@ -487,7 +499,6 @@ section h5,
     letter-spacing: 0.1em;
     margin-top: 20px;
     margin-bottom: 20px;
-    color: #35bbdc;
 }
 
 #dashboard .order-details {

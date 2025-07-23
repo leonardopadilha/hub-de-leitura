@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch("/header.html")
     .then((response) => response.text())
     .then((data) => {
-      console.log("Header HTML carregado"); // Debug
+      console.log("Header HTML carregado");
       // Inserir HTML do header
       document.getElementById("header").innerHTML = data;
 
@@ -18,12 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           updateCartCount();
         }, 200);
-
-        // Se logado, também verificar reservas ativas
-        const userId = localStorage.getItem("userId");
-        if (userId) {
-          updateReservationCount(userId);
-        }
       }, 100);
     })
     .catch((error) => {
@@ -31,9 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   function adaptHeaderForLibrary() {
-    console.log("Adaptando header para biblioteca..."); // Debug
+    console.log("Adaptando header para biblioteca...");
 
-    // 
     const links = document.querySelectorAll(
       'a[href="/basket.html"], a[href="/dashboard.html"]'
     );
@@ -43,12 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
         link.textContent.includes("CARRINHO") ||
         link.textContent.includes("MINHAS RESERVAS")
       ) {
-        link.href = "/cart.html";
+        link.href = "/basket.html";
         const innerHTML = link.innerHTML;
         link.innerHTML = innerHTML
           .replace("CARRINHO", "CESTA DE LIVROS")
           .replace("MINHAS RESERVAS", "CESTA DE LIVROS");
-        console.log("Link atualizado:", link.href, link.textContent); // Debug
+        console.log("Link atualizado:", link.href, link.textContent);
       }
     });
 
@@ -56,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const reservationCount = document.getElementById("reservation-count");
     if (reservationCount) {
       reservationCount.id = "cart-count";
-      console.log("ID alterado de reservation-count para cart-count"); // Debug
+      console.log("ID alterado de reservation-count para cart-count");
     }
   }
 
@@ -69,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const accountLink = document.getElementById("account-link");
 
     if (token && userName && accountLink) {
-      console.log("Usuário logado:", userName); // Debug
+      console.log("Usuário logado:", userName);
 
       // Criar estrutura com nome + botão logout
       const parentLi = accountLink.parentNode;
@@ -112,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
 
-      console.log("Interface de usuário logado criada"); // Debug
+      console.log("Interface de usuário logado criada");
     } else {
       // Usuário não logado
       const accountLink = document.getElementById("account-link");
@@ -133,10 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função de logout simplificada
   function performLogout() {
-    console.log("Função performLogout executada"); // Debug
+    console.log("Função performLogout executada");
 
     if (confirm("Tem certeza que deseja sair?")) {
-      console.log("Logout confirmado, limpando dados..."); // Debug
+      console.log("Logout confirmado, limpando dados...");
 
       // Limpar dados do localStorage
       localStorage.removeItem("authToken");
@@ -144,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.removeItem("userName");
       localStorage.removeItem("isAdmin");
 
-      console.log("Dados limpos, redirecionando..."); // Debug
+      console.log("Dados limpos, redirecionando...");
 
       // Redirecionar
       window.location.href = "/login.html";
@@ -157,166 +150,61 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Função para atualizar o contador da cesta (VERSÃO SIMPLIFICADA)
 function updateCartCount() {
-  console.log("updateCartCount() chamada"); // Debug
+  console.log("updateCartCount() chamada");
 
   const cart = JSON.parse(localStorage.getItem("bookCart") || "[]");
   const cartCount = cart.length;
 
-  console.log(`Itens na cesta: ${cartCount}`); // Debug
+  console.log(`Itens na cesta: ${cartCount}`);
 
   // Buscar elemento contador
   const countElement = document.getElementById("cart-count");
 
   if (countElement) {
     countElement.textContent = cartCount;
-    console.log(`✅ Contador atualizado: cart-count = ${cartCount}`); // Debug
+    console.log(`✅ Contador atualizado: cart-count = ${cartCount}`);
   } else {
-    console.warn("❌ Elemento cart-count não encontrado!"); // Debug
+    console.warn("❌ Elemento cart-count não encontrado!");
 
     // Tentar encontrar qualquer elemento com classe cart-badge
     const badgeElement = document.querySelector(".cart-badge");
     if (badgeElement) {
       badgeElement.textContent = cartCount;
-      console.log(`✅ Contador atualizado via cart-badge = ${cartCount}`); // Debug
+      console.log(`✅ Contador atualizado via cart-badge = ${cartCount}`);
     } else {
-      console.warn("❌ Nenhum elemento contador encontrado!"); // Debug
+      console.warn("❌ Nenhum elemento contador encontrado!");
     }
   }
-}
-
-// Função legacy para compatibilidade
-function updateReservationCount(userId) {
-  // Se estiver logado, pode também mostrar reservas ativas no botão do usuário
-  const token = localStorage.getItem("authToken");
-
-  if (!token) {
-    return; // Se não estiver logado, só mostra cesta
-  }
-
-  fetch("/api/reservations", {
-    headers: {
-      Authorization: token,
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Erro ao buscar reservas");
-      }
-      return response.json();
-    })
-    .then((reservations) => {
-      // Contar apenas reservas ativas
-      const activeReservations = reservations.filter(
-        (r) => r.status === "active"
-      );
-      const count = activeReservations.length;
-
-      // Verificar se há reservas vencendo em breve
-      checkUpcomingDeadlines(activeReservations);
-    })
-    .catch((error) => {
-      console.error("Erro ao atualizar contador de reservas:", error);
-    });
-}
-
-function checkUpcomingDeadlines(reservations) {
-  const now = new Date();
-  const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-
-  const urgentReservations = reservations.filter((reservation) => {
-    if (!reservation.pickup_deadline) return false;
-    const deadline = new Date(reservation.pickup_deadline);
-    return deadline <= tomorrow && deadline > now;
-  });
-
-  if (urgentReservations.length > 0) {
-    // Mostrar notificação discreta
-    showReservationAlert(urgentReservations.length);
-  }
-}
-
-function showReservationAlert(count) {
-  // Verificar se já foi mostrado nesta sessão
-  const alertShown = sessionStorage.getItem("urgentReservationAlertShown");
-  if (alertShown) return;
-
-  const message =
-    count === 1
-      ? "Você tem 1 reserva vencendo em breve!"
-      : `Você tem ${count} reservas vencendo em breve!`;
-
-  // Mostrar alerta discreto (pode personalizar como preferir)
-  setTimeout(() => {
-    if (confirm(message + "\n\nDeseja ver suas reservas agora?")) {
-      window.location.href = "/dashboard.html";
-    }
-  }, 2000);
-
-  // Marcar como mostrado nesta sessão
-  sessionStorage.setItem("urgentReservationAlertShown", "true");
 }
 
 // Função para ser chamada por outras páginas quando necessário
 window.updateCartCount = function () {
-  console.log("window.updateCartCount() chamada"); // Debug
+  console.log("window.updateCartCount() chamada");
 
   // Chamar a função local diretamente, sem loop
   const cart = JSON.parse(localStorage.getItem("bookCart") || "[]");
   const cartCount = cart.length;
 
-  console.log(`Itens na cesta (via window): ${cartCount}`); // Debug
+  console.log(`Itens na cesta (via window): ${cartCount}`);
 
   const countElement = document.getElementById("cart-count");
   if (countElement) {
     countElement.textContent = cartCount;
-    console.log(`✅ Contador atualizado via window: cart-count = ${cartCount}`); // Debug
+    console.log(`✅ Contador atualizado via window: cart-count = ${cartCount}`);
   } else {
-    console.warn("❌ Elemento cart-count não encontrado via window!"); // Debug
+    console.warn("❌ Elemento cart-count não encontrado via window!");
   }
-};
-
-window.updateReservationCount = function () {
-  const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("authToken");
-
-  if (!userId || !token) {
-    console.log("Usuário não logado, não atualizando reservas");
-    return;
-  }
-
-  // Fazer a chamada real para a API
-  fetch("/api/reservations", {
-    headers: { Authorization: token },
-  })
-    .then((response) => response.json())
-    .then((reservations) => {
-      const activeReservations = reservations.filter(
-        (r) => r.status === "active"
-      ).length;
-
-      // Atualizar badge de reservas no header
-      const badge = document.getElementById("reservations-count");
-      if (badge) {
-        badge.textContent = activeReservations;
-        badge.style.display = activeReservations > 0 ? "inline" : "none";
-      }
-
-      console.log(`Reservas atualizadas: ${activeReservations}`);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar reservas:", error);
-    });
 };
 
 // Escutar mudanças no localStorage para atualizar contador automaticamente
 window.addEventListener("storage", function (e) {
   if (e.key === "bookCart") {
-    console.log("bookCart mudou no localStorage, atualizando contador..."); // Debug
+    console.log("bookCart mudou no localStorage, atualizando contador...");
     const cart = JSON.parse(e.newValue || "[]");
     const countElement = document.getElementById("cart-count");
     if (countElement) {
       countElement.textContent = cart.length;
-      console.log(`✅ Contador atualizado via storage event: ${cart.length}`); // Debug
+      console.log(`✅ Contador atualizado via storage event: ${cart.length}`);
     }
   }
 });
@@ -326,14 +214,14 @@ const originalSetItem = localStorage.setItem;
 localStorage.setItem = function (key, value) {
   const result = originalSetItem.apply(this, [key, value]);
   if (key === "bookCart") {
-    console.log("bookCart alterado via setItem, atualizando contador..."); // Debug
+    console.log("bookCart alterado via setItem, atualizando contador...");
     setTimeout(() => {
       // Chamar função local diretamente
       const cart = JSON.parse(value || "[]");
       const countElement = document.getElementById("cart-count");
       if (countElement) {
         countElement.textContent = cart.length;
-        console.log(`✅ Contador atualizado via setItem: ${cart.length}`); // Debug
+        console.log(`✅ Contador atualizado via setItem: ${cart.length}`);
       }
     }, 100);
   }

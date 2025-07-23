@@ -9,11 +9,13 @@
     <title>Hub de Leitura - Criar Conta</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <link href="/css/home.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2024">
+    <link rel="shortcut icon" href="/images/favicon.svg?v=2024">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .register-container {
-            max-width: 500px;
+            max-width: 800px;
             margin: 80px auto;
             padding: 40px;
             border: 1px solid #ddd;
@@ -98,11 +100,11 @@
     <main>
         <div class="register-container">
             <!-- Cabeçalho -->
-            <div class="register-header">
-                <h2>Criar Conta</h2>
-            </div>
+             <div class="register-header">
+                <h5>Preencha todos os campos para Criar Conta</h5>
+            </div> 
             <!-- Container de Alertas -->
-            <div class="d-none mb-3" id="alert-container"></div>
+            <div class="d-none mb-" id="alert-container"></div>
             <!-- Formulário de Cadastro -->
             <form id="register-form" novalidate="">
                 <div class="mb-3">
@@ -152,9 +154,8 @@
                 <div class="mb-3 form-check">
                     <input class="form-check-input" id="terms-agreement" required="" type="checkbox" />
                     <label class="form-check-label" for="terms-agreement">
-                        Li e concordo com os <a data-bs-target="#termsModal" data-bs-toggle="modal" href="#">termos de
+                        Li e concordo com os <a data-bs-target="#termsModal" data-bs-toggle="modal" href="/terms.html" target="_blank">termos de
                             uso</a> da biblioteca
-                    </label>
                     <div class="invalid-feedback">Você deve aceitar os termos de uso.</div>
                 </div>
                 <div class="d-grid">
@@ -366,7 +367,7 @@
             registerBtn.disabled = true;
             registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
 
-            fetch('/api/registrar', {
+            fetch('/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -375,7 +376,7 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.id) {
+                    if (data.message && data.message.includes('sucesso') || data.user?.id) {
                         showAlert('Conta criada com sucesso! Fazendo login...', 'success');
 
                         // Fazer login automático

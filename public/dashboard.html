@@ -7,6 +7,8 @@
     <title>Hub de Leitura - Minha Conta</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2024">
+    <link rel="shortcut icon" href="/images/favicon.svg?v=2024">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -62,7 +64,8 @@
                 </h2>
                 <div class="text-xl md:text-2xl mb-8 text-blue-100">
                     <h4 style="color: #dbeafe;">Olá, <span id="user-name">Carregando...</span>!</h4>
-                    <p class="text-muted" style="color: #a5b4fc !important;">Bem-vindo ao seu espaço pessoal no Hub de Leitura</p>
+                    <p class="text-muted" style="color: #a5b4fc !important;">Bem-vindo ao seu espaço pessoal no Hub de
+                        Leitura</p>
                 </div>
             </div>
         </div>
@@ -257,16 +260,188 @@
                     'Authorization': token
                 }
             })
-                .then(response => response.json())
-                .then(reservations => {
-                    updateStatistics(reservations);
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados recebidos da API:', data);
+
+                    // A API retorna um objeto com estrutura { reservations: [...], statistics: {...} }
+                    const reservations = data.reservations || [];
+                    const statistics = data.statistics || {};
+
+                    updateStatistics(reservations, statistics);
                     displayLatestReservation(reservations);
                     displayRecentActivities(reservations);
                 })
                 .catch(error => {
                     console.error('Erro ao carregar dados:', error);
-                    showError('Erro ao carregar informações do dashboard.');
+                    showError('Erro ao carregar informações do dashboard: ' + error.message);
+
+                    // Exibir estados vazios em caso de erro
+                    displayEmptyStates();
                 });
+        }
+
+        function displayEmptyStates() {
+            // Resetar estatísticas para 0
+            document.getElementById('active-reservations').textContent = '0';
+            document.getElementById('books-read').textContent = '0';
+            document.getElementById('pending-returns').textContent = '0';
+            document.getElementById('total-reservations').textContent = '0';
+
+            // Exibir estado vazio para última reserva
+            document.getElementById('latest-reservation').innerHTML = `
+                <div class="text-center py-4">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h5>Erro ao carregar dados</h5>
+                    <p class="text-muted">Não foi possível carregar as informações das reservas.</p>
+                    <button class="btn btn-primary" onclick="loadDashboardData()">
+                        <i class="fas fa-refresh"></i> Tentar Novamente
+                    </button>
+                </div>
+            `;
+
+            // Exibir estado vazio para atividades
+            document.getElementById('recent-activities').innerHTML = `
+                <div class="text-center py-3">
+                    <p class="text-muted">Erro ao carregar atividades</p>
+                </div>
+            `;
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'active': '<span class="badge bg-success"><i class="fas fa-clock"></i> Ativa</span>',
+                'expired': '<span class="badge bg-danger"><i class="fas fa-times"></i> Expirada</span>',
+                'overdue': '<span class="badge bg-danger"><i class="fas fa-exclamation-triangle"></i> Atrasada</span>',
+                'picked-up': '<span class="badge bg-info"><i class="fas fa-book"></i> Retirada</span>',
+                'completed': '<span class="badge bg-secondary"><i class="fas fa-check"></i> Concluída</span>',
+                'returned': '<span class="badge bg-secondary"><i class="fas fa-check"></i> Devolvida</span>',
+                'cancelled': '<span class="badge bg-warning"><i class="fas fa-ban"></i> Cancelada</span>'
+            };
+            return badges[status] || '<span class="badge bg-light text-dark">Desconhecido</span>';
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                'active': '<i class="fas fa-clock text-success"></i>',
+                'expired': '<i class="fas fa-times text-danger"></i>',
+                'overdue': '<i class="fas fa-exclamation-triangle text-danger"></i>',
+                'picked-up': '<i class="fas fa-book text-info"></i>',
+                'completed': '<i class="fas fa-check text-secondary"></i>',
+                'returned': '<i class="fas fa-check text-secondary"></i>',
+                'cancelled': '<i class="fas fa-ban text-warning"></i>'
+            };
+            return icons[status] || '<i class="fas fa-question text-muted"></i>';
+        }
+
+        function updateStatistics(reservations, apiStatistics) {
+            // Usar estatísticas da API se disponíveis, senão calcular manualmente
+            if (apiStatistics && Object.keys(apiStatistics).length > 0) {
+                document.getElementById('active-reservations').textContent = apiStatistics.active || 0;
+                document.getElementById('books-read').textContent = apiStatistics.returned || 0;
+                document.getElementById('pending-returns').textContent = (apiStatistics.overdue || 0) + (apiStatistics.expired || 0);
+                document.getElementById('total-reservations').textContent =
+                    (apiStatistics.active || 0) + (apiStatistics.returned || 0) + (apiStatistics.cancelled || 0) + (apiStatistics.pickedUp || 0);
+            } else {
+                // Fallback: calcular manualmente a partir das reservas
+                const activeReservations = reservations.filter(r =>
+                    r.status === 'active' || r.calculated_status === 'active'
+                ).length;
+
+                const completedReservations = reservations.filter(r =>
+                    r.status === 'completed' || r.status === 'returned' || r.calculated_status === 'returned'
+                ).length;
+
+                const pendingReservations = reservations.filter(r =>
+                    r.calculated_status === 'expired' || r.calculated_status === 'overdue'
+                ).length;
+
+                const totalReservations = reservations.length;
+
+                document.getElementById('active-reservations').textContent = activeReservations;
+                document.getElementById('books-read').textContent = completedReservations;
+                document.getElementById('pending-returns').textContent = pendingReservations;
+                document.getElementById('total-reservations').textContent = totalReservations;
+            }
+        }
+
+        function displayLatestReservation(reservations) {
+            const container = document.getElementById('latest-reservation');
+
+            if (!reservations || reservations.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                        <h5>Nenhuma reserva ainda</h5>
+                        <p class="text-muted">Que tal começar explorando nosso catálogo?</p>
+                        <a href="/index.html" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Buscar Livros
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Pegar a reserva mais recente
+            const latestReservation = reservations[0];
+            const reservationDate = new Date(latestReservation.reservation_date).toLocaleDateString('pt-BR');
+            const statusBadge = getStatusBadge(latestReservation.calculated_status || latestReservation.status);
+
+            let additionalInfo = '';
+            if (latestReservation.pickup_deadline && (latestReservation.status === 'active' || latestReservation.calculated_status === 'active')) {
+                const deadline = new Date(latestReservation.pickup_deadline);
+                const now = new Date();
+                const isUrgent = deadline <= new Date(now.getTime() + 24 * 60 * 60 * 1000);
+                const deadlineStr = deadline.toLocaleDateString('pt-BR');
+
+                additionalInfo = `
+                    <div class="alert ${isUrgent ? 'alert-warning' : 'alert-info'} mt-3">
+                        <i class="fas fa-clock"></i>
+                        <strong>Prazo para retirada:</strong> ${deadlineStr}
+                        ${isUrgent ? '<br><small>⚠️ Prazo vencendo em breve!</small>' : ''}
+                    </div>
+                `;
+            } else if (latestReservation.return_deadline && latestReservation.pickup_date) {
+                const deadline = new Date(latestReservation.return_deadline);
+                const deadlineStr = deadline.toLocaleDateString('pt-BR');
+                const isOverdue = deadline < new Date();
+
+                additionalInfo = `
+                    <div class="alert ${isOverdue ? 'alert-danger' : 'alert-success'} mt-3">
+                        <i class="fas fa-calendar-alt"></i>
+                        <strong>Prazo para devolução:</strong> ${deadlineStr}
+                        ${isOverdue ? '<br><small>⚠️ Livro em atraso!</small>' : ''}
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <img src="/images/books/${latestReservation.cover_image || 'livro-padrao.png'}" 
+                             class="img-fluid rounded" style="max-height: 120px; object-fit: cover;" 
+                             alt="${latestReservation.title || 'Título não disponível'}"
+                             onerror="this.src='/images/books/livro-padrao.png'">
+                    </div>
+                    <div class="col-md-9">
+                        <h6 class="card-title">${latestReservation.title || 'Título não disponível'}</h6>
+                        <p class="text-muted mb-1">
+                            <i class="fas fa-user"></i> ${latestReservation.author || 'Autor não disponível'}
+                        </p>
+                        <p class="mb-2">
+                            <small class="text-muted">Reservado em: ${reservationDate}</small>
+                        </p>
+                        <div class="mb-2">${statusBadge}</div>
+                        ${additionalInfo}
+
+                    </div>
+                </div>
+            `;
         }
 
         function updateStatistics(reservations) {
@@ -336,26 +511,22 @@
                         </p>
                         <div class="mb-2">${statusBadge}</div>
                         ${additionalInfo}
-                        <div class="mt-3">
-                            <a href="/dashboard.html" class="btn btn-sm btn-outline-primary">
-                                Ver Todas as Reservas
-                            </a>
-                            <a href="/book-details.html?id=${latestReservation.book_id || ''}" class="btn btn-sm btn-outline-info">
-                                Detalhes do Livro
-                            </a>
-                        </div>
+
                     </div>
                 </div>
             `;
         }
-
-        function displayRecentActivities(reservations) {
+     
+ function displayRecentActivities(reservations) {
             const container = document.getElementById('recent-activities');
 
-            if (reservations.length === 0) {
+            if (!reservations || reservations.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-3">
                         <p class="text-muted">Nenhuma atividade recente</p>
+                        <a href="/index.html" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-search"></i> Começar a reservar livros
+                        </a>
                     </div>
                 `;
                 return;
@@ -367,15 +538,16 @@
             let activitiesHtml = '';
             recentActivities.forEach(activity => {
                 const date = new Date(activity.reservation_date).toLocaleDateString('pt-BR');
-                const statusIcon = getStatusIcon(activity.status);
+                const status = activity.calculated_status || activity.status;
+                const statusIcon = getStatusIcon(status);
 
                 activitiesHtml += `
-                    <div class="activity-item ${activity.status}">
+                    <div class="activity-item ${status}">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <strong>${activity.title}</strong>
+                                <strong>${activity.title || 'Título não disponível'}</strong>
                                 <br>
-                                <small class="text-muted">${activity.author}</small>
+                                <small class="text-muted">${activity.author || 'Autor não disponível'}</small>
                             </div>
                             <div class="text-end">
                                 ${statusIcon}
@@ -389,8 +561,9 @@
 
             container.innerHTML = activitiesHtml;
         }
-
-        function getStatusBadge(status) {
+      
+ 
+ function getStatusBadge(status) {
             const badges = {
                 'active': '<span class="badge bg-success"><i class="fas fa-clock"></i> Ativa</span>',
                 'expired': '<span class="badge bg-danger"><i class="fas fa-times"></i> Expirada</span>',

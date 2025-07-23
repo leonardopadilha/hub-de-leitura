@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub de Leitura - Editar Perfil</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2024">
+    <link rel="shortcut icon" href="/images/favicon.svg?v=2024">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -15,6 +17,10 @@
             border-radius: 15px;
             padding: 2rem;
             margin-bottom: 2rem;
+        }
+
+        .text-primary {
+            color: #764ba2 !important;
         }
 
         .profile-avatar {
@@ -94,6 +100,18 @@
         .preference-chip.selected:hover {
             background: #0b5ed7;
         }
+
+        .loading-skeleton {
+            background: #f8f9fa;
+            border-radius: 4px;
+            height: 20px;
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
     </style>
 </head>
 
@@ -101,7 +119,7 @@
     <div id="header"></div>
 
     <div id="alert-container" class="alert d-none"
-        style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; max-width: 500px;">
+        style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 99999; max-width: 500px;">
     </div>
 
     <main class="container mt-5">
@@ -118,7 +136,7 @@
                 <div class="col-md-9 text-md-start">
                     <h2><i class="fas fa-user-edit"></i> Editar Perfil</h2>
                     <p class="mb-0">Mantenha suas informações sempre atualizadas</p>
-                    <small class="opacity-75">Última atualização: <span id="last-update">Nunca</span></small>
+                    <small class="opacity-75">Última atualização: <span id="last-update">Carregando...</span></small>
                 </div>
             </div>
         </div>
@@ -133,17 +151,17 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="name" class="form-label">
-                            <i class="fas fa-signature"></i> Nome Completo *
+                            <i class="fas fa-signature"></i> Nome Completo 
                         </label>
-                        <input type="text" class="form-control" id="name" required placeholder="Seu nome completo">
+                        <input type="text" class="form-control" id="name" required placeholder="Carregando...">
                         <div class="invalid-feedback">Por favor, insira seu nome completo.</div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">
-                            <i class="fas fa-envelope"></i> Email *
+                            <i class="fas fa-envelope"></i> Email 
                         </label>
-                        <input type="email" class="form-control" id="email" required placeholder="seu@email.com">
+                        <input type="email" class="form-control" id="email" placeholder="Carregando...">
                         <div class="invalid-feedback">Por favor, insira um email válido.</div>
                         <div class="form-text">
                             <i class="fas fa-info-circle"></i>
@@ -157,7 +175,8 @@
                         <label for="phone" class="form-label">
                             <i class="fas fa-phone"></i> Telefone
                         </label>
-                        <input type="tel" class="form-control" id="phone" placeholder="(11) 99999-9999">
+                        <input type="tel" class="form-control" id="phone" placeholder="Digite seu telefone"
+                            pattern="^\(\d{2}\) \d{5}-\d{4}$" title="Formato: (XX) XXXXX-XXXX">
                         <div class="form-text">Opcional - para contato em caso de emergência</div>
                     </div>
 
@@ -234,13 +253,43 @@
                         personalizadas</p>
 
                     <div id="categories-preferences">
-                        <!-- Categorias serão carregadas dinamicamente -->
-                        <div class="text-center">
-                            <div class="spinner-border spinner-border-sm" role="status">
-                                <span class="visually-hidden">Carregando...</span>
-                            </div>
-                            <span class="ms-2">Carregando categorias...</span>
-                        </div>
+                        <!-- Categorias fictícias -->
+                        <span class="preference-chip" data-category="Ficção Científica">
+                            📚 Ficção Científica
+                        </span>
+                        <span class="preference-chip" data-category="Romance">
+                            💕 Romance
+                        </span>
+                        <span class="preference-chip" data-category="Suspense">
+                            🔍 Suspense
+                        </span>
+                        <span class="preference-chip" data-category="Fantasia">
+                            🧙‍♂️ Fantasia
+                        </span>
+                        <span class="preference-chip" data-category="Biografia">
+                            👤 Biografia
+                        </span>
+                        <span class="preference-chip" data-category="História">
+                            📜 História
+                        </span>
+                        <span class="preference-chip" data-category="Tecnologia">
+                            💻 Tecnologia
+                        </span>
+                        <span class="preference-chip" data-category="Autoajuda">
+                            🌟 Autoajuda
+                        </span>
+                        <span class="preference-chip" data-category="Negócios">
+                            💼 Negócios
+                        </span>
+                        <span class="preference-chip" data-category="Culinária">
+                            🍳 Culinária
+                        </span>
+                        <span class="preference-chip" data-category="Arte">
+                            🎨 Arte
+                        </span>
+                        <span class="preference-chip" data-category="Ciências">
+                            🔬 Ciências
+                        </span>
                     </div>
                 </div>
 
@@ -298,7 +347,6 @@
     </main>
 
     <footer id="footer"></footer>
-    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -311,6 +359,8 @@
         });
         
         document.addEventListener('DOMContentLoaded', function () {
+            console.log('🚀 Inicializando página de perfil...');
+            
             // Verificar autenticação
             const token = localStorage.getItem('authToken');
             if (!token) {
@@ -319,9 +369,9 @@
             }
 
             // Inicializar página
-            loadUserData();
-            loadCategories();
+            loadUserDataFromAPI();
             setupEventListeners();
+            setupCategoryChips();
         });
 
         function setupEventListeners() {
@@ -336,70 +386,131 @@
             document.getElementById('phone').addEventListener('input', formatPhone);
         }
 
-        function loadUserData() {
+        function setupCategoryChips() {
+            // Configurar chips de categoria (dados fictícios)
+            const chips = document.querySelectorAll('.preference-chip');
+            
+            // Definir algumas categorias como pré-selecionadas
+            const defaultCategories = ['Ficção Científica', 'Tecnologia', 'História'];
+            
+            chips.forEach(chip => {
+                const category = chip.dataset.category;
+                
+                // Marcar algumas como selecionadas por padrão
+                if (defaultCategories.includes(category)) {
+                    chip.classList.add('selected');
+                }
+                
+                // Adicionar evento de clique
+                chip.addEventListener('click', function () {
+                    this.classList.toggle('selected');
+                    console.log('Categoria toggled:', category, this.classList.contains('selected'));
+                });
+            });
+
+            console.log('✅ Chips de categoria configurados');
+        }
+
+        function loadUserDataFromAPI() {
             const token = localStorage.getItem('authToken');
             const userId = localStorage.getItem('userId');
 
-            // Simular carregamento de dados do usuário
-            // Na implementação real, faria uma chamada para /api/users/:id
-            const userData = {
-                name: localStorage.getItem('userName') || '',
-                email: 'usuario@exemplo.com', // Seria carregado da API
-                phone: '',
-                birthdate: '',
-                reading_goal: 3,
-                notification_preference: 'all',
-                preferred_categories: ['Ficção', 'Tecnologia']
-            };
+            console.log('📡 Carregando dados do usuário da API...');
 
-            // Preencher formulário
-            document.getElementById('name').value = userData.name;
-            document.getElementById('email').value = userData.email;
-            document.getElementById('phone').value = userData.phone;
-            document.getElementById('birthdate').value = userData.birthdate;
-            document.getElementById('reading-goal').value = userData.reading_goal;
-            document.getElementById('notification-preference').value = userData.notification_preference;
+            fetch(`/api/users/${userId}`, {
+                headers: {
+                    'Authorization': token
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(user => {
+                console.log('✅ Dados recebidos da API:', user);
+                
+                // Preencher campos com dados da API
+                document.getElementById('name').value = user.name || '';
+                document.getElementById('email').value = user.email || '';
+                document.getElementById('phone').value = user.phone || user.telefone || '';
+                document.getElementById('birthdate').value = user.birthdate || '';
+                document.getElementById('reading-goal').value = user.reading_goal || 3;
+                document.getElementById('notification-preference').value = user.notification_preference || 'all';
 
-            // Salvar categorias preferidas para quando carregar as categorias
-            window.userPreferredCategories = userData.preferred_categories;
+                // Atualizar timestamp
+                if (user.updated_at) {
+                    const updateDate = new Date(user.updated_at).toLocaleDateString('pt-BR');
+                    document.getElementById('last-update').textContent = updateDate;
+                } else {
+                    document.getElementById('last-update').textContent = 'Primeira vez';
+                }
+
+                // Atualizar localStorage com dados mais recentes
+                localStorage.setItem('userName', user.name || '');
+                localStorage.setItem('userEmail', user.email || '');
+                
+                // Aplicar categorias preferidas se existirem
+                if (user.preferred_categories && Array.isArray(user.preferred_categories)) {
+                    applyPreferredCategories(user.preferred_categories);
+                }
+
+                console.log('📝 Formulário preenchido com dados da API');
+            })
+            .catch(error => {
+                console.error('❌ Erro ao carregar dados da API:', error);
+                
+                // Fallback: usar dados do localStorage
+                loadUserDataFromLocalStorage();
+                
+                showAlert('Aviso: Alguns dados podem não estar atualizados. Verifique suas informações.', 'warning');
+            });
         }
 
-        function loadCategories() {
-            fetch('/api/books/categories')
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('categories-preferences');
-                    let categoriesHtml = '';
+        function loadUserDataFromLocalStorage() {
+            console.log('🔄 Usando dados do localStorage como fallback...');
+            
+            const fallbackName = localStorage.getItem('userName');
+            const fallbackEmail = localStorage.getItem('userEmail');
+            
+            if (fallbackName) {
+                document.getElementById('name').value = fallbackName;
+                console.log('📝 Nome do localStorage:', fallbackName);
+            }
+            
+            if (fallbackEmail) {
+                document.getElementById('email').value = fallbackEmail;
+                console.log('📝 Email do localStorage:', fallbackEmail);
+            } else {
+                // Se não tem email no localStorage, deixar em branco para o usuário preencher
+                document.getElementById('email').placeholder = 'Digite seu email';
+            }
 
-                    data.categories.forEach(category => {
-                        const isSelected = window.userPreferredCategories &&
-                            window.userPreferredCategories.includes(category.category);
-                        categoriesHtml += `
-                            <span class="preference-chip ${isSelected ? 'selected' : ''}" 
-                                  data-category="${category.category}">
-                                ${category.category} (${category.book_count})
-                            </span>
-                        `;
-                    });
+            document.getElementById('last-update').textContent = 'Dados locais';
+        }
 
-                    container.innerHTML = categoriesHtml;
+        function applyPreferredCategories(preferredCategories) {
+            const chips = document.querySelectorAll('.preference-chip');
+            
+            // Primeiro, limpar todas as seleções
+            chips.forEach(chip => chip.classList.remove('selected'));
+            
+            // Aplicar categorias preferidas
+            preferredCategories.forEach(categoryName => {
+                const chip = document.querySelector(`[data-category="${categoryName}"]`);
+                if (chip) {
+                    chip.classList.add('selected');
+                }
+            });
 
-                    // Adicionar event listeners para chips
-                    document.querySelectorAll('.preference-chip').forEach(chip => {
-                        chip.addEventListener('click', function () {
-                            this.classList.toggle('selected');
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar categorias:', error);
-                    document.getElementById('categories-preferences').innerHTML =
-                        '<p class="text-muted">Erro ao carregar categorias</p>';
-                });
+            console.log('✅ Categorias preferidas aplicadas:', preferredCategories);
         }
 
         function handleSubmit(e) {
             e.preventDefault();
+
+            console.log('💾 Tentativa de salvar perfil...');
 
             if (!validateForm()) {
                 return;
@@ -417,6 +528,8 @@
             if (!name) {
                 showFieldError('name', 'Nome é obrigatório');
                 isValid = false;
+            } else {
+                clearFieldError('name');
             }
 
             // Validar email
@@ -424,6 +537,8 @@
             if (!email || !isValidEmail(email)) {
                 showFieldError('email', 'Email válido é obrigatório');
                 isValid = false;
+            } else {
+                clearFieldError('email');
             }
 
             // Validar senhas se preenchidas
@@ -434,17 +549,23 @@
                 if (newPassword.length < 6) {
                     showFieldError('new-password', 'Senha deve ter pelo menos 6 caracteres');
                     isValid = false;
+                } else {
+                    clearFieldError('new-password');
                 }
 
                 if (newPassword !== confirmPassword) {
                     showFieldError('confirm-password', 'Senhas não coincidem');
                     isValid = false;
+                } else {
+                    clearFieldError('confirm-password');
                 }
 
                 const currentPassword = document.getElementById('current-password').value;
                 if (!currentPassword) {
                     showFieldError('current-password', 'Senha atual é necessária para alterar a senha');
                     isValid = false;
+                } else {
+                    clearFieldError('current-password');
                 }
             }
 
@@ -455,17 +576,27 @@
             const selectedCategories = Array.from(document.querySelectorAll('.preference-chip.selected'))
                 .map(chip => chip.dataset.category);
 
-            return {
+            const formData = {
                 name: document.getElementById('name').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 phone: document.getElementById('phone').value.trim(),
                 birthdate: document.getElementById('birthdate').value,
-                current_password: document.getElementById('current-password').value,
-                new_password: document.getElementById('new-password').value,
                 reading_goal: parseInt(document.getElementById('reading-goal').value) || 0,
                 notification_preference: document.getElementById('notification-preference').value,
                 preferred_categories: selectedCategories
             };
+
+            // Só incluir senhas se foram preenchidas
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            
+            if (newPassword && currentPassword) {
+                formData.current_password = currentPassword;
+                formData.new_password = newPassword;
+            }
+
+            console.log('📊 Dados coletados:', { ...formData, current_password: '[HIDDEN]', new_password: '[HIDDEN]' });
+            return formData;
         }
 
         function saveProfile(formData) {
@@ -485,37 +616,61 @@
                 },
                 body: JSON.stringify(formData)
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        // Atualizar localStorage se o nome mudou
-                        if (formData.name !== localStorage.getItem('userName')) {
-                            localStorage.setItem('userName', formData.name);
-                        }
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || `HTTP ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('✅ Perfil salvo com sucesso:', data);
+                
+                // Atualizar localStorage com novos dados
+                localStorage.setItem('userName', formData.name);
+                localStorage.setItem('userEmail', formData.email);
 
-                        showAlert('Perfil atualizado com sucesso!', 'success');
+                showAlert('Perfil atualizado com sucesso!', 'success');
 
-                        // Limpar campos de senha
-                        document.getElementById('current-password').value = '';
-                        document.getElementById('new-password').value = '';
-                        document.getElementById('confirm-password').value = '';
+                // Limpar campos de senha
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+                
+                // Resetar barra de força da senha
+                const strengthBar = document.getElementById('password-strength');
+                strengthBar.style.width = '0%';
+                strengthBar.className = 'password-strength';
 
-                        // Atualizar header se necessário
-                        if (window.refreshHeader) {
-                            window.refreshHeader();
-                        }
-                    } else {
-                        showAlert(data.error || 'Erro ao atualizar perfil', 'danger');
+                // Atualizar timestamp
+                document.getElementById('last-update').textContent = new Date().toLocaleDateString('pt-BR');
+
+                // Atualizar header se possível
+                try {
+                    if (window.refreshHeader && typeof window.refreshHeader === 'function') {
+                        window.refreshHeader();
                     }
-                })
-                .catch(error => {
-                    console.error('Erro ao salvar perfil:', error);
-                    showAlert('Erro de conexão. Tente novamente.', 'danger');
-                })
-                .finally(() => {
-                    saveBtn.disabled = false;
-                    saveBtn.innerHTML = originalText;
-                });
+                } catch (error) {
+                    console.warn('⚠️ Erro ao atualizar header:', error);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Erro ao salvar perfil:', error);
+                
+                let errorMessage = 'Erro ao atualizar perfil. Tente novamente.';
+                if (error.message.includes('Email já está sendo usado')) {
+                    errorMessage = 'Este email já está sendo usado por outro usuário.';
+                } else if (error.message.includes('senha')) {
+                    errorMessage = 'Erro relacionado à senha. Verifique se a senha atual está correta.';
+                }
+                
+                showAlert(errorMessage, 'danger');
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = originalText;
+            });
         }
 
         // Utility functions
@@ -539,6 +694,7 @@
 
             if (!password) {
                 strengthBar.style.width = '0%';
+                strengthBar.className = 'password-strength';
                 feedback.textContent = 'Mínimo 6 caracteres';
                 return;
             }
@@ -554,25 +710,24 @@
 
             if (strength < 2) {
                 strengthBar.className = 'password-strength strength-weak';
-                feedback.textContent = 'Senha fraca';
+                feedback.textContent = 'Senha fraca - use letras maiúsculas e números';
             } else if (strength < 3) {
                 strengthBar.className = 'password-strength strength-medium';
-                feedback.textContent = 'Senha média';
+                feedback.textContent = 'Senha média - adicione símbolos para melhorar';
             } else {
                 strengthBar.className = 'password-strength strength-strong';
-                feedback.textContent = 'Senha forte';
+                feedback.textContent = 'Senha forte!';
             }
         }
 
         function validatePasswordMatch() {
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            const confirmField = document.getElementById('confirm-password');
 
             if (confirmPassword && newPassword !== confirmPassword) {
-                confirmField.classList.add('is-invalid');
-            } else {
-                confirmField.classList.remove('is-invalid');
+                showFieldError('confirm-password', 'Senhas não coincidem');
+            } else if (confirmPassword) {
+                clearFieldError('confirm-password');
             }
         }
 
@@ -592,9 +747,19 @@
             field.classList.add('is-invalid');
 
             let feedback = field.parentNode.querySelector('.invalid-feedback');
+            if (!feedback) {
+                feedback = field.nextElementSibling?.classList?.contains('invalid-feedback') 
+                    ? field.nextElementSibling 
+                    : null;
+            }
             if (feedback) {
                 feedback.textContent = message;
             }
+        }
+
+        function clearFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.classList.remove('is-invalid');
         }
 
         function resetForm() {
@@ -606,7 +771,6 @@
         function deleteAccount() {
             if (confirm('⚠️ ATENÇÃO: Esta ação irá excluir permanentemente sua conta e todos os seus dados.\n\nTem certeza que deseja continuar?')) {
                 if (confirm('Esta é sua última chance. Confirma a exclusão da conta?')) {
-                    // Implementar exclusão da conta
                     showAlert('Funcionalidade de exclusão será implementada em breve.', 'warning');
                 }
             }

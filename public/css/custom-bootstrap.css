@@ -1,0 +1,280 @@
+/* ========================================
+   CUSTOM BOOTSTRAP - HUB DE LEITURA
+   Override das cores padrão do Bootstrap
+   ======================================== */
+
+/* === CORES PRINCIPAIS === */
+:root {
+  /* Cores principais do Hub de Leitura */
+  --bs-primary: #764ba2;
+  --bs-primary-rgb: 118, 75, 162;
+  --bs-secondary: #febc04;
+  --bs-secondary-rgb: 254, 188, 4;
+  
+  /* Substituir warning/yellow padrão pelo dourado */
+  --bs-warning: #febc04;
+  --bs-warning-rgb: 254, 188, 4;
+  
+  /* Tons de roxo para diferentes estados */
+  --bs-primary-bg-subtle: #f3f0f7;
+  --bs-primary-border-subtle: #d1c4e9;
+  --bs-primary-text-emphasis: #4a2c5a;
+  
+  /* Tons de dourado */
+  --bs-secondary-bg-subtle: #fffbf0;
+  --bs-secondary-border-subtle: #fef3d2;
+  --bs-secondary-text-emphasis: #cc9a03;
+  
+  /* Gradientes personalizados */
+  --custom-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --custom-gradient-accent: linear-gradient(135deg, #febc04 0%, #ffd700 100%);
+  --custom-gradient-full: linear-gradient(135deg, #febc04 0%, #764ba2 100%);
+}
+
+/* === BOTÕES === */
+.btn-primary {
+  background-color: #764ba2 !important;
+  border-color: #764ba2 !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: #5d3a7d !important;
+  border-color: #5d3a7d !important;
+  color: white !important;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  background-color: #5d3a7d !important;
+  border-color: #5d3a7d !important;
+  box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.25) !important;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background-color: #4a2c5a !important;
+  border-color: #4a2c5a !important;
+}
+
+.btn-outline-primary {
+  color: #764ba2 !important;
+  border-color: #764ba2 !important;
+}
+
+/* === BOTÕES SECUNDÁRIOS E DOURADOS === */
+.btn-secondary {
+  background-color: #febc04 !important;
+  border-color: #febc04 !important;
+  color: #333 !important;
+}
+
+.btn-secondary:hover {
+  background-color: #e5a603 !important;
+  border-color: #e5a603 !important;
+  color: #333 !important;
+}
+
+.btn-warning {
+  background-color: #febc04 !important;
+  border-color: #febc04 !important;
+  color: #333 !important;
+}
+
+.btn-warning:hover {
+  background-color: #e5a603 !important;
+  border-color: #e5a603 !important;
+  color: #333 !important;
+}
+
+/* === LINKS === */
+a {
+  color: #764ba2 !important;
+}
+
+a:hover {
+  color: #5d3a7d !important;
+}
+
+/* === FORMULÁRIOS === */
+.form-check-input:checked {
+  background-color: #764ba2 !important;
+  border-color: #764ba2 !important;
+}
+
+.form-control:focus {
+  border-color: #764ba2 !important;
+  box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.25) !important;
+}
+
+.form-select:focus {
+  border-color: #764ba2 !important;
+  box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.25) !important;
+}
+
+/* === BADGES DOURADOS === */
+.badge.bg-secondary,
+.badge.bg-warning {
+  background-color: #febc04 !important;
+  color: #333 !important;
+}
+
+.badge.text-bg-secondary,
+.badge.text-bg-warning {
+  background-color: #febc04 !important;
+  color: #333 !important;
+}
+
+/* === ALERTAS === */
+.alert-primary {
+  background-color: #f3f0f7 !important;
+  border-color: #d1c4e9 !important;
+  color: #4a2c5a !important;
+}
+
+/* === PROGRESS BARS === */
+.progress-bar {
+  background-color: #764ba2 !important;
+}
+
+/* === NAVEGAÇÃO === */
+.navbar-brand {
+  color: #764ba2 !important;
+}
+
+.nav-link.active {
+  color: #764ba2 !important;
+}
+
+/* === SPINNERS === */
+.spinner-border.text-primary {
+  color: #764ba2 !important;
+}
+
+/* === BORDERS === */
+.border-primary {
+  border-color: #764ba2 !important;
+}
+
+/* === BACKGROUNDS E TEXTOS DOURADOS === */
+.bg-secondary,
+.bg-warning {
+  background-color: #febc04 !important;
+  color: #333 !important;
+}
+
+.text-secondary {
+  color: #febc04 !important;
+}
+
+.text-warning {
+  color: #febc04 !important;
+}
+
+/* === BORDAS DOURADAS === */
+.border-secondary,
+.border-warning {
+  border-color: #febc04 !important;
+}
+
+/* === CLASSES PERSONALIZADAS PARA SUAS CORES === */
+.text-accent {
+  color: #febc04 !important;
+}
+
+.bg-accent {
+  background-color: #febc04 !important;
+  color: #333 !important;
+}
+
+.btn-accent {
+  background-color: #febc04 !important;
+  border-color: #febc04 !important;
+  color: #333 !important;
+}
+
+.btn-accent:hover {
+  background-color: #e5a603 !important;
+  border-color: #e5a603 !important;
+  color: #333 !important;
+}
+
+/* === GRADIENTES COM DOURADO === */
+.gradient-accent {
+  background: var(--custom-gradient-accent) !important;
+  color: #333 !important;
+}
+
+.gradient-full {
+  background: var(--custom-gradient-full) !important;
+  color: white !important;
+}
+
+/* === CLASSES ESPECÍFICAS DO SEU PROJETO === */
+.custom-nav-link.active {
+  color: #764ba2 !important;
+}
+
+.account-btn {
+  background: #764ba2 !important;
+  border-color: #764ba2 !important;
+}
+
+.account-btn:hover {
+  background: #5d3a7d !important;
+  border-color: #5d3a7d !important;
+}
+
+/* === GRADIENTES PERSONALIZADOS === */
+.hero-gradient {
+  background: var(--custom-gradient) !important;
+}
+
+.stat-card {
+  background: var(--custom-gradient) !important;
+}
+
+/* === CARDS === */
+.card-header {
+  background-color: rgba(118, 75, 162, 0.1) !important;
+  border-bottom-color: rgba(118, 75, 162, 0.2) !important;
+}
+
+/* === TABELAS === */
+.table-primary {
+  background-color: rgba(118, 75, 162, 0.1) !important;
+}
+
+/* === MODAIS === */
+.modal-header {
+  border-bottom-color: rgba(118, 75, 162, 0.2) !important;
+}
+
+/* === ESPECÍFICOS PARA ELEMENTOS QUE PODEM ESTAR FORÇANDO AZUL === */
+[style*="#0d6efd"] {
+  color: #764ba2 !important;
+}
+
+button[style*="#0d6efd"] {
+  background-color: #764ba2 !important;
+  border-color: #764ba2 !important;
+}
+
+/* === FORÇA BRUTA PARA GARANTIR === */
+* {
+  --bs-blue: #764ba2 !important;
+}
+
+/* Qualquer elemento com a cor azul específica */
+*[class*="primary"],
+*[style*="0d6efd"] {
+  color: #764ba2 !important;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .btn-primary {
+    background-color: #764ba2 !important;
+    border-color: #764ba2 !important;
+  }
+}
