@@ -1,7 +1,7 @@
 {
   "name": "hub-de-leitura",
   "version": "1.0.0",
-  "description": "Projeto de simulação de aulas de QA",
+  "description": "Projeto de simulação de aulas de QA. Leia o README.md para mais informações.",
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
