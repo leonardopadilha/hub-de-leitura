@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,7 @@
             width: 100%;
             z-index: 1050;
             background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .admin-header {
@@ -36,7 +37,7 @@
             background: white;
             border-radius: 15px;
             padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
         }
 
@@ -44,7 +45,7 @@
             background: white;
             border-radius: 10px;
             padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
         }
 
@@ -101,7 +102,7 @@
         .modal {
             z-index: 1060;
         }
-        
+
         .modal-backdrop {
             z-index: 1055;
         }
@@ -126,16 +127,17 @@
         }
     </style>
 </head>
+
 <body>
     <div id="header" class="fixed-header"></div>
-    
-    <div id="alert-container" class="alert d-none" 
-         style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1070; max-width: 500px;">
+
+    <div id="alert-container" class="alert d-none"
+        style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1070; max-width: 500px;">
     </div>
 
     <main class="container mt-3">
         <!-- Cabeçalho -->
-        <div class="admin-header">
+        <div class="admin-header text-center">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1><i class="fas fa-book"></i> Gerenciar Livros</h1>
@@ -176,21 +178,27 @@
             <div class="row align-items-end">
                 <div class="col-md-3">
                     <label for="search-input" class="form-label">Buscar Livros</label>
-                    <input type="text" class="form-control" id="search-input" 
-                           placeholder="Título, autor, ISBN...">
+                    <input type="text" class="form-control" id="search-input" placeholder="Título, autor, ISBN...">
                 </div>
                 <div class="col-md-2">
                     <label for="category-filter" class="form-label">Categoria</label>
                     <select class="form-select" id="category-filter">
                         <option value="">Todas</option>
-                        <option value="Ficção">Ficção</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Fantasia">Fantasia</option>
-                        <option value="Tecnologia">Tecnologia</option>
-                        <option value="Biografia">Biografia</option>
-                        <option value="História">História</option>
-                        <option value="Ciência">Ciência</option>
                         <option value="Autoajuda">Autoajuda</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Biografia">Biografia</option>
+                        <option value="Ciência">Ciência</option>
+                        <option value="Fantasia">Fantasia</option>
+                        <option value="Ficção">Ficção</option>
+                        <option value="História">História</option>
+                        <option value="Infantil">Infantil</option>
+                        <option value="Mistério">Mistério</option>
+                        <option value="Policial">Policial</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Suspense">Suspense</option>
+                        <option value="Tecnologia">Tecnologia</option>
+                        <option value="Terror">Terror</option>
+                        <option value="Outros">Outros</option>
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -213,11 +221,8 @@
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex gap-2">
-                        <button class="btn btn-primary" onclick="searchBooks()">
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
                         <button class="btn btn-outline-secondary" onclick="clearFilters()">
-                            <i class="fas fa-times"></i> Limpar
+                            <i class="fas fa-times"></i> Limpar filtro
                         </button>
                         <button class="btn btn-success" onclick="openAddBookModal()">
                             <i class="fas fa-plus"></i> Novo Livro
@@ -307,17 +312,24 @@
                                 <input type="text" class="form-control" id="book-isbn">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="book-category" class="form-label">Categoria</label>
-                                <select class="form-select" id="book-category">
+                                <label for="book-category" class="form-label">Categoria *</label>
+                                <select class="form-select" id="book-category" required>
                                     <option value="">Selecione uma categoria</option>
-                                    <option value="Ficção">Ficção</option>
-                                    <option value="Romance">Romance</option>
-                                    <option value="Fantasia">Fantasia</option>
-                                    <option value="Tecnologia">Tecnologia</option>
-                                    <option value="Biografia">Biografia</option>
-                                    <option value="História">História</option>
-                                    <option value="Ciência">Ciência</option>
                                     <option value="Autoajuda">Autoajuda</option>
+                                    <option value="Aventura">Aventura</option>
+                                    <option value="Biografia">Biografia</option>
+                                    <option value="Ciência">Ciência</option>
+                                    <option value="Fantasia">Fantasia</option>
+                                    <option value="Ficção">Ficção</option>
+                                    <option value="História">História</option>
+                                    <option value="Infantil">Infantil</option>
+                                    <option value="Mistério">Mistério</option>
+                                    <option value="Policial">Policial</option>
+                                    <option value="Romance">Romance</option>
+                                    <option value="Suspense">Suspense</option>
+                                    <option value="Tecnologia">Tecnologia</option>
+                                    <option value="Terror">Terror</option>
+                                    <option value="Outros">Outros</option>
                                 </select>
                             </div>
                         </div>
@@ -352,13 +364,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="book-description" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="book-description" rows="3" 
-                                      placeholder="Descrição do livro..."></textarea>
+                            <textarea class="form-control" id="book-description" rows="3"
+                                placeholder="Descrição do livro..."></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="book-cover" class="form-label">Imagem da Capa</label>
-                            <input type="text" class="form-control" id="book-cover" 
-                                   placeholder="livro-padrao.png">
+                            <input type="text" class="form-control" id="book-cover" placeholder="livro-padrao.png">
                             <div class="form-text">Nome do arquivo da imagem (deve estar na pasta images/books/)</div>
                         </div>
                     </form>
@@ -386,7 +397,8 @@
                 <div class="modal-body">
                     <p>Tem certeza que deseja excluir este livro?</p>
                     <div class="alert alert-warning">
-                        <strong>Atenção:</strong> Esta ação não pode ser desfeita. Todas as reservas associadas a este livro serão afetadas.
+                        <strong>Atenção:</strong> Esta ação não pode ser desfeita. Todas as reservas associadas a este
+                        livro serão afetadas.
                     </div>
                     <div id="book-to-delete-info"></div>
                 </div>
@@ -399,7 +411,43 @@
             </div>
         </div>
     </div>
- 
+
+    <!-- Modal Visualizar Livro -->
+    <div class="modal fade" id="viewBookModal" tabindex="-1">
+        <div class="modal-dialog modal-lg"> <!-- usando modal-lg para mais espaço -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-book-open text-primary"></i> Detalhes do Livro
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body row gx-3">
+                    <div class="col-md-4 text-center">
+                        <!-- Capa do livro -->
+                        <img id="view-cover" src="" alt="Capa do Livro" class="img-fluid rounded shadow-sm mb-3"
+                            style="max-height: 300px;">
+                    </div>
+                    <div class="col-md-8">
+                        <p><strong>Título:</strong> <span id="view-title"></span></p>
+                        <p><strong>Autor:</strong> <span id="view-author"></span></p>
+                        <p><strong>ISBN:</strong> <span id="view-isbn"></span></p>
+                        <p><strong>Editora:</strong> <span id="view-publisher"></span></p>
+                        <p><strong>Categoria:</strong> <span id="view-category"></span></p>
+                        <p><strong>Ano de Publicação:</strong> <span id="view-year"></span></p>
+                        <p><strong>Estoque:</strong> <span id="view-stock"></span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Variáveis globais para paginação real
@@ -410,13 +458,13 @@
         let totalBooksCount = 0;
         let editingBookId = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Verificar autenticação
             checkAuth();
-            
+
             // Carregar livros
             loadBooksFromAPI(1);
-            
+
             // Event listeners para filtros
             setupEventListeners();
         });
@@ -424,7 +472,7 @@
         function checkAuth() {
             const isAdmin = localStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === '1';
             const token = localStorage.getItem('authToken');
-            
+
             if (!token || !isAdmin) {
                 alert('Acesso negado. Apenas administradores podem acessar esta página.');
                 window.location.href = './login.html';
@@ -436,7 +484,7 @@
         function setupEventListeners() {
             // Busca em tempo real
             document.getElementById('search-input').addEventListener('input', debounce(searchBooks, 300));
-            
+
             // Filtros
             document.getElementById('category-filter').addEventListener('change', searchBooks);
             document.getElementById('status-filter').addEventListener('change', searchBooks);
@@ -459,66 +507,66 @@
         function loadBooksFromAPI(page = 1, filters = {}) {
             showLoading(true);
             const token = localStorage.getItem('authToken');
-            
+
             // Construir URL com filtros e paginação
             const params = new URLSearchParams({
                 page: page,
                 limit: booksPerPage,
                 ...filters
             });
-            
+
             // Remover parâmetros vazios
             for (let [key, value] of params.entries()) {
                 if (!value) params.delete(key);
             }
-            
+
             const url = `/api/books?${params.toString()}`;
             console.log('🔍 Buscando na API:', url);
-            
+
             fetch(url, {
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('📚 Resposta da API:', data);
-                
-                allBooks = data.books || [];
-                
-                // Usar dados de paginação da API
-                if (data.pagination) {
-                    totalPages = data.pagination.totalPages;
-                    currentPage = data.pagination.currentPage;
-                    totalBooksCount = data.pagination.totalBooks;
-                } else {
-                    // Fallback
-                    totalPages = 1;
-                    currentPage = 1;
-                    totalBooksCount = allBooks.length;
-                }
-                
-                displayBooksFromAPI();
-                updatePagination();
-                updateResultsInfo();
-                showLoading(false);
-            })
-            .catch(error => {
-                console.error('Erro ao carregar livros:', error);
-                showLoading(false);
-                showAlert('Erro ao carregar livros. Tente novamente.', 'danger');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('📚 Resposta da API:', data);
+
+                    allBooks = data.books || [];
+
+                    // Usar dados de paginação da API
+                    if (data.pagination) {
+                        totalPages = data.pagination.totalPages;
+                        currentPage = data.pagination.currentPage;
+                        totalBooksCount = data.pagination.totalBooks;
+                    } else {
+                        // Fallback
+                        totalPages = 1;
+                        currentPage = 1;
+                        totalBooksCount = allBooks.length;
+                    }
+
+                    displayBooksFromAPI();
+                    updatePagination();
+                    updateResultsInfo();
+                    showLoading(false);
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar livros:', error);
+                    showLoading(false);
+                    showAlert('Erro ao carregar livros. Tente novamente.', 'danger');
+                });
         }
 
         // NOVA FUNÇÃO: Exibir livros vindos da API
         function displayBooksFromAPI() {
             const tbody = document.getElementById('books-tbody');
             tbody.innerHTML = '';
-            
+
             allBooks.forEach(book => {
                 const row = document.createElement('tr');
                 const isAvailable = book.available_copies > 0;
-                const stockStatus = book.available_copies <= 1 ? 'danger' : 
-                                   book.available_copies <= 3 ? 'warning' : 'success';
-                
+                const stockStatus = book.available_copies <= 1 ? 'danger' :
+                    book.available_copies <= 3 ? 'warning' : 'success';
+
                 row.innerHTML = `
                     <td><strong>#${book.id}</strong></td>
                     <td>
@@ -561,7 +609,7 @@
                 `;
                 tbody.appendChild(row);
             });
-            
+
             if (allBooks.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -585,19 +633,19 @@
             const categoryFilter = document.getElementById('category-filter').value;
             const statusFilter = document.getElementById('status-filter').value;
             const sortBy = document.getElementById('sort-by').value;
-            
+
             // Resetar para primeira página ao filtrar
             currentPage = 1;
-            
+
             // Construir filtros para API
             const filters = {};
             if (searchTerm) filters.search = searchTerm;
             if (categoryFilter) filters.category = categoryFilter;
             if (statusFilter === 'available') filters.available = 'true';
-            
+
             // Nota: Ordenação seria implementada no backend
             // Por enquanto, usar ordenação por ID/data padrão
-            
+
             // Buscar da API com filtros
             loadBooksFromAPI(1, filters);
         }
@@ -607,7 +655,7 @@
             if (page >= 1 && page <= totalPages) {
                 const filters = getCurrentFilters();
                 loadBooksFromAPI(page, filters);
-                
+
                 // Scroll para o topo da tabela
                 document.getElementById('books-table').scrollIntoView({ behavior: 'smooth' });
             }
@@ -619,37 +667,37 @@
             const searchTerm = document.getElementById('search-input').value;
             const categoryFilter = document.getElementById('category-filter').value;
             const statusFilter = document.getElementById('status-filter').value;
-            
+
             if (searchTerm) filters.search = searchTerm;
             if (categoryFilter) filters.category = categoryFilter;
             if (statusFilter === 'available') filters.available = 'true';
-            
+
             return filters;
         }
 
         function updatePagination() {
             const container = document.getElementById('pagination-container');
             container.innerHTML = '';
-            
+
             if (totalPages <= 1) return;
-            
+
             // Botão anterior
             const prevLi = document.createElement('li');
             prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
             prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Anterior</a>`;
             container.appendChild(prevLi);
-            
+
             // Páginas
             const startPage = Math.max(1, currentPage - 2);
             const endPage = Math.min(totalPages, currentPage + 2);
-            
+
             for (let i = startPage; i <= endPage; i++) {
                 const li = document.createElement('li');
                 li.className = `page-item ${i === currentPage ? 'active' : ''}`;
                 li.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
                 container.appendChild(li);
             }
-            
+
             // Botão próximo
             const nextLi = document.createElement('li');
             nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
@@ -660,35 +708,35 @@
         function updateResultsInfo() {
             const startResult = allBooks.length === 0 ? 0 : (currentPage - 1) * booksPerPage + 1;
             const endResult = Math.min(currentPage * booksPerPage, totalBooksCount);
-            
-            document.getElementById('showing-results').textContent = 
+
+            document.getElementById('showing-results').textContent =
                 `Mostrando ${startResult}-${endResult} de ${totalBooksCount} livros (Página ${currentPage}/${totalPages})`;
         }
 
         // ATUALIZADA: Stats usando busca separada para total
         function updateStats() {
             const token = localStorage.getItem('authToken');
-            
+
             // Buscar todos os livros para calcular estatísticas
             fetch('/api/books?limit=1000', {
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
-            .then(data => {
-                const books = data.books || [];
-                const total = books.length;
-                const available = books.filter(book => book.available_copies > 0).length;
-                const reserved = books.filter(book => book.available_copies === 0).length;
-                const lowStock = books.filter(book => book.available_copies > 0 && book.available_copies <= 3).length;
+                .then(response => response.json())
+                .then(data => {
+                    const books = data.books || [];
+                    const total = books.length;
+                    const available = books.filter(book => book.available_copies > 0).length;
+                    const reserved = books.filter(book => book.available_copies === 0).length;
+                    const lowStock = books.filter(book => book.available_copies > 0 && book.available_copies <= 3).length;
 
-                document.getElementById('total-books-count').textContent = total;
-                document.getElementById('available-books-count').textContent = available;
-                document.getElementById('reserved-books-count').textContent = reserved;
-                document.getElementById('low-stock-count').textContent = lowStock;
-            })
-            .catch(error => {
-                console.error('Erro ao carregar stats:', error);
-            });
+                    document.getElementById('total-books-count').textContent = total;
+                    document.getElementById('available-books-count').textContent = available;
+                    document.getElementById('reserved-books-count').textContent = reserved;
+                    document.getElementById('low-stock-count').textContent = lowStock;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar stats:', error);
+                });
         }
 
         function clearFilters() {
@@ -696,7 +744,7 @@
             document.getElementById('category-filter').value = '';
             document.getElementById('status-filter').value = '';
             document.getElementById('sort-by').value = 'newest';
-            
+
             loadBooksFromAPI(1); // Buscar primeira página sem filtros
         }
 
@@ -713,11 +761,11 @@
         // Funções do Modal
         function openAddBookModal() {
             editingBookId = null;
-            document.getElementById('modal-title').innerHTML = 
+            document.getElementById('modal-title').innerHTML =
                 '<i class="fas fa-plus text-primary"></i> Adicionar Novo Livro';
             document.getElementById('book-form').reset();
             document.getElementById('book-id').value = '';
-            
+
             const modal = new bootstrap.Modal(document.getElementById('bookModal'));
             modal.show();
         }
@@ -725,25 +773,25 @@
         function editBook(id) {
             const book = allBooks.find(b => b.id === id);
             if (!book) return;
-            
+
             editingBookId = id;
-            document.getElementById('modal-title').innerHTML = 
+            document.getElementById('modal-title').innerHTML =
                 '<i class="fas fa-edit text-warning"></i> Editar Livro';
-            
+
             // Preencher formulário
             document.getElementById('book-id').value = book.id;
             document.getElementById('book-title').value = book.title;
             document.getElementById('book-author').value = book.author;
             document.getElementById('book-isbn').value = book.isbn || '';
-            document.getElementById('book-category').value = book.category || '';
+            document.getElementById('book-category').value = book.category;
             document.getElementById('book-editor').value = book.editor || '';
             document.getElementById('book-year').value = book.publication_year || '';
             document.getElementById('book-pages').value = book.pages || '';
             document.getElementById('book-copies').value = book.total_copies || 1;
             document.getElementById('book-language').value = book.language || 'Português';
             document.getElementById('book-description').value = book.description || '';
-            document.getElementById('book-cover').value = book.cover_image || '';
-            
+            document.getElementById('book-cover').value = book.cover_image || 'livro-padrao.png';
+
             const modal = new bootstrap.Modal(document.getElementById('bookModal'));
             modal.show();
         }
@@ -751,33 +799,66 @@
         function viewBook(id) {
             const book = allBooks.find(b => b.id === id);
             if (!book) return;
-            
-            // Por enquanto, usar alert (depois pode criar modal de visualização)
-            alert(`Livro: ${book.title}\nAutor: ${book.author}\nEstoque: ${book.available_copies}/${book.total_copies}`);
+
+            // Preencher capa
+            // Ajuste o caminho para a pasta de imagens conforme seu projeto
+            document.getElementById('view-cover').src =
+                book.cover_image
+                    ? `/images/books/${book.cover_image}`
+                    : '/images/books/livro-padrao.png';
+            document.getElementById('view-cover').alt = book.title;
+
+            // Preencher textos
+            document.getElementById('view-title').textContent = book.title;
+            document.getElementById('view-author').textContent = book.author;
+            document.getElementById('view-isbn').textContent = book.isbn || '—';
+            document.getElementById('view-publisher').textContent = book.publisher || book.editor || '—';
+            document.getElementById('view-category').textContent = book.category;
+            document.getElementById('view-year').textContent = book.publication_year || book.year || '—';
+            document.getElementById('view-stock').textContent =
+                `${book.available_copies} de ${book.total_copies || book.copies || '—'}`;
+
+            // Mostrar modal
+            const modal = new bootstrap.Modal(
+                document.getElementById('viewBookModal')
+            );
+            modal.show();
         }
+
+
 
         function confirmDeleteBook(id) {
             const book = allBooks.find(b => b.id === id);
             if (!book) return;
-            
+
             document.getElementById('book-to-delete-info').innerHTML = `
                 <strong>Livro:</strong> ${book.title}<br>
                 <strong>Autor:</strong> ${book.author}<br>
                 <strong>ID:</strong> #${book.id}
             `;
-            
+
             document.getElementById('confirm-delete-btn').onclick = () => deleteBook(id);
-            
+
             const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
             modal.show();
         }
 
         function saveBook() {
+            const form = document.getElementById('book-form');
+
+            // dispara a validação nativa e exibe mensagens de browser
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
             const formData = {
+                title: form['book-title'].value.trim(),
+                author: form['book-author'].value.trim(),
+                category: form['book-category'].value.trim(),
                 title: document.getElementById('book-title').value,
                 author: document.getElementById('book-author').value,
                 isbn: document.getElementById('book-isbn').value,
-                category: document.getElementById('book-category').value,
+                //category: document.getElementById('book-category').value,
                 editor: document.getElementById('book-editor').value,
                 publication_year: parseInt(document.getElementById('book-year').value) || null,
                 pages: parseInt(document.getElementById('book-pages').value) || null,
@@ -810,77 +891,77 @@
                 },
                 body: JSON.stringify(formData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message || data.bookId) {
-                    showAlert(
-                        editingBookId ? 'Livro atualizado com sucesso!' : 'Livro adicionado com sucesso!', 
-                        'success'
-                    );
-                    bootstrap.Modal.getInstance(document.getElementById('bookModal')).hide();
-                    
-                    // IMPORTANTE: Recarregar a página atual preservando filtros
-                    const filters = getCurrentFilters();
-                    loadBooksFromAPI(currentPage, filters);
-                    updateStats(); // Atualizar estatísticas também
-                } else {
-                    showAlert(data.error || 'Erro ao salvar livro', 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao salvar livro:', error);
-                showAlert('Erro de conexão', 'danger');
-            })
-            .finally(() => {
-                saveBtn.innerHTML = originalText;
-                saveBtn.disabled = false;
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message || data.bookId) {
+                        showAlert(
+                            editingBookId ? 'Livro atualizado com sucesso!' : 'Livro adicionado com sucesso!',
+                            'success'
+                        );
+                        bootstrap.Modal.getInstance(document.getElementById('bookModal')).hide();
+
+                        // IMPORTANTE: Recarregar a página atual preservando filtros
+                        const filters = getCurrentFilters();
+                        loadBooksFromAPI(currentPage, filters);
+                        updateStats(); // Atualizar estatísticas também
+                    } else {
+                        showAlert(data.error || 'Erro ao salvar livro', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao salvar livro:', error);
+                    showAlert('Erro de conexão', 'danger');
+                })
+                .finally(() => {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.disabled = false;
+                });
         }
 
         function deleteBook(id) {
             const token = localStorage.getItem('authToken');
-            
+
             fetch(`/api/books/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': token }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    showAlert('Livro excluído com sucesso!', 'success');
-                    bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-                    
-                    // IMPORTANTE: Recarregar preservando filtros
-                    const filters = getCurrentFilters();
-                    loadBooksFromAPI(currentPage, filters);
-                    updateStats(); // Atualizar estatísticas também
-                } else {
-                    showAlert(data.error || 'Erro ao excluir livro', 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao excluir livro:', error);
-                showAlert('Erro de conexão', 'danger');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        showAlert('Livro excluído com sucesso!', 'success');
+                        bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+
+                        // IMPORTANTE: Recarregar preservando filtros
+                        const filters = getCurrentFilters();
+                        loadBooksFromAPI(currentPage, filters);
+                        updateStats(); // Atualizar estatísticas também
+                    } else {
+                        showAlert(data.error || 'Erro ao excluir livro', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao excluir livro:', error);
+                    showAlert('Erro de conexão', 'danger');
+                });
         }
 
         function showAlert(message, type) {
             const alertContainer = document.getElementById('alert-container');
-            const iconClass = type === 'success' ? 'fa-check-circle' : 
-                             type === 'warning' ? 'fa-exclamation-triangle' : 
-                             type === 'danger' ? 'fa-times-circle' : 'fa-info-circle';
-            
+            const iconClass = type === 'success' ? 'fa-check-circle' :
+                type === 'warning' ? 'fa-exclamation-triangle' :
+                    type === 'danger' ? 'fa-times-circle' : 'fa-info-circle';
+
             alertContainer.className = `alert alert-${type}`;
             alertContainer.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
             alertContainer.classList.remove('d-none');
-            
+
             setTimeout(() => {
                 alertContainer.classList.add('d-none');
             }, 5000);
         }
 
         // Carregar estatísticas ao inicializar
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             if (checkAuth()) {
                 updateStats();
             }
@@ -888,4 +969,5 @@
     </script>
     <script src="js/header.js"></script>
 </body>
+
 </html>

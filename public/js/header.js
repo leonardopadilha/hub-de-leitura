@@ -74,8 +74,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Substituir o conteúdo por: ícone + nome clicável + botões
       parentLi.innerHTML = `
                     <!-- Nome do usuário (clicável para dashboard) -->
-                    <a href="/dashboard.html" class="user-info d-flex align-items-center text-dark text-decoration-none me-2" 
-                       title="Meu Dashboard">
+                    <a href="${isAdmin ? '/admin-dashboard.html' : '/dashboard.html'}" class="user-info d-flex align-items-center text-dark text-decoration-none me-2" 
+                       title="${isAdmin ? 'Painel Admin' : 'Meu Dashboard'}">
                         <i class="fas fa-user-circle me-2" style="font-size: 1.2rem;"></i>
                         <span class="fw-bold">${userName}</span>
                         ${
@@ -87,9 +87,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     <!-- Botões de ação -->
                     <div class="user-actions d-flex align-items-center">
-                        <a href="/dashboard.html" class="btn btn-outline-primary btn-sm me-1" title="Minhas Reservas">
-                            <i class="fas fa-bookmark"></i>
-                        </a>
+                        ${
+                          !isAdmin
+                            ? `
+                            <a href="/dashboard.html" class="btn btn-outline-primary btn-sm me-1" title="Minhas Reservas">
+                                <i class="fas fa-bookmark"></i>
+                            </a>
+                        `
+                            : ""
+                        }
                         ${
                           isAdmin
                             ? `

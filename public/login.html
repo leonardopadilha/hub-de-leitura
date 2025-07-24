@@ -300,7 +300,7 @@
 
                 // Redirecionar baseado no tipo de usuário
                 const isAdmin = localStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === '1';
-                return isAdmin ? '/admin-dashboard.html' : '/index.html';
+                return isAdmin ? '/admin-dashboard.html' : '/dashboard.html';
             }
 
             function checkIfLoggedIn() {

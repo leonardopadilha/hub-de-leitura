@@ -1,6 +1,6 @@
 # 📚 Hub de Leitura - Sistema de Biblioteca para QA
 
-> **Sistema educacional completo para aprendizado e prática de Quality Assurance (QA)**
+ **Sistema educacional completo para aprendizado e prática de Quality Assurance (QA)**
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)
 ![Express](https://img.shields.io/badge/Express-4.18+-blue.svg)
@@ -17,7 +17,7 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 
 - ✅ **Aprenda testando** - Sistema real com cenários complexos
 - ✅ **API REST completa** - Todos os tipos de endpoint
-- ✅ **Diferentes perfis** - Usuário comum vs Administrador  
+- ✅ **Diferentes perfis** - Usuário comum vs Administrador
 - ✅ **Autenticação JWT** - Sistema de login profissional
 - ✅ **Cenários de erro** - Como sistemas falham na prática
 - ✅ **Documentação Swagger** - API bem documentada
@@ -26,12 +26,14 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 ## 🚀 Funcionalidades
 
 ### 👤 **Gestão de Usuários**
+
 - Registro e login de usuários
 - Autenticação JWT com expiração
 - Perfis diferenciados (Usuário/Admin)
 - Atualização de perfil
 
 ### 📖 **Catálogo de Livros**
+
 - Listagem com filtros e busca
 - CRUD completo (Admin)
 - Controle de estoque
@@ -39,6 +41,7 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 - Categorização
 
 ### 📝 **Sistema de Reservas**
+
 - Reserva de livros disponíveis
 - Controle de prazos
 - Gestão de retiradas e devoluções
@@ -46,6 +49,7 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 - Alertas de atraso
 
 ### 🛠️ **Painel Administrativo**
+
 - Dashboard com estatísticas
 - Gestão de todas as reservas
 - Controle de usuários
@@ -55,6 +59,7 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 ## 🛠️ Tecnologias
 
 ### Backend
+
 - **Node.js** - Runtime JavaScript
 - **Express.js** - Framework web
 - **SQLite** - Banco de dados leve
@@ -64,6 +69,7 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 - **Swagger** - Documentação da API
 
 ### Frontend
+
 - **HTML5/CSS3** - Estrutura e estilo
 - **Bootstrap 5** - Framework CSS
 - **JavaScript ES6+** - Interatividade
@@ -73,27 +79,32 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 ## ⚡ Instalação Rápida
 
 ### Pré-requisitos
+
 - Node.js 18+ instalado
 - Git instalado
 - Editor de código (VS Code recomendado)
 
 ### 1. Clone o Repositório
+
 ```bash
 git clone https://github.com/fabioaraujoqa/hub-de-leitura.git
 cd hub-de-leitura
 ```
 
 ### 2. Instale as Dependências
+
 ```bash
 npm install
 ```
 
 ### 3. Inicie o Servidor
+
 ```bash
 npm start
 ```
 
 ### 4. Acesse o Sistema
+
 - **Sistema:** http://localhost:3000
 - **API Docs:** http://localhost:3000/api-docs
 - **Admin:** http://localhost:3000/admin-dashboard.html
@@ -101,11 +112,13 @@ npm start
 ## 🔑 Credenciais de Teste
 
 ### Administrador
+
 - **Email:** admin@admin.com
 - **Senha:** admin123
 - **Permissões:** Acesso total ao sistema
 
 ### Usuário Comum
+
 - **Email:** usuario@teste.com
 - **Senha:** user123
 - **Permissões:** Reservas e consultas
@@ -113,6 +126,7 @@ npm start
 ## 📋 Cenários de Teste Sugeridos
 
 ### 🔐 **Autenticação**
+
 - [ ] Login com credenciais válidas
 - [ ] Login com email inexistente
 - [ ] Login com senha incorreta
@@ -122,6 +136,7 @@ npm start
 - [ ] Tentativa de acesso sem token
 
 ### 📚 **Gestão de Livros**
+
 - [ ] Listar todos os livros
 - [ ] Buscar por título/autor/categoria
 - [ ] Filtrar por disponibilidade
@@ -131,6 +146,7 @@ npm start
 - [ ] Remover livro com reservas ativas
 
 ### 📝 **Sistema de Reservas**
+
 - [ ] Reservar livro disponível
 - [ ] Tentar reservar livro esgotado
 - [ ] Reservar mesmo livro duas vezes
@@ -140,6 +156,7 @@ npm start
 - [ ] Cancelar reserva (Admin)
 
 ### 🛠️ **Painel Admin**
+
 - [ ] Acessar dashboard com perfil admin
 - [ ] Tentar acessar dashboard como usuário comum
 - [ ] Visualizar estatísticas
@@ -148,14 +165,15 @@ npm start
 
 ## 🗂️ Estrutura do Projeto
 
-
 ## 🔗 Endpoints da API
 
 ### Autenticação
+
 - `POST /api/login` - Login de usuário
 - `POST /api/registrar` - Registro de usuário
 
 ### Livros
+
 - `GET /api/books` - Listar livros
 - `GET /api/books/:id` - Detalhes do livro
 - `POST /api/books` - Adicionar livro (Admin)
@@ -163,22 +181,26 @@ npm start
 - `DELETE /api/books/:id` - Remover livro (Admin)
 
 ### Reservas (Usuário)
+
 - `GET /api/reservations` - Minhas reservas
 - `POST /api/reservations` - Fazer reserva
 
 ### Admin - Reservas
+
 - `GET /api/admin/reservations` - Todas as reservas
 - `GET /api/admin/reservations/stats` - Estatísticas
 - `PUT /api/admin/reservations/:id` - Atualizar status
 - `PUT /api/admin/reservations/:id/extend` - Estender prazo
 
 ### Utilitários
+
 - `GET /api/health` - Status do sistema
 - `GET /api-docs` - Documentação Swagger
 
 ## 🧪 Testando a API
 
 ### Com cURL
+
 ```bash
 # Login
 curl -X POST http://localhost:3000/api/login \
@@ -191,6 +213,7 @@ curl -X GET http://localhost:3000/api/books \
 ```
 
 ### Com Postman/Insomnia
+
 1. Importe a coleção do Swagger: http://localhost:3000/api-docs
 2. Configure o token JWT no cabeçalho Authorization
 3. Teste todos os endpoints disponíveis
@@ -198,17 +221,20 @@ curl -X GET http://localhost:3000/api/books \
 ## 🎨 Personalizações
 
 ### Adicionando Novos Livros
+
 ```sql
 INSERT INTO Books (title, author, category, isbn, total_copies, available_copies) 
 VALUES ('Seu Livro', 'Autor', 'Categoria', 'ISBN', 5, 5);
 ```
 
 ### Criando Usuário Admin
+
 ```sql
 UPDATE Users SET isAdmin = 1 WHERE email = 'seu@email.com';
 ```
 
 ### Configurando Tempo de Token
+
 ```javascript
 // Em src/server.js
 const token = jwt.sign(payload, SECRET_KEY, { 
@@ -219,6 +245,7 @@ const token = jwt.sign(payload, SECRET_KEY, {
 ## 🤝 Contribuindo
 
 ### Para Instrutores
+
 1. Fork o repositório
 2. Crie cenários de teste adicionais
 3. Adicione novos endpoints para prática
@@ -226,6 +253,7 @@ const token = jwt.sign(payload, SECRET_KEY, {
 5. Envie um Pull Request
 
 ### Para Alunos
+
 1. Reporte bugs encontrados (é parte do aprendizado!)
 2. Sugira melhorias na documentação
 3. Compartilhe casos de teste interessantes
@@ -234,17 +262,20 @@ const token = jwt.sign(payload, SECRET_KEY, {
 ## 📝 Logs e Debugging
 
 ### Visualizar Logs
+
 ```bash
 # No terminal onde o servidor está rodando
 # Os logs aparecem automaticamente
 ```
 
 ### Estrutura do Banco de Dados
+
 - **Users** - Usuários do sistema
 - **Books** - Catálogo de livros
 - **Reservations** - Histórico de reservas
 
 ### Resetar Banco de Dados
+
 ```bash
 # Pare o servidor e delete o arquivo do banco
 rm data/library.db
@@ -255,6 +286,7 @@ npm start
 ## 🐛 Problemas Comuns
 
 ### Erro "Port 3000 already in use"
+
 ```bash
 # Encontrar processo usando a porta
 lsof -ti:3000
@@ -263,22 +295,26 @@ kill -9 PID_DO_PROCESSO
 ```
 
 ### Token expirado
+
 - Faça login novamente para obter um novo token
 - Tokens expiram em 1 hora por padrão
 
 ### Banco de dados corrompido
+
 - Delete o arquivo `database/biblioteca.db`
 - Rode o comando `npm run db` para recriar o banco
 
 ## 📚 Recursos de Aprendizado
 
 ### Documentação
+
 - [Express.js](https://expressjs.com/)
 - [JWT.io](https://jwt.io/)
 - [SQLite Tutorial](https://www.sqlitetutorial.net/)
 - [Swagger/OpenAPI](https://swagger.io/docs/)
 
 ### Ferramentas de Teste
+
 - [Postman](https://www.postman.com/)
 - [Insomnia](https://insomnia.rest/)
 - [Jest](https://jestjs.io/) - Para testes automatizados
@@ -296,12 +332,14 @@ kill -9 PID_DO_PROCESSO
 - [ ] App mobile com React Native
 
 ### Uso Permitido
+
 - ✅ Uso educacional e acadêmico
-- ✅ Modificação para fins didáticos  
+- ✅ Modificação para fins didáticos
 - ✅ Distribuição para alunos
 - ✅ Criação de cursos baseados no projeto
 
 ### Uso Restrito
+
 - ❌ Uso comercial direto
 - ❌ Venda do código
 - ❌ Redistribuição sem créditos
@@ -313,6 +351,7 @@ kill -9 PID_DO_PROCESSO
 Desenvolvido com ❤️ para a comunidade de **Quality Assurance**.
 
 **Contribuidores:**
+
 - [Fábio Araújo](https://github.com/fabioaraujoqa) - Criador
 
 ---
