@@ -26,12 +26,12 @@ const port = process.env.PORT || 3000;
 
 // === MIDDLEWARE GLOBAL ===
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Middleware para logs de requisições (desenvolvimento)
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
@@ -50,14 +50,14 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *     summary: Login de usuário
  *     description: |
  *       **Autentica usuário e retorna token JWT**
- *       
+ *
  *       ### 🎯 Cenários para testar:
  *       - ✅ Login com credenciais válidas
  *       - ❌ Email inexistente
  *       - ❌ Senha incorreta
  *       - ❌ Campos obrigatórios em branco
  *       - ✅ Login de admin vs usuário comum
- *       
+ *
  *       ### 🔑 Credenciais de teste:
  *       - **Admin:** admin@admin.com / admin123
  *       - **Usuário:** usuario@teste.com / user123
@@ -125,44 +125,44 @@ app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ 
-      message: "Email e senha são obrigatórios." 
+    return res.status(400).json({
+      message: "Email e senha são obrigatórios.",
     });
   }
 
   db.get("SELECT * FROM Users WHERE email = ?", [email], (err, user) => {
     if (err) {
       console.error("Erro ao buscar usuário:", err);
-      return res.status(500).json({ 
-        message: "Erro interno do servidor." 
+      return res.status(500).json({
+        message: "Erro interno do servidor.",
       });
     }
 
     if (!user) {
-      return res.status(401).json({ 
-        message: "Email ou senha incorretos." 
+      return res.status(401).json({
+        message: "Email ou senha incorretos.",
       });
     }
 
     bcrypt.compare(password, user.password, (err, result) => {
       if (err) {
         console.error("Erro ao comparar senhas:", err);
-        return res.status(500).json({ 
-          message: "Erro interno do servidor." 
+        return res.status(500).json({
+          message: "Erro interno do servidor.",
         });
       }
 
       if (!result) {
-        return res.status(401).json({ 
-          message: "Email ou senha incorretos." 
+        return res.status(401).json({
+          message: "Email ou senha incorretos.",
         });
       }
 
       const token = jwt.sign(
-        { 
-          id: user.id, 
+        {
+          id: user.id,
           email: user.email,
-          isAdmin: user.isAdmin 
+          isAdmin: user.isAdmin,
         },
         SECRET_KEY,
         { expiresIn: "8h" }
@@ -173,7 +173,7 @@ app.post("/api/login", (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: !!user.isAdmin,
-        token: `Bearer ${token}`
+        token: `Bearer ${token}`,
       });
     });
   });
@@ -187,14 +187,14 @@ app.post("/api/login", (req, res) => {
  *     summary: Registro de novo usuário
  *     description: |
  *       **Cria uma nova conta de usuário no sistema**
- *       
+ *
  *       ### 🎯 Cenários para testar:
  *       - ✅ Registro com dados válidos
  *       - ❌ Email já cadastrado
  *       - ❌ Senha muito curta
  *       - ❌ Email malformado
  *       - ❌ Campos obrigatórios em branco
- *       
+ *
  *       ### ⚠️ Regras:
  *       - Email deve ser único
  *       - Senha mínimo 6 caracteres
@@ -233,72 +233,124 @@ app.post("/api/register", (req, res) => {
 
   // Validações básicas
   if (!name || !email || !password) {
-    return res.status(400).json({ 
-      message: "Nome, email e senha são obrigatórios." 
+    return res.status(400).json({
+      message: "Nome, email e senha são obrigatórios.",
     });
   }
 
   if (name.length < 2) {
-    return res.status(400).json({ 
-      message: "Nome deve ter pelo menos 2 caracteres." 
+    return res.status(400).json({
+      message: "Nome deve ter pelo menos 2 caracteres.",
     });
   }
 
   if (password.length < 6) {
-    return res.status(400).json({ 
-      message: "Senha deve ter pelo menos 6 caracteres." 
+    return res.status(400).json({
+      message: "Senha deve ter pelo menos 6 caracteres.",
     });
   }
 
-  // Verificar se email já existe
-  db.get("SELECT * FROM Users WHERE email = ?", [email], (err, existingUser) => {
-    if (err) {
-      console.error("Erro ao verificar email:", err);
-      return res.status(500).json({ 
-        message: "Erro interno do servidor." 
-      });
+  /* Rota de contato */
+
+  app.post("/api/contact", (req, res) => {
+    const { name, email, subject, message } = req.body;
+    if (!name || !email || !subject || !message) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos são obrigatórios." });
     }
 
-    if (existingUser) {
-      return res.status(400).json({ 
-        message: "Email já está sendo usado por outro usuário.",
-        conflictingEmail: email
-      });
-    }
-
-    // Criptografar senha e criar usuário
-    const saltRounds = 10;
-    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+    const sql = `INSERT INTO Contacts (name, email, subject, message) VALUES (?, ?, ?, ?)`;
+    db.run(sql, [name, email, subject, message], function (err) {
       if (err) {
-        console.error("Erro ao criptografar senha:", err);
-        return res.status(500).json({ 
-          message: "Erro ao processar senha." 
+        console.error("❌ Erro ao inserir contato:", err);
+        return res
+          .status(500)
+          .json({ message: "Erro interno ao salvar contato." });
+      }
+      res.json({ message: "Contato enviado com sucesso!" });
+    });
+  });
+
+  // Verificar se email já existe
+  db.get(
+    "SELECT * FROM Users WHERE email = ?",
+    [email],
+    (err, existingUser) => {
+      if (err) {
+        console.error("Erro ao verificar email:", err);
+        return res.status(500).json({
+          message: "Erro interno do servidor.",
         });
       }
 
-      db.run(
-        "INSERT INTO Users (name, email, password, isAdmin) VALUES (?, ?, ?, ?)",
-        [name, email, hashedPassword, 0],
-        function (err) {
-          if (err) {
-            console.error("Erro ao criar usuário:", err);
-            return res.status(500).json({ 
-              message: "Erro ao criar usuário." 
-            });
-          }
+      if (existingUser) {
+        return res.status(400).json({
+          message: "Email já está sendo usado por outro usuário.",
+          conflictingEmail: email,
+        });
+      }
 
-          res.status(201).json({
-            message: "Usuário criado com sucesso.",
-            user: {
-              id: this.lastID,
-              name: name,
-              email: email,
-              isAdmin: false
-            }
+      // Criptografar senha e criar usuário
+      const saltRounds = 10;
+      bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+        if (err) {
+          console.error("Erro ao criptografar senha:", err);
+          return res.status(500).json({
+            message: "Erro ao processar senha.",
           });
         }
-      );
-    });
+
+        db.run(
+          "INSERT INTO Users (name, email, password, isAdmin) VALUES (?, ?, ?, ?)",
+          [name, email, hashedPassword, 0],
+          function (err) {
+            if (err) {
+              console.error("Erro ao criar usuário:", err);
+              return res.status(500).json({
+                message: "Erro ao criar usuário.",
+              });
+            }
+
+            res.status(201).json({
+              message: "Usuário criado com sucesso.",
+              user: {
+                id: this.lastID,
+                name: name,
+                email: email,
+                isAdmin: false,
+              },
+            });
+          }
+        );
+      });
+    }
+  );
+});
+
+/**
+ * Recebe dados do formulário de contato e salva no SQLite
+ */
+app.post("/api/contact", (req, res) => {
+  const { name, email, subject, message } = req.body;
+  if (!name || !email || !subject || !message) {
+    return res
+      .status(400)
+      .json({ message: "Todos os campos são obrigatórios." });
+  }
+
+  const sql = `
+    INSERT INTO Contacts (name, email, subject, message)
+    VALUES (?, ?, ?, ?)
+  `;
+  db.run(sql, [name, email, subject, message], function (err) {
+    if (err) {
+      console.error("❌ Erro ao inserir contato:", err);
+      return res
+        .status(500)
+        .json({ message: "Erro interno ao salvar contato." });
+    }
+    res.json({ message: "Contato enviado com sucesso!" });
   });
 });
 
@@ -321,13 +373,14 @@ app.use("/api/admin", adminRoutes);
  *     summary: Verificar status do sistema
  *     description: |
  *       **Endpoint para monitoramento da saúde do sistema**
- *       
+ *
  *       ### 📋 Verifica:
  *       - Status do servidor
  *       - Conexão com banco de dados
  *       - Serviços disponíveis
  *       - Versão da API
- *     responses:
+ *       security: []
+ *       responses:
  *       200:
  *         description: ✅ Sistema funcionando corretamente
  *         content:
@@ -381,26 +434,26 @@ app.use("/api/admin", adminRoutes);
 app.get("/api/health", (req, res) => {
   // Verificar conexão com banco
   db.get("SELECT 1", (err) => {
-    const dbStatus = err ? 'disconnected' : 'connected';
-    
+    const dbStatus = err ? "disconnected" : "connected";
+
     res.json({
-      status: 'ok',
+      status: "ok",
       timestamp: new Date().toISOString(),
-      version: '1.0.0',
-      environment: process.env.NODE_ENV || 'development',
+      version: "1.0.0",
+      environment: process.env.NODE_ENV || "development",
       services: {
         database: dbStatus,
-        auth: 'working',
-        swagger: 'active'
+        auth: "working",
+        swagger: "active",
       },
       routes: {
-        books: '/api/books',
-        users: '/api/users', 
-        reservations: '/api/reservations',
-        basket: '/api/basket',
-        admin: '/api/admin'
+        books: "/api/books",
+        users: "/api/users",
+        reservations: "/api/reservations",
+        basket: "/api/basket",
+        admin: "/api/admin",
       },
-      documentation: '/api-docs'
+      documentation: "/api-docs",
     });
   });
 });
@@ -426,11 +479,11 @@ app.get("/api/info", (req, res) => {
     author: "Fábio Araújo",
     contact: {
       email: "fabio@qualityassurance.com",
-      github: "https://github.com/fabioaraujoqa/hub-de-leitura"
+      github: "https://github.com/fabioaraujoqa/hub-de-leitura",
     },
     documentation: {
       swagger: "/api-docs",
-      postman: "Disponível no repositório"
+      postman: "Disponível no repositório",
     },
     endpoints: {
       auth: ["/api/login", "/api/register"],
@@ -438,12 +491,12 @@ app.get("/api/info", (req, res) => {
       users: ["/api/users", "/api/users/:id"],
       reservations: ["/api/reservations", "/api/reservations/:id"],
       basket: ["/api/basket/:userId", "/api/basket"],
-      admin: ["/api/admin/reservations", "/api/admin/users"]
+      admin: ["/api/admin/reservations", "/api/admin/users"],
     },
     testCredentials: {
       admin: { email: "admin@admin.com", password: "admin123" },
-      user: { email: "usuario@teste.com", password: "user123" }
-    }
+      user: { email: "usuario@teste.com", password: "user123" },
+    },
   });
 });
 
@@ -491,7 +544,7 @@ app.get("/index.html", (req, res) => {
 // Middleware para rotas não encontradas
 app.use("*", (req, res) => {
   // Se é uma rota da API, retorna JSON
-  if (req.originalUrl.startsWith('/api/')) {
+  if (req.originalUrl.startsWith("/api/")) {
     return res.status(404).json({
       message: "Endpoint não encontrado",
       endpoint: req.originalUrl,
@@ -503,9 +556,9 @@ app.use("*", (req, res) => {
         reservations: ["/api/reservations", "/api/reservations/:id"],
         basket: ["/api/basket/:userId"],
         admin: ["/api/admin/reservations", "/api/admin/users"],
-        system: ["/api/health", "/api/info"]
+        system: ["/api/health", "/api/info"],
       },
-      documentation: "/api-docs"
+      documentation: "/api-docs",
     });
   }
 
@@ -515,46 +568,47 @@ app.use("*", (req, res) => {
 
 // Middleware global de tratamento de erros
 app.use((err, req, res, next) => {
-  console.error('Erro não tratado:', err);
+  console.error("Erro não tratado:", err);
 
   // Erro de token JWT
-  if (err.name === 'JsonWebTokenError') {
+  if (err.name === "JsonWebTokenError") {
     return res.status(401).json({
       message: "Token JWT inválido",
-      error: "INVALID_TOKEN"
+      error: "INVALID_TOKEN",
     });
   }
 
   // Erro de token expirado
-  if (err.name === 'TokenExpiredError') {
+  if (err.name === "TokenExpiredError") {
     return res.status(401).json({
       message: "Token JWT expirado",
       error: "EXPIRED_TOKEN",
-      expiredAt: err.expiredAt
+      expiredAt: err.expiredAt,
     });
   }
 
   // Erro de validação
-  if (err.name === 'ValidationError') {
+  if (err.name === "ValidationError") {
     return res.status(400).json({
       message: "Dados inválidos",
-      details: err.details
+      details: err.details,
     });
   }
 
   // Erro de banco de dados
-  if (err.code === 'SQLITE_CONSTRAINT') {
+  if (err.code === "SQLITE_CONSTRAINT") {
     return res.status(400).json({
       message: "Violação de restrição do banco de dados",
-      error: "DATABASE_CONSTRAINT"
+      error: "DATABASE_CONSTRAINT",
     });
   }
 
   // Erro genérico
   res.status(500).json({
     message: "Erro interno do servidor",
-    error: process.env.NODE_ENV === 'development' ? err.message : "INTERNAL_ERROR",
-    timestamp: new Date().toISOString()
+    error:
+      process.env.NODE_ENV === "development" ? err.message : "INTERNAL_ERROR",
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -573,18 +627,22 @@ async function initializeTestData() {
       // Se já existem usuários, não inicializa dados
       if (result.count > 0) {
         console.log("📊 Dados já existem no banco");
-        
+
         // Verificar credenciais existentes
         db.all("SELECT name, email FROM Users", (err, users) => {
           if (!err && users.length > 0) {
             console.log("👥 Usuários disponíveis:");
-            users.forEach(user => {
-              const userType = user.email.includes('admin') || user.email.includes('biblioteca') ? '👑 Admin' : '👤 User';
+            users.forEach((user) => {
+              const userType =
+                user.email.includes("admin") ||
+                user.email.includes("biblioteca")
+                  ? "👑 Admin"
+                  : "👤 User";
               console.log(`   ${userType}: ${user.email}`);
             });
           }
         });
-        
+
         return resolve();
       }
 
@@ -603,50 +661,50 @@ async function startServer() {
 
     // Iniciar servidor
     app.listen(port, () => {
-      console.log('\n🚀 ===============================================');
-      console.log('📚 HUB DE LEITURA - Sistema de Biblioteca QA');
-      console.log('🚀 ===============================================\n');
-      
+      console.log("\n🚀 ===============================================");
+      console.log("📚 HUB DE LEITURA - Sistema de Biblioteca QA");
+      console.log("🚀 ===============================================\n");
+
       console.log(`🌐 Servidor rodando em: http://localhost:${port}`);
       console.log(`📖 Documentação API: http://localhost:${port}/api-docs`);
       console.log(`👤 Login: http://localhost:${port}/login.html`);
       console.log(`🏠 Dashboard: http://localhost:${port}/dashboard.html`);
       console.log(`🛠️  Admin: http://localhost:${port}/admin-dashboard.html`);
-      
-      console.log('\n🔑 Credenciais de Teste (Banco Existente):');
-      console.log('   👑 Admin: admin@biblioteca.com / admin123');
-      console.log('   👤 User:  usuario@teste.com / user123');
-      
-      console.log('\n📋 Endpoints Principais:');
-      console.log('   🔐 POST /api/login        - Autenticação');
-      console.log('   📚 GET  /api/books        - Listar livros');
-      console.log('   👥 GET  /api/users        - Listar usuários (Admin)');
-      console.log('   📝 GET  /api/reservations - Minhas reservas');
-      console.log('   🛒 GET  /api/basket/:id   - Meu carrinho');
-      console.log('   🛠️  GET  /api/admin/*     - Rotas administrativas');
-      console.log('   ❤️  GET  /api/health      - Status do sistema');
-      
-      console.log('\n✨ Recursos Disponíveis:');
-      console.log('   📖 Sistema completo de biblioteca');
-      console.log('   🔐 Autenticação JWT com roles');
-      console.log('   📝 Gestão de reservas e carrinho');
-      console.log('   🛠️  Painel administrativo completo');
-      console.log('   📚 Documentação Swagger interativa');
-      console.log('   🧪 Dados de teste pré-configurados');
-      
-      console.log('\n🎯 Perfeito para:');
-      console.log('   ✅ Aprendizado de QA Manual');
-      console.log('   ✅ Automação de testes de API');
-      console.log('   ✅ Testes de integração');
-      console.log('   ✅ Práticas de teste E2E');
-      
-      console.log('\n🚀 ===============================================');
-      console.log('✨ Sistema pronto para uso! Bons testes! 🧪');
-      console.log('🚀 ===============================================\n');
+
+      console.log("\n🔑 Credenciais de Teste (Banco Existente):");
+      console.log("   👑 Admin: admin@biblioteca.com / admin123");
+      console.log("   👤 User:  usuario@teste.com / user123");
+
+      console.log("\n📋 Endpoints Principais:");
+      console.log("   🔐 POST /api/login        - Autenticação");
+      console.log("   📚 GET  /api/books        - Listar livros");
+      console.log("   👥 GET  /api/users        - Listar usuários (Admin)");
+      console.log("   📝 GET  /api/reservations - Minhas reservas");
+      console.log("   🛒 GET  /api/basket/:id   - Meu carrinho");
+      console.log("   🛠️  GET  /api/admin/*     - Rotas administrativas");
+      console.log("   ❤️  GET  /api/health      - Status do sistema");
+
+      console.log("\n✨ Recursos Disponíveis:");
+      console.log("   📖 Sistema completo de biblioteca");
+      console.log("   🔐 Autenticação JWT com roles");
+      console.log("   📝 Gestão de reservas e carrinho");
+      console.log("   🛠️  Painel administrativo completo");
+      console.log("   📚 Documentação Swagger interativa");
+      console.log("   🧪 Dados de teste pré-configurados");
+
+      console.log("\n🎯 Perfeito para:");
+      console.log("   ✅ Aprendizado de QA Manual");
+      console.log("   ✅ Automação de testes de API");
+      console.log("   ✅ Testes de integração");
+      console.log("   ✅ Práticas de teste E2E");
+
+      console.log("\n🚀 ===============================================");
+      console.log("✨ Sistema pronto para uso! Bons testes! 🧪");
+      console.log("🚀 ===============================================\n");
     });
 
     // Abrir automaticamente no navegador (apenas em desenvolvimento)
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== "production") {
       try {
         const open = await import("open");
         setTimeout(() => {
@@ -656,37 +714,36 @@ async function startServer() {
         // Falha silenciosa se o módulo 'open' não estiver disponível
       }
     }
-
   } catch (error) {
-    console.error('❌ Erro ao inicializar servidor:', error);
+    console.error("❌ Erro ao inicializar servidor:", error);
     process.exit(1);
   }
 }
 
 // Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\n🔄 Encerrando servidor graciosamente...');
-  
+process.on("SIGINT", () => {
+  console.log("\n🔄 Encerrando servidor graciosamente...");
+
   // Fechar conexão com banco de dados
   db.close((err) => {
     if (err) {
-      console.error('❌ Erro ao fechar banco de dados:', err);
+      console.error("❌ Erro ao fechar banco de dados:", err);
     } else {
-      console.log('✅ Banco de dados fechado');
+      console.log("✅ Banco de dados fechado");
     }
-    
-    console.log('👋 Servidor encerrado. Até mais!');
+
+    console.log("👋 Servidor encerrado. Até mais!");
     process.exit(0);
   });
 });
 
 // Tratar erros não capturados
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("❌ Unhandled Rejection at:", promise, "reason:", reason);
 });
 
-process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
+process.on("uncaughtException", (error) => {
+  console.error("❌ Uncaught Exception:", error);
   process.exit(1);
 });
 

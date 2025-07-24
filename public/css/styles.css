@@ -195,6 +195,13 @@ main {
     font-size: 1rem;
 }
 
+.alert-warning {
+    background-color: #f8ffaa;
+    border-color: #fff56b;
+    color: #4d4d4d;
+    font-size: 1rem;
+}
+
 /* Estilos para campos inválidos */
 .is-invalid {
     border-color: #dc3545;

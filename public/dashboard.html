@@ -14,7 +14,7 @@
     <style>
         .dashboard-card {
             transition: transform 0.2s;
-            border-left: 4px solid #0d6efd;
+            border-left: 4px solid #007bff;
         }
 
         .dashboard-card:hover {
@@ -51,11 +51,86 @@
         .activity-item.completed {
             border-left-color: #6c757d;
         }
+
+        .floating-image {
+            position: fixed;
+            top: 90px;
+            right: 300px;
+            z-index: 9999;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(-90px);
+        }
+
+        .floating-image.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-image img {
+            width: 130px;
+            height: 130px;
+            cursor: pointer;
+        }
+
+        .floating-image .tooltip {
+            visibility: hidden;
+            width: 150px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            top: 105%;
+            left: 1px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+
+        .floating-image .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #333 transparent;
+        }
+
+        .floating-image:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
+
+    <!-- Script para o comportamento da imagem flutuante -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const floatingImage = document.getElementById('floatingImage');
+            const heroSection = document.getElementById('home');
+
+            function handleScroll() {
+                const heroRect = heroSection.getBoundingClientRect();
+                const isHeroVisible = heroRect.bottom > 0 && heroRect.top < window.innerHeight;
+
+                if (isHeroVisible) {
+                    floatingImage.classList.add('visible');
+                } else {
+                    floatingImage.classList.remove('visible');
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Check initial state
+        });
+    </script>
 </head>
 
 <body>
-    <section class="hero-gradient text-white py-5">
+    <section id="home" class="hero-gradient text-white py-5">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center fade-in"
                 style="opacity: 1; transform: translateY(0px); transition: 0.6s;">
@@ -76,6 +151,14 @@
     </div>
 
     <div id="header"></div>
+
+    <!-- Imagem do Booki -->
+    <div class="floating-image" id="floatingImage">
+        <a>
+            <img src="images/booki.png" alt="Leitura" data-tooltip="Booki" />
+        </a>
+        <div class="tooltip">Oie. Eu sou Booki. Que bom que você está aqui!</div>
+    </div>
 
     <main class="container mt-5">
 
@@ -516,8 +599,8 @@
                 </div>
             `;
         }
-     
- function displayRecentActivities(reservations) {
+
+        function displayRecentActivities(reservations) {
             const container = document.getElementById('recent-activities');
 
             if (!reservations || reservations.length === 0) {
@@ -561,9 +644,9 @@
 
             container.innerHTML = activitiesHtml;
         }
-      
- 
- function getStatusBadge(status) {
+
+
+        function getStatusBadge(status) {
             const badges = {
                 'active': '<span class="badge bg-success"><i class="fas fa-clock"></i> Ativa</span>',
                 'expired': '<span class="badge bg-danger"><i class="fas fa-times"></i> Expirada</span>',

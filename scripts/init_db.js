@@ -66,6 +66,21 @@ db.serialize(() => {
     `);
   console.log("✅ Tabela Books criada");
 
+  db.run(`
+  CREATE TABLE IF NOT EXISTS Contacts (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT    NOT NULL,
+    email       TEXT    NOT NULL,
+    subject     TEXT    NOT NULL,
+    message     TEXT    NOT NULL,
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`,
+    (err) => {
+      if (err) console.error("❌ Erro ao criar tabela Contacts:", err);
+      else console.log("✅ Tabela Contacts criada");
+    }
+  );
+
   // Tabela de reservas (substitui Cart)
   db.run(`
         CREATE TABLE IF NOT EXISTS Reservations (
@@ -132,7 +147,7 @@ db.serialize(() => {
     UNIQUE(user_id, book_id)
   )
 `);
-console.log("✅ Tabela Basket criada");
+  console.log("✅ Tabela Basket criada");
 
   // Índices para performance
   db.run(`CREATE INDEX IF NOT EXISTS idx_basket_user_id ON Basket(user_id)`);
