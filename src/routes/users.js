@@ -213,7 +213,7 @@ const UsersController = require('../controllers/usersController');
  *                   users:
  *                     - id: 1
  *                       name: "Administrador"
- *                       email: "admin@admin.com"
+ *                       email: "admin@biblioteca.com"
  *                       isAdmin: true
  *                       created_at: "2024-01-01T00:00:00Z"
  *                       activeReservations: 0
@@ -448,7 +448,7 @@ router.post('/', UsersController.createUser);
  *                 value:
  *                   id: 1
  *                   name: "Administrador"
- *                   email: "admin@admin.com"
+ *                   email: "admin@biblioteca.com"
  *                   isAdmin: true
  *                   created_at: "2024-01-01T00:00:00Z"
  *                   statistics:

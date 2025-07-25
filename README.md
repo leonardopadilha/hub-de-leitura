@@ -1,6 +1,6 @@
 # 📚 Hub de Leitura - Sistema de Biblioteca para QA
 
- **Sistema educacional completo para aprendizado e prática de Quality Assurance (QA)**
+**Sistema educacional completo para aprendizado e prática de Quality Assurance (QA)**
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)
 ![Express](https://img.shields.io/badge/Express-4.18+-blue.svg)
@@ -40,7 +40,7 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 - Upload de capas
 - Categorização
 
-### 📝 **Sistema de Reservas**
+### 📝 **Reservas**
 
 - Reserva de livros disponíveis
 - Controle de prazos
@@ -113,7 +113,7 @@ npm start
 
 ### Administrador
 
-- **Email:** admin@admin.com
+- **Email:** admin@biblioteca.com
 - **Senha:** admin123
 - **Permissões:** Acesso total ao sistema
 
@@ -145,7 +145,7 @@ npm start
 - [ ] Tentar editar sem permissão de admin
 - [ ] Remover livro com reservas ativas
 
-### 📝 **Sistema de Reservas**
+### 📝 **Reservas**
 
 - [ ] Reservar livro disponível
 - [ ] Tentar reservar livro esgotado
@@ -205,7 +205,7 @@ npm start
 # Login
 curl -X POST http://localhost:3000/api/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"admin@admin.com","password":"admin123"}'
+  -d '{"email":"admin@biblioteca.com","password":"admin123"}'
 
 # Listar livros (com token)
 curl -X GET http://localhost:3000/api/books \

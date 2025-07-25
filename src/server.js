@@ -59,7 +59,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *       - ✅ Login de admin vs usuário comum
  *
  *       ### 🔑 Credenciais de teste:
- *       - **Admin:** admin@admin.com / admin123
+ *       - **Admin:** admin@biblioteca.com / admin123
  *       - **Usuário:** usuario@teste.com / user123
  *     requestBody:
  *       required: true
@@ -72,7 +72,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "admin@admin.com"
+ *                 example: "admin@biblioteca.com"
  *               password:
  *                 type: string
  *                 example: "admin123"
@@ -80,7 +80,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *             admin_login:
  *               summary: Login como administrador
  *               value:
- *                 email: "admin@admin.com"
+ *                 email: "admin@biblioteca.com"
  *                 password: "admin123"
  *             user_login:
  *               summary: Login como usuário comum
@@ -103,7 +103,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *                   example: "Administrador"
  *                 email:
  *                   type: string
- *                   example: "admin@admin.com"
+ *                   example: "admin@biblioteca.com"
  *                 isAdmin:
  *                   type: boolean
  *                   example: true
@@ -179,55 +179,6 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-/**
- * @swagger
- * /api/register:
- *   post:
- *     tags: [🔐 Autenticação]
- *     summary: Registro de novo usuário
- *     description: |
- *       **Cria uma nova conta de usuário no sistema**
- *
- *       ### 🎯 Cenários para testar:
- *       - ✅ Registro com dados válidos
- *       - ❌ Email já cadastrado
- *       - ❌ Senha muito curta
- *       - ❌ Email malformado
- *       - ❌ Campos obrigatórios em branco
- *
- *       ### ⚠️ Regras:
- *       - Email deve ser único
- *       - Senha mínimo 6 caracteres
- *       - Nome mínimo 2 caracteres
- *       - Novos usuários são criados como não-admin
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [name, email, password]
- *             properties:
- *               name:
- *                 type: string
- *                 minLength: 2
- *                 example: "João Silva"
- *               email:
- *                 type: string
- *                 format: email
- *                 example: "joao@email.com"
- *               password:
- *                 type: string
- *                 minLength: 6
- *                 example: "minhaSenha123"
- *     responses:
- *       201:
- *         description: ✅ Usuário criado com sucesso
- *       400:
- *         description: ❌ Dados inválidos ou email já cadastrado
- *       500:
- *         description: ❌ Erro interno do servidor
- */
 app.post("/api/register", (req, res) => {
   const { name, email, password } = req.body;
 
@@ -379,8 +330,8 @@ app.use("/api/admin", adminRoutes);
  *       - Conexão com banco de dados
  *       - Serviços disponíveis
  *       - Versão da API
- *       security: []
- *       responses:
+ *     security: []
+ *     responses:
  *       200:
  *         description: ✅ Sistema funcionando corretamente
  *         content:
@@ -494,7 +445,7 @@ app.get("/api/info", (req, res) => {
       admin: ["/api/admin/reservations", "/api/admin/users"],
     },
     testCredentials: {
-      admin: { email: "admin@admin.com", password: "admin123" },
+      admin: { email: "admin@biblioteca.com", password: "admin123" },
       user: { email: "usuario@teste.com", password: "user123" },
     },
   });

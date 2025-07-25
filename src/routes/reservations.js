@@ -202,7 +202,7 @@ const ReservationsController = require("../controllers/reservationsController");
  * @swagger
  * /api/reservations:
  *   get:
- *     tags: [📝 Sistema de Reservas]
+ *     tags: [📝 Reserva de Livros]
  *     summary: Listar minhas reservas
  *     description: |
  *       **Lista todas as reservas do usuário autenticado com estatísticas**
@@ -274,7 +274,7 @@ const ReservationsController = require("../controllers/reservationsController");
  *       500:
  *         $ref: '#/components/responses/ServerError'
  *   post:
- *     tags: [📝 Sistema de Reservas]
+ *     tags: [📝 Reserva de Livros]
  *     summary: Criar nova reserva
  *     description: |
  *       **Cria uma nova reserva de livro para o usuário autenticado**
@@ -341,7 +341,7 @@ router.post("/", authenticateToken, ReservationsController.createReservation);
  * @swagger
  * /api/reservations/from-basket:
  *   post:
- *     tags: [📝 Sistema de Reservas]
+ *     tags: [📝 Reserva de Livros]
  *     summary: Criar reservas a partir do carrinho
  *     description: |
  *       **Converte todos os itens do carrinho em reservas ativas**
@@ -402,7 +402,7 @@ router.post("/from-basket", authenticateToken, ReservationsController.createRese
  * @swagger
  * /api/reservations/statistics:
  *   get:
- *     tags: [📝 Sistema de Reservas]
+ *     tags: [📝 Reserva de Livros]
  *     summary: Estatísticas das reservas do usuário
  *     description: |
  *       **Retorna estatísticas detalhadas das reservas do usuário**
@@ -428,7 +428,7 @@ router.get("/statistics", authenticateToken, ReservationsController.getUserReser
  * @swagger
  * /api/reservations/{id}:
  *   put:
- *     tags: [📝 Sistema de Reservas]
+ *     tags: [📝 Reserva de Livros]
  *     summary: Atualizar reserva
  *     description: |
  *       **Permite diferentes ações na reserva (cancelar, atualizar observações)**
@@ -481,7 +481,7 @@ router.get("/statistics", authenticateToken, ReservationsController.getUserReser
  *       500:
  *         $ref: '#/components/responses/ServerError'
  *   delete:
- *     tags: [📝 Sistema de Reservas]
+ *     tags: [📝 Reserva de Livros]
  *     summary: Cancelar reserva (método alternativo)
  *     description: |
  *       **Cancela uma reserva ativa do usuário (alternativa ao PUT com action=cancel)**

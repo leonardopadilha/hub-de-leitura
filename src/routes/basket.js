@@ -9,15 +9,15 @@ const BasketController = require('../controllers/basketController');
  *   schemas:
  *     BasketItem:
  *       type: object
- *       description: Item no carrinho de livros
+ *       description: Item na cesta de livros
  *       properties:
  *         id:
  *           type: integer
- *           description: ID único do item no carrinho
+ *           description: ID único do item na cesta
  *           example: 1
  *         user_id:
  *           type: integer
- *           description: ID do usuário dono do carrinho
+ *           description: ID do usuário dono da cesta
  *           example: 2
  *         book_id:
  *           type: integer
@@ -50,7 +50,7 @@ const BasketController = require('../controllers/basketController');
  *           example: 3
  *     BasketRequest:
  *       type: object
- *       description: Dados para adicionar item ao carrinho
+ *       description: Dados para adicionar item à cesta
  *       properties:
  *         userId:
  *           type: integer
@@ -68,7 +68,7 @@ const BasketController = require('../controllers/basketController');
  *       required: [userId, bookId, quantity]
  *     BasketResponse:
  *       type: object
- *       description: Resposta com itens do carrinho
+ *       description: Resposta com itens da cesta
  *       properties:
  *         items:
  *           type: array
@@ -99,19 +99,19 @@ const BasketController = require('../controllers/basketController');
  * @swagger
  * /api/basket/{userId}:
  *   get:
- *     tags: [🛒 Carrinho (Basket)]
- *     summary: Listar itens do carrinho
+ *     tags: [🛒 Cesta de Livros]
+ *     summary: Listar itens da cesta
  *     description: |
- *       **Retorna todos os livros no carrinho do usuário**
+ *       **Retorna todos os livros na cesta do usuário**
  *       
  *       ### 🎯 Cenários para testar:
- *       - ✅ Ver próprio carrinho (sucesso)
- *       - ❌ Tentar ver carrinho de outro usuário (403)
- *       - 📋 Carrinho vazio vs com itens
+ *       - ✅ Ver própria cesta (sucesso)
+ *       - ❌ Tentar ver cesta de outro usuário (403)
+ *       - 📋 Cesta vazia vs com itens
  *       - ⚠️ Verificar livros que ficaram indisponíveis
  *       
  *       ### ⚠️ Regras de negócio:
- *       - Usuário só pode ver próprio carrinho
+ *       - Usuário só pode ver própria cesta
  *       - Mostra disponibilidade atual dos livros
  *       - Inclui estatísticas de disponibilidade
  *     security:
@@ -128,14 +128,14 @@ const BasketController = require('../controllers/basketController');
  *         example: 2
  *     responses:
  *       200:
- *         description: ✅ Itens do carrinho carregados com sucesso
+ *         description: ✅ Itens da cesta carregados com sucesso
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/BasketResponse'
  *             examples:
- *               carrinho_com_itens:
- *                 summary: Carrinho com livros
+ *               cesta_com_itens:
+ *                 summary: Cesta com livros
  *                 value:
  *                   items:
  *                     - id: 1
@@ -153,8 +153,8 @@ const BasketController = require('../controllers/basketController');
  *                     totalItems: 1
  *                     availableItems: 1
  *                     unavailableItems: 0
- *               carrinho_vazio:
- *                 summary: Carrinho vazio
+ *               cesta_vazia:
+ *                 summary: Cesta vazia
  *                 value:
  *                   items: []
  *                   total: 0
@@ -172,13 +172,13 @@ const BasketController = require('../controllers/basketController');
  *             example:
  *               message: "Token inválido ou expirado"
  *       403:
- *         description: ❌ Acesso negado - Tentativa de ver carrinho de outro usuário
+ *         description: ❌ Acesso negado - Tentativa de ver cesta de outro usuário
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *             example:
- *               message: "Acesso negado. Você só pode ver seu próprio carrinho."
+ *               message: "Acesso negado. Você só pode ver sua própria cesta."
  *       500:
  *         description: ❌ Erro interno do servidor
  */
@@ -188,24 +188,24 @@ router.get('/:userId', authenticateToken, BasketController.getUserBasket);
  * @swagger
  * /api/basket:
  *   post:
- *     tags: [🛒 Carrinho (Basket)]
- *     summary: Adicionar livro ao carrinho
+ *     tags: [🛒 Cesta de Livros]
+ *     summary: Adicionar livro à cesta
  *     description: |
- *       **Adiciona um livro disponível ao carrinho do usuário**
+ *       **Adiciona um livro disponível à cesta do usuário**
  *       
  *       ### 🎯 Cenários para testar:
  *       - ✅ Adicionar livro disponível (sucesso)
- *       - ❌ Adicionar livro já no carrinho (400)
+ *       - ❌ Adicionar livro já na cesta (400)
  *       - ❌ Adicionar livro esgotado (400)
  *       - ❌ Adicionar livro inexistente (404)
  *       - ❌ Quantidade diferente de 1 (400)
- *       - ❌ Tentar adicionar ao carrinho de outro usuário (403)
+ *       - ❌ Tentar adicionar à cesta de outro usuário (403)
  *       
  *       ### ⚠️ Regras de negócio:
- *       - Cada livro só pode estar uma vez no carrinho
+ *       - Cada livro só pode estar uma vez na cesta
  *       - Quantidade sempre deve ser 1
  *       - Apenas livros disponíveis podem ser adicionados
- *       - Usuário só pode adicionar ao próprio carrinho
+ *       - Usuário só pode adicionar à própria cesta
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -221,7 +221,7 @@ router.get('/:userId', authenticateToken, BasketController.getUserBasket);
  *                 userId: 2
  *                 bookId: 1
  *                 quantity: 1
- *             livro_ja_no_carrinho:
+ *             livro_ja_na_cesta:
  *               summary: Livro já adicionado (erro esperado)
  *               value:
  *                 userId: 2
@@ -235,7 +235,7 @@ router.get('/:userId', authenticateToken, BasketController.getUserBasket);
  *                 quantity: 2
  *     responses:
  *       201:
- *         description: ✅ Livro adicionado ao carrinho com sucesso
+ *         description: ✅ Livro adicionado à cesta com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -243,7 +243,7 @@ router.get('/:userId', authenticateToken, BasketController.getUserBasket);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Livro adicionado ao carrinho com sucesso."
+ *                   example: "Livro adicionado à cesta com sucesso."
  *                 itemId:
  *                   type: integer
  *                   example: 15
@@ -271,10 +271,10 @@ router.get('/:userId', authenticateToken, BasketController.getUserBasket);
  *                 availableCopies:
  *                   type: integer
  *             examples:
- *               livro_ja_no_carrinho:
- *                 summary: Livro já está no carrinho
+ *               livro_ja_na_cesta:
+ *                 summary: Livro já está na cesta
  *                 value:
- *                   message: "Livro já está no carrinho."
+ *                   message: "Livro já está na cesta."
  *                   bookTitle: "Dom Casmurro"
  *                   addedDate: "2024-01-15T10:30:00Z"
  *               livro_esgotado:
@@ -290,7 +290,7 @@ router.get('/:userId', authenticateToken, BasketController.getUserBasket);
  *       401:
  *         description: ❌ Token inválido ou expirado
  *       403:
- *         description: ❌ Acesso negado - Tentativa de adicionar ao carrinho de outro usuário
+ *         description: ❌ Acesso negado - Tentativa de adicionar à cesta de outro usuário
  *       404:
  *         description: ❌ Livro não encontrado
  *         content:
@@ -308,18 +308,18 @@ router.post('/', authenticateToken, BasketController.addToBasket);
  * @swagger
  * /api/basket/{userId}:
  *   delete:
- *     tags: [🛒 Carrinho (Basket)]
- *     summary: Limpar carrinho completo
+ *     tags: [🛒 Cesta de Livros]
+ *     summary: Limpar cesta completa
  *     description: |
- *       **Remove todos os itens do carrinho do usuário**
+ *       **Remove todos os itens da cesta do usuário**
  *       
  *       ### 🎯 Cenários para testar:
- *       - ✅ Limpar carrinho com itens (sucesso)
- *       - ✅ Limpar carrinho já vazio (sucesso)
- *       - ❌ Tentar limpar carrinho de outro usuário (403)
+ *       - ✅ Limpar cesta com itens (sucesso)
+ *       - ✅ Limpar cesta já vazia (sucesso)
+ *       - ❌ Tentar limpar cesta de outro usuário (403)
  *       
  *       ### ⚠️ Regras de negócio:
- *       - Usuário só pode limpar próprio carrinho
+ *       - Usuário só pode limpar própria cesta
  *       - Operação é irreversível
  *       - Não afeta disponibilidade dos livros
  *     security:
@@ -335,7 +335,7 @@ router.post('/', authenticateToken, BasketController.addToBasket);
  *           example: 2
  *     responses:
  *       200:
- *         description: ✅ Carrinho limpo com sucesso
+ *         description: ✅ Cesta limpa com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -343,7 +343,7 @@ router.post('/', authenticateToken, BasketController.addToBasket);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Carrinho limpo com sucesso."
+ *                   example: "Cesta limpa com sucesso."
  *                 itemsRemoved:
  *                   type: integer
  *                   description: Número de itens removidos
@@ -353,16 +353,16 @@ router.post('/', authenticateToken, BasketController.addToBasket);
  *                   description: Total de itens antes da limpeza
  *                   example: 3
  *             examples:
- *               carrinho_com_itens:
- *                 summary: Carrinho com itens foi limpo
+ *               cesta_com_itens:
+ *                 summary: Cesta com itens foi limpa
  *                 value:
- *                   message: "Carrinho limpo com sucesso."
+ *                   message: "Cesta limpa com sucesso."
  *                   itemsRemoved: 3
  *                   previousItemCount: 3
- *               carrinho_ja_vazio:
- *                 summary: Carrinho já estava vazio
+ *               cesta_ja_vazia:
+ *                 summary: Cesta já estava vazia
  *                 value:
- *                   message: "Carrinho já estava vazio."
+ *                   message: "Cesta já estava vazia."
  *                   itemsRemoved: 0
  *       401:
  *         description: ❌ Token inválido ou expirado
@@ -377,20 +377,20 @@ router.delete('/:userId', authenticateToken, BasketController.clearBasket);
  * @swagger
  * /api/basket/{userId}/{bookId}:
  *   delete:
- *     tags: [🛒 Carrinho (Basket)]
- *     summary: Remover item específico do carrinho
+ *     tags: [🛒 Cesta de Livros]
+ *     summary: Remover item específico da cesta
  *     description: |
- *       **Remove um livro específico do carrinho do usuário**
+ *       **Remove um livro específico da cesta do usuário**
  *       
  *       ### 🎯 Cenários para testar:
- *       - ✅ Remover item existente no carrinho (sucesso)
- *       - ❌ Remover item que não está no carrinho (404)
+ *       - ✅ Remover item existente na cesta (sucesso)
+ *       - ❌ Remover item que não está na cesta (404)
  *       - ❌ IDs inválidos (400)
- *       - ❌ Tentar remover de carrinho de outro usuário (403)
+ *       - ❌ Tentar remover de cesta de outro usuário (403)
  *       
  *       ### ⚠️ Regras de negócio:
- *       - Item deve existir no carrinho
- *       - Usuário só pode remover do próprio carrinho
+ *       - Item deve existir na cesta
+ *       - Usuário só pode remover do próprio cesta
  *       - Não afeta disponibilidade do livro
  *     security:
  *       - BearerAuth: []
@@ -413,7 +413,7 @@ router.delete('/:userId', authenticateToken, BasketController.clearBasket);
  *           example: 1
  *     responses:
  *       200:
- *         description: ✅ Item removido do carrinho com sucesso
+ *         description: ✅ Item removido da cesta com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -421,7 +421,7 @@ router.delete('/:userId', authenticateToken, BasketController.clearBasket);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Item removido do carrinho com sucesso."
+ *                   example: "Item removido da cesta com sucesso."
  *                 removedItem:
  *                   type: object
  *                   properties:
@@ -439,13 +439,13 @@ router.delete('/:userId', authenticateToken, BasketController.clearBasket);
  *       403:
  *         description: ❌ Acesso negado
  *       404:
- *         description: ❌ Item não encontrado no carrinho
+ *         description: ❌ Item não encontrado na cesta
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *             example:
- *               message: "Item não encontrado no carrinho."
+ *               message: "Item não encontrado na cesta."
  *       500:
  *         description: ❌ Erro interno do servidor
  */
@@ -455,15 +455,15 @@ router.delete('/:userId/:bookId', authenticateToken, BasketController.removeFrom
  * @swagger
  * /api/basket/{userId}/check-availability:
  *   get:
- *     tags: [🛒 Carrinho (Basket)]
+ *     tags: [🛒 Cesta de Livros]
  *     summary: Verificar disponibilidade dos itens
  *     description: |
- *       **Verifica se todos os livros do carrinho ainda estão disponíveis**
+ *       **Verifica se todos os livros da cesta ainda estão disponíveis**
  *       
  *       ### 🎯 Cenários para testar:
  *       - ✅ Todos os itens disponíveis
  *       - ⚠️ Alguns itens ficaram indisponíveis
- *       - 📋 Carrinho vazio
+ *       - 📋 Cesta vazia
  *       
  *       ### 💡 Útil antes de criar reservas
  *       - Mostra quais livros podem ser reservados

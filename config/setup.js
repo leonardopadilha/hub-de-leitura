@@ -144,7 +144,7 @@ RATE_LIMIT_MAX=100
     console.log('   ❤️  Health: http://localhost:3000/api/health\n');
     
     console.log('🔑 Credenciais de teste:');
-    console.log('   👑 Admin: admin@admin.com / admin123');
+    console.log('   👑 Admin: admin@biblioteca.com / admin123');
     console.log('   👤 User: usuario@teste.com / user123\n');
     
     console.log('📚 Próximos passos:');
