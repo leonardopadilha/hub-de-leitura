@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub de Leitura - Swagger Helper</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .title {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        .credential-box {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+        }
+        .credential-box.admin {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+        .credential-box.user {
+            border-color: #059669;
+            background: #f0fdf4;
+        }
+        .credential-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .credential-item {
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+        }
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #2563eb;
+        }
+        .btn.success {
+            background: #10b981;
+        }
+        .btn.success:hover {
+            background: #059669;
+        }
+        .instructions {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 8px 0;
+        }
+        .step-number {
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .copy-btn:hover {
+            background: #374151;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">📚 Hub de Leitura - Swagger Helper</h1>
+            <p>Facilite seus testes na API com autenticação automática!</p>
+        </div>
+
+        <div class="instructions">
+            <h3>🚀 Como usar o Swagger com autenticação:</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Escolha uma credencial abaixo e clique em "Login Rápido"</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Copie o campo "token_for_swagger" (apenas o hash, sem "Bearer")</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Vá para o Swagger e clique no botão "🔒 Authorize"</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Cole APENAS o hash no campo "Value" - Swagger adiciona "Bearer" automaticamente</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Clique "Authorize" e depois "Close"</strong>
+            </div>
+            
+            <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 10px; margin: 15px 0; border-radius: 6px;">
+                <strong>⚠️ IMPORTANTE para estudantes:</strong><br>
+                • <strong>No Swagger:</strong> Use apenas o hash (ex: "eyJhbGciOiJIUzI1NiIs...")<br>
+                • <strong>No Postman:</strong> Use o token completo (ex: "Bearer eyJhbGciOiJIUzI1NiIs...")<br>
+                • O Swagger adiciona "Bearer " automaticamente!
+            </div>
+        </div>
+
+        <h3>🔑 Credenciais de Teste:</h3>
+        
+        <div class="credential-box admin">
+            <button class="copy-btn" onclick="copyCredentials('admin')">📋 Copiar</button>
+            <div class="credential-title">👑 Administrador</div>
+            <div class="credential-item"><strong>Email:</strong> admin@biblioteca.com</div>
+            <div class="credential-item"><strong>Senha:</strong> admin123</div>
+            <div class="credential-item"><strong>Acesso:</strong> Todos os endpoints (criar/editar livros, gerenciar usuários, etc.)</div>
+            <button class="btn" onclick="quickLogin('admin@biblioteca.com', 'admin123', 'admin')">
+                👑 Login Rápido (Admin)
+            </button>
+        </div>
+
+        <div class="credential-box user">
+            <button class="copy-btn" onclick="copyCredentials('user')">📋 Copiar</button>
+            <div class="credential-title">👤 Usuário Comum</div>
+            <div class="credential-item"><strong>Email:</strong> usuario@teste.com</div>
+            <div class="credential-item"><strong>Senha:</strong> user123</div>
+            <div class="credential-item"><strong>Acesso:</strong> Visualizar livros, fazer reservas, gerenciar carrinho</div>
+            <button class="btn" onclick="quickLogin('usuario@teste.com', 'user123', 'user')">
+                👤 Login Rápido (Usuário)
+            </button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/api-docs" class="btn success">📖 Abrir Swagger UI</a>
+            <a href="/dashboard.html" class="btn">🏠 Dashboard</a>
+        </div>
+
+        <hr style="margin: 30px 0;">
+        
+        <h3>📋 Endpoints Principais para Testar:</h3>
+        <ul>
+            <li><strong>📚 GET /api/books</strong> - Listar livros (público)</li>
+            <li><strong>📝 GET /api/reservations</strong> - Minhas reservas (autenticado)</li>
+            <li><strong>🛒 GET /api/basket/{userId}</strong> - Meu carrinho (autenticado)</li>
+            <li><strong>👥 GET /api/users</strong> - Listar usuários (admin)</li>
+            <li><strong>👑 GET /api/admin/reservations</strong> - Todas as reservas (admin)</li>
+        </ul>
+    </div>
+
+    <script>
+        async function quickLogin(email, password, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status';
+            statusDiv.innerHTML = '🔄 Fazendo login...';
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Salvar apenas o hash para uso futuro no Swagger
+                    const tokenHash = data.token_for_swagger;
+                    localStorage.setItem('swagger_auth_token', tokenHash);
+                    
+                    // Copiar apenas o hash para clipboard (para Swagger)
+                    await navigator.clipboard.writeText(tokenHash);
+                    
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = `
+                        ✅ <strong>Login realizado com sucesso!</strong><br>
+                        👤 Logado como: ${data.name} (${data.isAdmin ? 'Admin' : 'Usuário'})<br><br>
+                        
+                        <div style="background: #f0f9ff; border: 1px solid #0ea5e9; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                            <strong>🔧 Para o Swagger:</strong><br>
+                            Hash copiado: <code style="background: #e5e7eb; padding: 2px 4px;">${tokenHash.substring(0, 20)}...</code><br>
+                            <small>Cole este hash no campo "Value" do Authorize</small>
+                        </div>
+                        
+                        <div style="background: #f0fdf4; border: 1px solid #10b981; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                            <strong>📮 Para o Postman:</strong><br>
+                            Token completo: <code style="background: #e5e7eb; padding: 2px 4px;">${data.token.substring(0, 20)}...</code><br>
+                            <button onclick="copyFullToken('${data.token}')" style="margin-top: 5px; padding: 4px 8px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                📋 Copiar Token Completo
+                            </button>
+                        </div>
+                        
+                        📖 <a href="/api-docs" target="_blank">Clique aqui para abrir o Swagger</a> e cole o hash no botão "🔒 Authorize"
+                    `;
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = `❌ <strong>Erro no login:</strong> ${data.message}`;
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `❌ <strong>Erro de conexão:</strong> ${error.message}`;
+            }
+        }
+
+        function copyCredentials(type) {
+            let text;
+            if (type === 'admin') {
+                text = 'Email: admin@biblioteca.com\nSenha: admin123';
+            } else {
+                text = 'Email: usuario@teste.com\nSenha: user123';
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copiado!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        function copyFullToken(fullToken) {
+            navigator.clipboard.writeText(fullToken).then(() => {
+                const btn = event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copiado!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Verificar se já existe um token salvo
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedToken = localStorage.getItem('swagger_auth_token');
+            if (savedToken) {
+                const statusDiv = document.getElementById('status');
+                statusDiv.style.display = 'block';
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    ℹ️ <strong>Token já salvo!</strong><br>
+                    Você já tem um token de autenticação salvo. 
+                    <a href="/api-docs" target="_blank">Abra o Swagger</a> e ele será aplicado automaticamente.
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

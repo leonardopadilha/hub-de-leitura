@@ -352,7 +352,9 @@ Desenvolvido com ❤️ para a comunidade de **Quality Assurance**.
 
 **Contribuidores:**
 
-- [Fábio Araújo](https://github.com/fabioaraujoqa) - Criador
+- Fábio Araújo
+    - [Repositório](https://github.com/fabioaraujoqa)
+    - [Linkedin](https://www.linkedin.com/in/fabio10/)
 
 ---
 

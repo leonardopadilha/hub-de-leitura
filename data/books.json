@@ -25,7 +25,7 @@
     "format": "Físico",
     "available": 4,
     "description": "1984 é um romance distópico que descreve um regime totalitário liderado pelo Grande Irmão. A história acompanha Winston Smith em sua luta contra a opressão e o controle do pensamento, levantando questões sobre liberdade e vigilância.",
-    "cover_image": ""
+    "cover_image": "1984.jpg"
   },
   {
     "title": "O Pequeno Príncipe",
@@ -67,7 +67,7 @@
     "format": "Físico",
     "available": 2,
     "description": "Primeiro volume da trilogia O Senhor dos Anéis, acompanha Frodo Bolseiro em sua jornada para destruir o Um Anel. Uma narrativa épica repleta de magia, amizade, coragem e batalhas memoráveis.",
-    "cover_image": ""
+    "cover_image": "senhor-dos-aneis-sociedade.jpg"
   },
   {
     "title": "A Arte da Guerra",
@@ -81,7 +81,7 @@
     "format": "Físico",
     "available": 6,
     "description": "A Arte da Guerra é um tratado militar chinês com ensinamentos sobre táticas, estratégias e inteligência. Seus princípios são aplicados não apenas em guerras, mas também em negócios, política e vida pessoal.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "arte-da-guerra.jpg"
   },
   {
     "title": "O Alquimista",
@@ -95,7 +95,7 @@
     "format": "Físico",
     "available": 8,
     "description": "O Alquimista narra a jornada espiritual de Santiago, um jovem pastor que parte em busca de um tesouro. A obra aborda temas como destino, sonhos e propósito de vida, tornando-se um fenômeno mundial.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "alquimista.jpg"
   },
   {
     "title": "A Menina que Roubava Livros",
@@ -109,7 +109,7 @@
     "format": "Físico",
     "available": 7,
     "description": "Durante a Segunda Guerra Mundial, Liesel encontra refúgio nos livros, enquanto a Morte narra sua história. Uma comovente homenagem ao poder das palavras e da literatura.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "menina-que-roubava-livros.jpg"
   },
   {
     "title": "O Código Da Vinci",
@@ -123,7 +123,7 @@
     "format": "Físico",
     "available": 5,
     "description": "O simbologista Robert Langdon investiga um assassinato no Louvre e descobre uma conspiração milenar ligada ao Santo Graal. Um thriller eletrizante repleto de enigmas e segredos históricos.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "codigo-davinci.jpg"
   },
   {
     "title": "Harry Potter e a Pedra Filosofal",
@@ -137,7 +137,7 @@
     "format": "Físico",
     "available": 9,
     "description": "O primeiro livro da saga Harry Potter apresenta o jovem bruxo que descobre seu passado mágico e embarca em aventuras na Escola de Magia de Hogwarts. Um clássico moderno da literatura infantojuvenil.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "hh-pedra-filosofal.jpg"
   },
   {
     "title": "Orgulho e Preconceito",
@@ -151,7 +151,7 @@
     "format": "Físico",
     "available": 4,
     "description": "Elizabeth Bennet e o Sr. Darcy protagonizam uma história de amor marcada por mal-entendidos, orgulho e transformações pessoais. Uma das obras mais amadas da literatura inglesa.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "orgulho-preconceito.jpg"
   },
   {
     "title": "O Hobbit",
@@ -165,7 +165,7 @@
     "format": "Físico",
     "available": 3,
     "description": "Bilbo Bolseiro embarca em uma jornada inesperada com anões em busca de um tesouro guardado por um dragão. Uma introdução ao universo da Terra Média e às aventuras épicas de Tolkien.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "hobbit.jpg"
   },
   {
     "title": "Cem Anos de Solidão",
@@ -179,7 +179,7 @@
     "format": "Físico",
     "available": 6,
     "description": "A saga da família Buendía em Macondo é uma narrativa envolvente que mistura realidade e fantasia. Obra-prima do realismo mágico e um marco da literatura latino-americana.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "cem-anos-solidao.jpg"
   },
   {
     "title": "O Morro dos Ventos Uivantes",
@@ -193,7 +193,7 @@
     "format": "Físico",
     "available": 2,
     "description": "Um clássico da literatura inglesa que narra a intensa e trágica paixão entre Heathcliff e Catherine, ambientada em uma sombria propriedade rural inglesa.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "morro-ventos.jpg"
   },
   {
     "title": "A Metamorfose",
@@ -207,7 +207,7 @@
     "format": "Físico",
     "available": 5,
     "description": "Gregor Samsa acorda transformado em um inseto gigante, e a história aborda temas como alienação, rejeição e identidade em uma narrativa surreal e simbólica.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "metamorfose.jpg"
   },
   {
     "title": "O Diário de Anne Frank",
@@ -221,7 +221,7 @@
     "format": "Físico",
     "available": 4,
     "description": "O relato emocionante da jovem judia Anne Frank durante o período em que se escondeu dos nazistas. Uma das mais tocantes testemunhas do Holocausto.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "diario-de-anne.jpg"
   },
   {
     "title": "A Divina Comédia",
@@ -235,7 +235,7 @@
     "format": "Físico",
     "available": 3,
     "description": "Dante viaja por Inferno, Purgatório e Paraíso, guiado por Virgílio e Beatriz, em uma das mais grandiosas obras da literatura mundial, repleta de alegorias e simbolismos.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "divina-comedia.jpg"
   },
   {
     "title": "Dom Quixote",
@@ -249,7 +249,7 @@
     "format": "Físico",
     "available": 6,
     "description": "Dom Quixote e Sancho Pança vivem aventuras hilárias e filosóficas na busca por justiça e cavalheirismo. Um marco da literatura ocidental, repleto de crítica social.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "dom-quixote.jpg"
   },
   {
     "title": "O Sol é Para Todos",
@@ -263,7 +263,7 @@
     "format": "Físico",
     "available": 5,
     "description": "Narrado pela jovem Scout, o livro denuncia o racismo e a injustiça nos Estados Unidos dos anos 30, comovendo leitores com sua sensibilidade e firmeza moral.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "sol-pra-todos.jpg"
   },
   {
     "title": "O Apanhador no Campo de Centeio",
@@ -277,21 +277,7 @@
     "format": "Físico",
     "available": 4,
     "description": "A história de Holden Caulfield, um adolescente rebelde e introspectivo, que critica a hipocrisia da sociedade moderna. Um clássico da literatura juvenil.",
-    "cover_image": "livro-padrao.png"
-  },
-  {
-    "title": "A Revolução dos Bichos",
-    "author": "George Orwell",
-    "isbn": "978-85-359-0277-5",
-    "editor": "Companhia das Letras",
-    "category": "Ficção",
-    "language": "Português",
-    "publication_year": 2008,
-    "pages": 256,
-    "format": "Físico",
-    "available": 3,
-    "description": "Uma alegoria sobre o poder e a corrupção, A Revolução dos Bichos mostra como os ideais de uma revolução podem ser distorcidos. Os animais de uma fazenda tomam o controle, apenas para descobrir que a tirania pode mudar de forma.",
-    "cover_image": "livro-padrao.png"
+    "cover_image": "apanhador-campo.jpg"
   },
   {
     "title": "O Senhor dos Anéis: As Duas Torres",
@@ -305,6 +291,35 @@
     "format": "Físico",
     "available": 2,
     "description": "Segundo volume da trilogia O Senhor dos Anéis, continua a jornada épica de Frodo e seus amigos enquanto enfrentam novos perigos e desafios na Terra Média.",
+    "cover_image": "senhor-aneis-duas-torres.jpg"
+  },
+  {
+    "title": "O Ladrão de Raios",
+    "author": "Rick Riordan",
+    "isbn": "978-85-359-0277-5",
+    "editor": "Editora Intrínseca",
+    "category": "Fantasia",
+    "language": "Português",
+    "publication_year": 2008,
+    "pages": 256,
+    "format": "Físico",
+    "available": 7,
+    "description": "Percy Jackson descobre ser filho de Poseidon e embarca em uma aventura para impedir uma guerra entre os deuses do Olimpo. Uma mistura envolvente de mitologia grega e aventura moderna.",
+    "cover_image": "ladrao-reios.png"
+  }, 
+  {
+    "title": "Hub de Leitura",
+    "author": "Autor Exemplo",
+    "isbn": "978-85-359-0000-0",
+    "editor": "Editora Exemplo",
+    "category": "Geral",
+    "language": "Português",
+    "publication_year": 2023,
+    "pages": 200,
+    "format": "Físico",
+    "available": 1,
+    "description": "Livro de exemplo para demonstração do sistema Hub de Leitura. Contém informações básicas para testes e validação da aplicação.",
     "cover_image": "livro-padrao.png"
   }
+
 ]

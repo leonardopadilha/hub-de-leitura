@@ -166,6 +166,95 @@ const logAuthAttempts = (req, res, next) => {
   next();
 };
 
+// === MIDDLEWARE DE DEBUG PARA SWAGGER ===
+
+// Middleware para debug detalhado de autenticação
+const debugAuth = (req, res, next) => {
+  if (process.env.NODE_ENV === 'development') {
+    const authHeader = req.headers['authorization'];
+    const userAgent = req.headers['user-agent'] || '';
+    const isSwagger = userAgent.includes('swagger') || req.headers['referer']?.includes('/api-docs');
+    
+    console.log('\n🔍 ===== DEBUG AUTH =====');
+    console.log(`📍 Endpoint: ${req.method} ${req.path}`);
+    console.log(`🌐 User-Agent: ${userAgent}`);
+    console.log(`📚 É Swagger: ${isSwagger ? 'SIM' : 'NÃO'}`);
+    console.log(`🔑 Auth Header: ${authHeader ? 'PRESENTE' : 'AUSENTE'}`);
+    
+    if (authHeader) {
+      console.log(`📝 Header completo: ${authHeader}`);
+      const token = authHeader.split(' ')[1];
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, SECRET_KEY);
+          console.log(`✅ Token válido para: ${decoded.email} (Admin: ${decoded.isAdmin})`);
+        } catch (error) {
+          console.log(`❌ Token inválido: ${error.message}`);
+        }
+      }
+    }
+    
+    console.log('🔍 ========================\n');
+  }
+  next();
+};
+
+// Middleware para adicionar headers CORS específicos para Swagger
+const swaggerCors = (req, res, next) => {
+  // Headers específicos para requisições do Swagger UI
+  if (req.headers['referer']?.includes('/api-docs') || 
+      req.headers['user-agent']?.includes('swagger')) {
+    
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control, Pragma');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Responder imediatamente a requisições OPTIONS
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
+  }
+  next();
+};
+
+// Middleware para interceptar e melhorar respostas de erro de autenticação
+const enhanceAuthErrors = (req, res, next) => {
+  const originalJson = res.json;
+  
+  res.json = function(data) {
+    // Se é um erro de autenticação e vem do Swagger
+    if (res.statusCode === 401 && 
+        (req.headers['referer']?.includes('/api-docs') || 
+         req.headers['user-agent']?.includes('swagger'))) {
+      
+      // Adicionar instruções específicas para o Swagger
+      if (data && typeof data === 'object') {
+        data.swagger_help = {
+          message: "🔧 Problema de autenticação no Swagger?",
+          steps: [
+            "1. Faça login em /api/login primeiro",
+            "2. Copie o token retornado (ex: 'Bearer eyJ...')",
+            "3. Clique no botão 🔒 Authorize no topo do Swagger",
+            "4. Cole o token completo no campo 'Value'",
+            "5. Clique 'Authorize' e depois 'Close'",
+            "6. Tente a requisição novamente"
+          ],
+          helper_page: "/swagger-helper.html",
+          test_credentials: {
+            admin: "admin@biblioteca.com / admin123",
+            user: "usuario@teste.com / user123"
+          }
+        };
+      }
+    }
+    
+    return originalJson.call(this, data);
+  };
+  
+  next();
+};
+
 module.exports = {
   authenticateToken,
   isAdmin,
@@ -174,5 +263,9 @@ module.exports = {
   optionalAuth,
   generateToken,
   verifyToken,
-  logAuthAttempts
+  logAuthAttempts,
+  debugAuth,
+  swaggerCors,
+  enhanceAuthErrors
 };
+

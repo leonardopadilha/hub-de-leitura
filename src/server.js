@@ -38,7 +38,50 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// === CONFIGURAÇÃO DO SWAGGER UI ===
+const swaggerUiOptions = {
+  explorer: true,
+  swaggerOptions: {
+    // Persistir autorização entre requisições
+    persistAuthorization: true,
+    // Mostrar apenas um esquema de autenticação por vez
+    authAction: {
+      BearerAuth: {
+        name: "BearerAuth",
+        schema: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+        value: "",
+      },
+    },
+    // Configurações de UI
+    docExpansion: "list",
+    filter: true,
+    showRequestHeaders: true,
+    showCommonExtensions: true,
+    // Configurar interceptor para adicionar automaticamente o token
+    requestInterceptor: function (req) {
+      // Se existe um token salvo, adiciona automaticamente
+      const token = localStorage.getItem("swagger_auth_token");
+      if (token && !req.headers.Authorization) {
+        req.headers.Authorization = token;
+      }
+      return req;
+    },
+  },
+};
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      persistAuthorization: true
+    }
+  })
+);
 
 // === ROTAS DE AUTENTICAÇÃO ===
 
@@ -49,7 +92,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *     tags: [🔐 Autenticação]
  *     summary: Login de usuário
  *     description: |
- *       **Autentica usuário e retorna token JWT**
+ *       **Autentica usuário e retorna token JWT para uso na API**
  *
  *       ### 🎯 Cenários para testar:
  *       - ✅ Login com credenciais válidas
@@ -58,9 +101,24 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *       - ❌ Campos obrigatórios em branco
  *       - ✅ Login de admin vs usuário comum
  *
- *       ### 🔑 Credenciais de teste:
+ *       ### 🔑 Credenciais de teste pré-configuradas:
  *       - **Admin:** admin@biblioteca.com / admin123
  *       - **Usuário:** usuario@teste.com / user123
+ *
+ *       ### 🚀 Como usar no Swagger:
+ *       1. Faça login com uma das credenciais acima
+ *       2. Copie o campo **"token_for_swagger"** (apenas o hash, sem "Bearer")
+ *       3. Clique no botão "🔒 Authorize" no topo desta página
+ *       4. Cole APENAS o hash no campo "Value" - Swagger adiciona "Bearer" automaticamente
+ *       5. Clique em "Authorize" e depois "Close"
+ *       6. Agora você pode testar os endpoints protegidos!
+ *
+ *       ### 📮 Para Postman/Insomnia:
+ *       - Use o campo **"token"** completo (que já inclui "Bearer ")
+ *
+ *       ### ⚠️ IMPORTANTE:
+ *       - **Swagger:** Use apenas o hash (token_for_swagger)
+ *       - **Postman:** Use o token completo (token)
  *     requestBody:
  *       required: true
  *       content:
@@ -72,21 +130,32 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *               email:
  *                 type: string
  *                 format: email
+ *                 description: Email do usuário cadastrado
  *                 example: "admin@biblioteca.com"
  *               password:
  *                 type: string
+ *                 description: Senha do usuário
  *                 example: "admin123"
+ *                 minLength: 6
  *           examples:
  *             admin_login:
- *               summary: Login como administrador
+ *               summary: 👑 Login como Administrador
+ *               description: "Use estas credenciais para testar funcionalidades de admin"
  *               value:
  *                 email: "admin@biblioteca.com"
  *                 password: "admin123"
  *             user_login:
- *               summary: Login como usuário comum
+ *               summary: 👤 Login como Usuário Comum
+ *               description: "Use estas credenciais para testar funcionalidades de usuário"
  *               value:
  *                 email: "usuario@teste.com"
  *                 password: "user123"
+ *             teste_erro:
+ *               summary: ❌ Credenciais Inválidas (para testar erro)
+ *               description: "Use para testar o comportamento com credenciais erradas"
+ *               value:
+ *                 email: "inexistente@email.com"
+ *                 password: "senhaerrada"
  *     responses:
  *       200:
  *         description: ✅ Login realizado com sucesso
@@ -97,36 +166,88 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *               properties:
  *                 id:
  *                   type: integer
+ *                   description: ID único do usuário
  *                   example: 1
  *                 name:
  *                   type: string
+ *                   description: Nome completo do usuário
  *                   example: "Administrador"
  *                 email:
  *                   type: string
+ *                   format: email
+ *                   description: Email do usuário
  *                   example: "admin@biblioteca.com"
  *                 isAdmin:
  *                   type: boolean
+ *                   description: Se o usuário é administrador
  *                   example: true
  *                 token:
  *                   type: string
+ *                   description: "Token JWT completo para Postman/Insomnia (inclui 'Bearer ')"
  *                   example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 token_for_swagger:
+ *                   type: string
+ *                   description: "Apenas o hash do token para usar no Swagger (sem 'Bearer ')"
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 expiresIn:
+ *                   type: string
+ *                   description: Tempo de expiração do token
+ *                   example: "8h"
+ *                 swagger_instructions:
+ *                   type: object
+ *                   description: Instruções para usar no Swagger
+ *                   properties:
+ *                     step1:
+ *                       type: string
+ *                       example: "Copie o campo 'token_for_swagger' (sem Bearer)"
+ *                     step2:
+ *                       type: string
+ *                       example: "Clique no botão 'Authorize' 🔒 no topo da página"
+ *                     step3:
+ *                       type: string
+ *                       example: "Cole APENAS o hash no campo 'Value' (Swagger adiciona 'Bearer' automaticamente)"
+ *                     step4:
+ *                       type: string
+ *                       example: "Clique 'Authorize' e depois 'Close'"
+ *                     step5:
+ *                       type: string
+ *                       example: "Agora você pode usar endpoints protegidos!"
+ *                     postman_note:
+ *                       type: string
+ *                       example: "Para Postman, use o campo 'token' completo (com Bearer)"
+ *       400:
+ *         description: ❌ Dados de entrada inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       401:
  *         description: ❌ Credenciais inválidas
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Email ou senha incorretos."
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
  */
+
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({
       message: "Email e senha são obrigatórios.",
+      error: "MISSING_FIELDS",
+      hint: "Forneça tanto email quanto senha no body da requisição",
+    });
+  }
+
+  // Validação básica de formato de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({
+      message: "Formato de email inválido.",
+      error: "INVALID_EMAIL_FORMAT",
     });
   }
 
@@ -135,12 +256,16 @@ app.post("/api/login", (req, res) => {
       console.error("Erro ao buscar usuário:", err);
       return res.status(500).json({
         message: "Erro interno do servidor.",
+        error: "DATABASE_ERROR",
+        timestamp: new Date().toISOString(),
       });
     }
 
     if (!user) {
       return res.status(401).json({
         message: "Email ou senha incorretos.",
+        error: "INVALID_CREDENTIALS",
+        hint: "Verifique suas credenciais. Para testes, use: admin@biblioteca.com/admin123 ou usuario@teste.com/user123",
       });
     }
 
@@ -149,31 +274,56 @@ app.post("/api/login", (req, res) => {
         console.error("Erro ao comparar senhas:", err);
         return res.status(500).json({
           message: "Erro interno do servidor.",
+          error: "BCRYPT_ERROR",
+          timestamp: new Date().toISOString(),
         });
       }
 
       if (!result) {
         return res.status(401).json({
           message: "Email ou senha incorretos.",
+          error: "INVALID_CREDENTIALS",
+          hint: "Verifique suas credenciais. Para testes, use: admin@biblioteca.com/admin123 ou usuario@teste.com/user123",
         });
       }
 
-      const token = jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-          isAdmin: user.isAdmin,
-        },
-        SECRET_KEY,
-        { expiresIn: "8h" }
-      );
+      const tokenPayload = {
+        id: user.id,
+        email: user.email,
+        isAdmin: !!user.isAdmin,
+      };
+
+      const token = jwt.sign(tokenPayload, SECRET_KEY, { expiresIn: "8h" });
+      const bearerToken = `Bearer ${token}`;
+
+      // Log para desenvolvimento
+      if (process.env.NODE_ENV !== "production") {
+        console.log(
+          `✅ Login bem-sucedido: ${user.email} (Admin: ${!!user.isAdmin})`
+        );
+        console.log(`🔑 Token gerado: ${bearerToken.substring(0, 20)}...`);
+      }
 
       res.json({
         id: user.id,
         name: user.name,
         email: user.email,
         isAdmin: !!user.isAdmin,
-        token: `Bearer ${token}`,
+        token: bearerToken, // Para Postman e outras ferramentas
+        token_for_swagger: token, // Apenas o hash para o Swagger
+        expiresIn: "8h",
+        loginTime: new Date().toISOString(),
+        // Instruções úteis para o Swagger
+        swagger_instructions: {
+          step1: "Copie o campo 'token_for_swagger' (sem Bearer)",
+          step2: "Clique no botão 'Authorize' 🔒 no topo da página",
+          step3:
+            "Cole APENAS o hash no campo 'Value' (Swagger adiciona 'Bearer' automaticamente)",
+          step4: "Clique 'Authorize' e depois 'Close'",
+          step5: "Agora você pode usar endpoints protegidos!",
+          postman_note:
+            "Para Postman, use o campo 'token' completo (com Bearer)",
+        },
       });
     });
   });
