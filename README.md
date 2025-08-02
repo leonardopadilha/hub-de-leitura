@@ -82,9 +82,9 @@ O **Hub de Leitura** é um sistema de gestão de biblioteca desenvolvido especif
 
 - Node.js 18+ instalado
 - Git instalado
-- Editor de código (VS Code recomendado)
+- Editor de código (Visual Studio Code recomendado)
 
-### 1. Clone o Repositório
+### 1. Clone o Repositório e entre na pasta
 
 ```bash
 git clone https://github.com/fabioaraujoqa/hub-de-leitura.git
@@ -123,80 +123,6 @@ npm start
 - **Senha:** user123
 - **Permissões:** Reservas e consultas
 
-## 📋 Cenários de Teste Sugeridos
-
-### 🔐 **Autenticação**
-
-- [ ] Login com credenciais válidas
-- [ ] Login com email inexistente
-- [ ] Login com senha incorreta
-- [ ] Registro de novo usuário
-- [ ] Registro com email já existente
-- [ ] Acesso com token expirado
-- [ ] Tentativa de acesso sem token
-
-### 📚 **Gestão de Livros**
-
-- [ ] Listar todos os livros
-- [ ] Buscar por título/autor/categoria
-- [ ] Filtrar por disponibilidade
-- [ ] Adicionar novo livro (Admin)
-- [ ] Editar informações do livro (Admin)
-- [ ] Tentar editar sem permissão de admin
-- [ ] Remover livro com reservas ativas
-
-### 📝 **Reservas**
-
-- [ ] Reservar livro disponível
-- [ ] Tentar reservar livro esgotado
-- [ ] Reservar mesmo livro duas vezes
-- [ ] Marcar retirada de livro (Admin)
-- [ ] Marcar devolução (Admin)
-- [ ] Estender prazo de devolução (Admin)
-- [ ] Cancelar reserva (Admin)
-
-### 🛠️ **Painel Admin**
-
-- [ ] Acessar dashboard com perfil admin
-- [ ] Tentar acessar dashboard como usuário comum
-- [ ] Visualizar estatísticas
-- [ ] Filtrar reservas por status/usuário
-- [ ] Verificar alertas de atraso
-
-## 🗂️ Estrutura do Projeto
-
-## 🔗 Endpoints da API
-
-### Autenticação
-
-- `POST /api/login` - Login de usuário
-- `POST /api/registrar` - Registro de usuário
-
-### Livros
-
-- `GET /api/books` - Listar livros
-- `GET /api/books/:id` - Detalhes do livro
-- `POST /api/books` - Adicionar livro (Admin)
-- `PUT /api/books/:id` - Editar livro (Admin)
-- `DELETE /api/books/:id` - Remover livro (Admin)
-
-### Reservas (Usuário)
-
-- `GET /api/reservations` - Minhas reservas
-- `POST /api/reservations` - Fazer reserva
-
-### Admin - Reservas
-
-- `GET /api/admin/reservations` - Todas as reservas
-- `GET /api/admin/reservations/stats` - Estatísticas
-- `PUT /api/admin/reservations/:id` - Atualizar status
-- `PUT /api/admin/reservations/:id/extend` - Estender prazo
-
-### Utilitários
-
-- `GET /api/health` - Status do sistema
-- `GET /api-docs` - Documentação Swagger
-
 ## 🧪 Testando a API
 
 ### Com cURL
@@ -218,30 +144,6 @@ curl -X GET http://localhost:3000/api/books \
 2. Configure o token JWT no cabeçalho Authorization
 3. Teste todos os endpoints disponíveis
 
-## 🎨 Personalizações
-
-### Adicionando Novos Livros
-
-```sql
-INSERT INTO Books (title, author, category, isbn, total_copies, available_copies) 
-VALUES ('Seu Livro', 'Autor', 'Categoria', 'ISBN', 5, 5);
-```
-
-### Criando Usuário Admin
-
-```sql
-UPDATE Users SET isAdmin = 1 WHERE email = 'seu@email.com';
-```
-
-### Configurando Tempo de Token
-
-```javascript
-// Em src/server.js
-const token = jwt.sign(payload, SECRET_KEY, { 
-  expiresIn: "8h" // Altere conforme necessário
-});
-```
-
 ## 🤝 Contribuindo
 
 ### Para Instrutores
@@ -259,26 +161,15 @@ const token = jwt.sign(payload, SECRET_KEY, {
 3. Compartilhe casos de teste interessantes
 4. Contribua com exemplos de automação
 
-## 📝 Logs e Debugging
-
-### Visualizar Logs
-
-```bash
-# No terminal onde o servidor está rodando
-# Os logs aparecem automaticamente
-```
-
-### Estrutura do Banco de Dados
-
-- **Users** - Usuários do sistema
-- **Books** - Catálogo de livros
-- **Reservations** - Histórico de reservas
 
 ### Resetar Banco de Dados
 
 ```bash
-# Pare o servidor e delete o arquivo do banco
-rm data/library.db
+# Pare o servidor "CTRL + C" e delete o arquivo do banco
+rm database/biblioteca.db
+ou apague manualmente entrando na pasta.
+# Rode o comando para recriar o banco
+npm run db
 # Reinicie o servidor para recriar as tabelas
 npm start
 ```
@@ -320,16 +211,6 @@ kill -9 PID_DO_PROCESSO
 - [Jest](https://jestjs.io/) - Para testes automatizados
 - [Newman](https://github.com/postmanlabs/newman) - CLI do Postman
 
-## 🏆 Próximas Funcionalidades
-
-- [ ] Testes automatizados com Jest
-- [ ] Notificações por email
-- [ ] Sistema de multas
-- [ ] Reserva de salas de estudo
-- [ ] API de recomendações
-- [ ] Dashboard com gráficos
-- [ ] Integração com sistemas externos
-- [ ] App mobile com React Native
 
 ### Uso Permitido
 
