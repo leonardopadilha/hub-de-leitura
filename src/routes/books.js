@@ -380,13 +380,17 @@ const { authenticateToken, isAdmin } = require('../middleware/auth');
  *             atualizacao_parcial:
  *               summary: Atualizar apenas alguns campos
  *               value:
- *                 description: "Descrição atualizada do livro"
- *                 available_copies: 2
- *             corrigir_disponibilidade:
- *               summary: Corrigir número de exemplares
- *               value:
- *                 available_copies: 4
- *                 total_copies: 5
+ *                  title: "Nome livro atualizado"
+ *                  author: "Autor Atualizado"
+ *                  description: "Descrição atualizada do livro"
+ *                  category: "Categoria atualizada"
+ *                  editor: "Editora Atualizada"
+ *                  language: "Português"
+ *                  publication_year: 2000
+ *                  pages: 300
+ *                  format: "Físico"
+ *                  total_copies: 10
+ *                  available_copies: 5
  *     responses:
  *       200:
  *         description: Livro atualizado com sucesso
