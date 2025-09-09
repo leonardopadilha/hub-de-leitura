@@ -1,10 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test } from '../../fixtures/fixture';
 
-test('Home page should be visible', async ({ page }) => {
-  await page.goto('http://localhost:3000/index.html');
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveURL(/localhost/);
-  const pageTitle = await page.locator('.logo-section h1').textContent();
-  await expect(pageTitle).toEqual('Hub de Leitura');
-});
+test('Should click on book catalog button', async ({ homePage, catalogPage }) => {
+  await homePage.clickOnBookCatalog()
+  await catalogPage.expectPageTitle('Conheça Nosso Acervo')
+  await catalogPage.bookListIsVisibleAndNotEmpty()
+})
