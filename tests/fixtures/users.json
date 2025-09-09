@@ -1,11 +1,13 @@
 {
   "admin_user": {
     "email": "admin@biblioteca.com",
-    "password": "admin123"
+    "password": "admin123",
+    "logged": "Bibliotecário Admin"
   },
   "common_user": {
       "email": "usuario@teste.com",
-      "password": "user123"
+      "password": "user123",
+      "logged": "Usuário Padrão"
   },
   "wrong_credentials": {
     "email": "user_wrong@email.com",
